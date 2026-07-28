@@ -359,6 +359,7 @@ td select{padding:6px 8px; font-size:12px;}
 .status-Shipping{background:#3a2f5a; color:#c5a8f0;}
 .status-Delivered{background:#1c5a2f; color:#8ef0a3;}
 .status-Cancelled{background:#5a1c1c; color:#f08e8e;}
+.status-Returned{background:#5a3a1c; color:#f0b98e;}
 .status-pending{background:#5a4a1c; color:#f0d787;}
 .status-approved{background:#1c5a2f; color:#8ef0a3;}
 .status-rejected{background:#5a1c1c; color:#f08e8e;}
@@ -638,7 +639,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
     <button onclick="openTrackOrder()"><span class="ti"><svg viewBox="0 0 24 24"><path d="M3 7h11v9H3z"></path><path d="M14 10h4l3 3v3h-7z"></path><circle cx="7" cy="18" r="1.6"></circle><circle cx="17.5" cy="18" r="1.6"></circle></svg></span>Track</button>
     <button class="cart-tab" onclick="openCart()"><span class="cart-fab"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1.2 11a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 8Z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="badge" id="cartBadge2">0</span></span><span class="cart-tab-label">Cart</span></button>
     <button onclick="openWishlist()"><span class="ti"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.35-9.5-8.5C.8 8 2.2 4.5 5.5 4c2-.3 3.7.7 4.5 2 .8-1.3 2.5-2.3 4.5-2 3.3.5 4.7 4 3 7.5C19 15.65 12 20 12 20Z"></path></svg><span class="badge hidden" id="wishBadge2">0</span></span>Wishlist</button>
-    <button onclick="openMyOrders()"><span class="ti"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"></path><path d="M8 10h8M8 13.5h8M8 17h5"></path></svg><span class="badge hidden" id="myOrdersBadge">0</span></span>My Orders</button>
+    <button onclick="openReturnRequest()"><span class="ti"><svg viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"></path><path d="M4 9h10a6 6 0 0 1 0 12h-3"></path></svg></span>Return</button>
   </div>
 </div>
 </div>
@@ -704,12 +705,22 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
   </div>
 </div>
 
-<!-- My Orders Drawer -->
-<div class="overlay hidden" id="myOrdersOverlay">
+<!-- Return Request -->
+<div class="overlay hidden" id="returnOverlay">
   <div class="stage">
-    <div class="cart-panel">
-      <div class="drawer-head"><h3>My Orders</h3><button onclick="closeMyOrders()">✕</button></div>
-      <div class="cart-items" id="myOrdersItems" style="margin-top:10px;"></div>
+    <div class="product-panel">
+      <div class="pp-topbar"><button onclick="closeReturnRequest()">←</button><span style="font-size:11px; letter-spacing:2px; color:var(--muted); text-transform:uppercase;">Return Order</span><span></span></div>
+      <div class="section-wrap" style="padding-top:10px;">
+        <div id="retLookupBox">
+          <label class="ck-label">Order ID</label>
+          <input type="text" id="retOrderId" placeholder="e.g. AUR-12345" style="width:100%; margin:6px 0 14px;">
+          <label class="ck-label">Phone number</label>
+          <input type="tel" id="retPhone" placeholder="01xxxxxxxxx" style="width:100%; margin:6px 0 14px;">
+          <button class="btn" style="width:100%;" onclick="lookupReturnOrder()">Find My Order</button>
+          <div id="retLookupMsg" class="msg-note"></div>
+        </div>
+        <div id="retFormBox" class="hidden" style="margin-top:20px;"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -786,6 +797,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
       <button data-sec="banner">🖼 Banner</button>
       <button data-sec="orders">🛒 Orders</button>
       <button data-sec="returns">↩ Returns</button>
+      <button data-sec="returnrequests">📩 Return Requests <span class="nbadge hidden" id="returnReqBadge">0</span></button>
       <button data-sec="customers">👤 Customers</button>
       <button data-sec="coupons">🏷 Coupons</button>
       <button data-sec="shipping">🚚 Shipping</button>
@@ -884,6 +896,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
             <option value="Shipping">Shipping</option>
             <option value="Delivered">Delivered</option>
             <option value="Cancelled">Cancelled</option>
+            <option value="Returned">Returned</option>
           </select>
         </div>
         <div>
@@ -921,6 +934,17 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
       <table>
         <thead><tr><th>Product</th><th>Qty</th><th>Reason</th><th>Date</th><th></th></tr></thead>
         <tbody id="returnsTable"></tbody>
+      </table>
+      </div>
+    </section>
+
+    <section class="admin-section" id="sec-returnrequests">
+      <div class="admin-h1">Return Requests</div>
+      <div class="admin-sub">Return requests submitted by customers from the store. Accepting one marks the order as Returned and removes its amount from Total Sales.</div>
+      <div style="overflow-x:auto;">
+      <table>
+        <thead><tr><th>Order #</th><th>Customer</th><th>Phone</th><th>Amount</th><th>Reason</th><th>Date</th><th>Status</th><th></th></tr></thead>
+        <tbody id="returnRequestsTable"></tbody>
       </table>
       </div>
     </section>
@@ -1080,6 +1104,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
         <div class="dm-row"><span>Products</span><button class="btn small danger" onclick="removeDataSection('products')">Delete</button></div>
         <div class="dm-row"><span>Orders</span><button class="btn small danger" onclick="removeDataSection('orders')">Delete</button></div>
         <div class="dm-row"><span>Returns</span><button class="btn small danger" onclick="removeDataSection('returns')">Delete</button></div>
+        <div class="dm-row"><span>Return Requests</span><button class="btn small danger" onclick="removeDataSection('returnrequests')">Delete</button></div>
         <div class="dm-row"><span>Customers</span><button class="btn small danger" onclick="removeDataSection('customers')">Delete</button></div>
         <div class="dm-row"><span>Statistics</span><button class="btn small danger" onclick="removeDataSection('stats')">Delete</button></div>
         <div class="dm-row"><span>Banners</span><button class="btn small danger" onclick="removeDataSection('banner')">Delete</button></div>
@@ -1190,16 +1215,35 @@ function withTimeout(promise, ms, fallback){
   });
 }
 
+/* If Firebase Anonymous Auth never resolves (blocked network, unauthorized domain, slow
+   connection, etc.) we used to fall back to the literal string 'local' as the "user id" for
+   private data (cart/wishlist). That made every device/browser that hit the fallback write
+   to the SAME "users/local/private/..." document — so a phone that couldn't reach Firebase
+   Auth would see the exact same cart as any other device in the same situation. Instead we
+   generate a random id once and keep it in this browser's localStorage, so even in the
+   fallback case each device still gets its own private bucket. */
+function getDeviceFallbackId(){
+  try{
+    let id = localStorage.getItem('auracache:deviceId');
+    if(!id){
+      id = 'device-' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+      localStorage.setItem('auracache:deviceId', id);
+    }
+    return id;
+  }catch(e){
+    return 'device-' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+  }
+}
 let authReadyPromise = null;
 function ensureAuth(){
-  if(!fbReady) return Promise.resolve('local');
+  if(!fbReady) return Promise.resolve(getDeviceFallbackId());
   if(!authReadyPromise){
     authReadyPromise = withTimeout(new Promise((resolve)=>{
       fbAuth.onAuthStateChanged(user=>{
         if(user) resolve(user.uid);
-        else fbAuth.signInAnonymously().catch(e=>{ console.error('Anonymous sign-in failed', e); resolve('local'); });
+        else fbAuth.signInAnonymously().catch(e=>{ console.error('Anonymous sign-in failed', e); resolve(getDeviceFallbackId()); });
       });
-    }), 6000, 'local'); // never let a stuck/blocked auth handshake freeze buttons — fall back after 6s
+    }), 6000, getDeviceFallbackId()); // never let a stuck/blocked auth handshake freeze buttons — fall back after 6s
   }
   return authReadyPromise;
 }
@@ -1311,6 +1355,14 @@ function attachRealtimeListeners(){
   fbDb.collection('store').doc('aura:coupons').onSnapshot(snap=>{ if(snap.exists){ COUPONS = snap.data().value || []; if(typeof renderCouponsTable==='function') renderCouponsTable(); } });
   fbDb.collection('store').doc('aura:shipping').onSnapshot(snap=>{ if(snap.exists){ SHIPPING = snap.data().value || SHIPPING; } });
   fbDb.collection('store').doc('aura:returns').onSnapshot(snap=>{ if(snap.exists){ RETURNS = snap.data().value || []; if(typeof renderReturnsAdmin==='function' && document.getElementById('sec-returns')) renderReturnsAdmin(); if(typeof renderStatistics==='function' && document.getElementById('sec-statistics')) renderStatistics(); } });
+  fbDb.collection('store').doc('aura:returnrequests').onSnapshot(snap=>{
+    if(!snap.exists) return;
+    const incoming = snap.data().value || [];
+    const isNewRequest = RETURN_REQUESTS.length && incoming.length > RETURN_REQUESTS.length && incoming[0].id !== RETURN_REQUESTS[0]?.id;
+    RETURN_REQUESTS = incoming;
+    if(typeof renderReturnRequestsAdmin==='function' && document.getElementById('sec-returnrequests')) renderReturnRequestsAdmin();
+    if(isNewRequest && ADMIN_LOGGED_IN){ notifyNewActivity(`New return request for order ${incoming[0].orderId}`); }
+  });
   fbDb.collection('store').doc('aura:banner').onSnapshot(snap=>{ if(snap.exists){ BANNER = snap.data().value; renderBanner(); } });
   fbDb.collection('store').doc('aura:stats').onSnapshot(snap=>{ if(snap.exists){ STATS = snap.data().value || STATS; } });
   fbDb.collection('store').doc('aura:settings').onSnapshot(snap=>{ if(snap.exists){ SETTINGS = snap.data().value; applySettingsToStorefront(); } });
@@ -1386,8 +1438,7 @@ function requestNotifPermission(){
 }
 
 /* ================= STATE ================= */
-let PRODUCTS=[], ORDERS=[], CUSTOMERS=[], COUPONS=[], STATS=null, NOTIFS=[], BANNER=null, CART=[], SHIPPING={}, WISHLIST=[], RETURNS=[];
-let MY_ORDERS=[]; // {id, phone} pairs for orders placed from this device/browser — powers the "My Orders" tab
+let PRODUCTS=[], ORDERS=[], CUSTOMERS=[], COUPONS=[], STATS=null, NOTIFS=[], BANNER=null, CART=[], SHIPPING={}, WISHLIST=[], RETURNS=[], RETURN_REQUESTS=[];
 let SETTINGS=null, ADMIN_LOGGED_IN=false;
 let SIZEGUIDES={}; // { [categoryName]: imageDataUrl } — set per-category from the admin panel
 function defaultSettings(){
@@ -1521,7 +1572,7 @@ async function init(){
   SETTINGS = cacheGet('aura:settings', null) || defaultSettings();
   SIZEGUIDES = cacheGet('aura:sizeguides', {});
   RETURNS = cacheGet('aura:returns', []);
-  MY_ORDERS = cacheGet('aura:myorders', []);
+  RETURN_REQUESTS = cacheGet('aura:returnrequests', []);
 
   renderMenu();
   renderBanner();
@@ -1530,7 +1581,6 @@ async function init(){
   renderBestSellers();
   renderCart();
   renderWishlistBadge();
-  renderMyOrdersBadge();
   applySettingsToStorefront();
 
   document.getElementById('searchInput').addEventListener('input', onSearchInput);
@@ -1552,7 +1602,7 @@ async function init(){
 
 async function syncFromFirestore(){
   if(!fbReady){ return; }
-  const [products, orders, customers, coupons, notifs, banner, stats, cart, wishlist, shipping, settings, sizeguides, returns, myorders] = await Promise.all([
+  const [products, orders, customers, coupons, notifs, banner, stats, cart, wishlist, shipping, settings, sizeguides, returns, returnrequests] = await Promise.all([
     getData('aura:products', null, true),
     getData('aura:orders', [], true),
     getData('aura:customers', [], true),
@@ -1566,7 +1616,7 @@ async function syncFromFirestore(){
     getData('aura:settings', null, true),
     getData('aura:sizeguides', {}, true),
     getData('aura:returns', [], true),
-    getData('aura:myorders', [], false),
+    getData('aura:returnrequests', [], true),
   ]);
 
   const prevProductsJSON = JSON.stringify(PRODUCTS);
@@ -1581,7 +1631,7 @@ async function syncFromFirestore(){
   if(!settings){ await setData('aura:settings', SETTINGS, true); }
   SIZEGUIDES = sizeguides;
   RETURNS = returns;
-  MY_ORDERS = myorders;
+  RETURN_REQUESTS = returnrequests;
 
   const t = todayStr();
   STATS.visitorsByDay[t] = (STATS.visitorsByDay[t]||0) + 1;
@@ -1595,11 +1645,10 @@ async function syncFromFirestore(){
   if(JSON.stringify(SETTINGS) !== prevSettingsJSON) applySettingsToStorefront();
   renderCart();
   renderWishlistBadge();
-  renderMyOrdersBadge();
-  if(!document.getElementById('myOrdersOverlay').classList.contains('hidden')) renderMyOrders();
   if(typeof renderOrdersTable === 'function') renderOrdersTable();
   if(typeof renderStatistics === 'function') renderStatistics();
   if(typeof renderReturnsAdmin === 'function' && document.getElementById('sec-returns')) renderReturnsAdmin();
+  if(typeof renderReturnRequestsAdmin === 'function' && document.getElementById('sec-returnrequests')) renderReturnRequestsAdmin();
 
   attachRealtimeListeners();
 }
@@ -1621,7 +1670,7 @@ function navigateTo(view, extra){
 }
 function goBack(){ history.back(); }
 function hideAllOverlays(){
-  ['menuOverlay','productOverlay','categoryOverlay','cartOverlay','wishlistOverlay','myOrdersOverlay','checkoutOverlay','trackOrderOverlay','orderConfirmOverlay'].forEach(id=>{
+  ['menuOverlay','productOverlay','categoryOverlay','cartOverlay','wishlistOverlay','returnOverlay','checkoutOverlay','trackOrderOverlay','orderConfirmOverlay'].forEach(id=>{
     const el = document.getElementById(id); if(el) el.classList.add('hidden');
   });
   const sd = document.getElementById('searchDrop'); if(sd) sd.classList.remove('open');
@@ -1679,9 +1728,9 @@ function applyRoute(state){
       document.getElementById('wishlistOverlay').classList.remove('hidden');
       renderWishlist();
       break;
-    case 'myorders':
-      document.getElementById('myOrdersOverlay').classList.remove('hidden');
-      renderMyOrders();
+    case 'returnrequest':
+      document.getElementById('returnOverlay').classList.remove('hidden');
+      resetReturnRequestForm();
       break;
     case 'trackorder':
       document.getElementById('trackOrderOverlay').classList.remove('hidden');
@@ -1716,6 +1765,23 @@ function applyRoute(state){
       break; // all overlays already hidden above — nothing else to do
   }
 }
+/* Turns the URL hash the page was loaded with (e.g. "#!product/abc123" from a shared
+   link) into a router state, so a shared link actually opens that product instead of
+   always landing on the home screen. Falls back to home for anything unrecognized. */
+function parseHashToState(hash){
+  const fallback = {__aura:true, view:'home'};
+  if(!hash || hash.length < 3) return fallback;
+  const parts = hash.replace(/^#!/, '').split('/');
+  const view = parts[0];
+  if(!['product','category'].includes(view)) return fallback; // only these carry a shareable id
+  const state = {__aura:true, view};
+  if(parts[1]){
+    const val = decodeURIComponent(parts[1]);
+    if(view === 'product') state.id = val;
+    if(view === 'category') state.cat = val;
+  }
+  return state;
+}
 function setupRouter(){
   window.addEventListener('popstate', (e)=>{
     const state = e.state;
@@ -1733,7 +1799,11 @@ function setupRouter(){
       history.pushState({__aura:true, view:'home'}, '', '#!home');
     }
   });
-  history.pushState({__aura:true, view:'home'}, '', '#!home');
+  const deepLink = parseHashToState(location.hash);
+  history.pushState({__aura:true, view:'home'}, '', '#!home'); // base entry, so back-button behavior is unchanged
+  if(deepLink.view !== 'home'){
+    navigateTo(deepLink.view, deepLink); // open the shared product/category on top of the home entry
+  }
 }
 function setupScrollReveal(){
   if(!('IntersectionObserver' in window)) return;
@@ -2036,42 +2106,142 @@ function renderWishlistBadge(){
 }
 function openWishlist(){ navigateTo('wishlist'); }
 function closeWishlist(){ goBack(); }
-function openMyOrders(){ navigateTo('myorders'); }
-function closeMyOrders(){ goBack(); }
-function renderMyOrdersBadge(){
-  const el = document.getElementById('myOrdersBadge');
-  if(!el) return;
-  const n = MY_ORDERS.length;
-  el.textContent = n;
-  el.classList.toggle('hidden', n===0);
+/* ================= CUSTOMER RETURN REQUEST ================= */
+const RETURN_POLICY_TEXT = 'Return Policy: items must be returned unused and in the same condition in which they were received, with any original tags/packaging, within a reasonable time of delivery.';
+function openReturnRequest(){ navigateTo('returnrequest'); }
+function closeReturnRequest(){ goBack(); }
+function resetReturnRequestForm(){
+  const idEl = document.getElementById('retOrderId'), phEl = document.getElementById('retPhone'), msgEl = document.getElementById('retLookupMsg');
+  if(idEl) idEl.value=''; if(phEl) phEl.value=''; if(msgEl){ msgEl.textContent=''; }
+  document.getElementById('retLookupBox').classList.remove('hidden');
+  const box = document.getElementById('retFormBox');
+  box.classList.add('hidden');
+  box.innerHTML = '';
 }
-/* Shows every order placed from this device/browser, newest first, with live status,
-   shipment/tracking number (if the store has set one), and quick actions to track or
-   print the invoice — pulled straight from the shared ORDERS list so status always
-   reflects whatever the store last updated it to. */
-function renderMyOrders(){
-  const wrap = document.getElementById('myOrdersItems');
-  const rows = MY_ORDERS
-    .map(m=>ORDERS.find(o=>o.id===m.id))
-    .filter(Boolean);
-  if(rows.length===0){ wrap.innerHTML = '<div class="cart-empty">You haven\'t placed any orders yet.</div>'; return; }
-  wrap.innerHTML = rows.map(o=>{
-    const count = (o.items||[]).reduce((s,i)=>s+i.qty,0);
-    return `<div class="cart-item" style="flex-direction:column; align-items:stretch; gap:8px;">
-      <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-        <div>
-          <div class="nm">Order ${o.id}</div>
-          <div class="meta">${o.date||''} · ${count} item(s) · ${fmtMoney(o.amount)}</div>
-        </div>
-        <span class="status-pill status-${o.status}">${o.status}</span>
-      </div>
-      ${o.tracking ? `<div style="font-size:12px; color:var(--muted);">Shipment No: <span style="color:var(--cream);">${o.tracking}</span></div>` : ''}
-      <div class="wish-actions">
-        <button class="wa-add" onclick="trackOrderFromConfirm('${o.id}','${o.phone}')">Track Order</button>
-        <button class="wa-remove" onclick="printOrderInvoice('${o.id}')">View Invoice</button>
-      </div>
-    </div>`;
-  }).join('');
+/* Finds the return request already on file for an order, if any (newest first). */
+function returnRequestForOrder(orderId){
+  return RETURN_REQUESTS.filter(r=>r.orderId===orderId).slice(-1)[0] || null;
+}
+function lookupReturnOrder(){
+  const id = document.getElementById('retOrderId').value.trim();
+  const phone = document.getElementById('retPhone').value.trim();
+  const msgEl = document.getElementById('retLookupMsg');
+  const formBox = document.getElementById('retFormBox');
+  formBox.classList.add('hidden'); formBox.innerHTML='';
+  if(!id || !phone){ msgEl.style.color='var(--danger)'; msgEl.textContent='Please enter both your order ID and phone number.'; return; }
+  const order = ORDERS.find(o=>o.id.toLowerCase()===id.toLowerCase() && (o.phone===phone || o.phone2===phone));
+  if(!order){ msgEl.style.color='var(--danger)'; msgEl.textContent='No order found with these details. Please check your Order ID and phone number.'; return; }
+  if(order.status==='Cancelled'){ msgEl.style.color='var(--danger)'; msgEl.textContent='This order was cancelled and cannot be returned.'; return; }
+  msgEl.textContent='';
+  renderReturnRequestForm(order);
+}
+function renderReturnRequestForm(order){
+  const box = document.getElementById('retFormBox');
+  const count = (order.items||[]).reduce((s,i)=>s+i.qty,0);
+  const existing = returnRequestForOrder(order.id);
+  let actionHtml;
+  if(order.status==='Returned'){
+    actionHtml = `<div class="msg-note" style="color:var(--ok);">This order has already been returned.</div>`;
+  } else if(existing && existing.status==='pending'){
+    actionHtml = `<div class="msg-note">A return request for this order is already <span class="status-pill status-pending">pending</span> review.</div>`;
+  } else if(existing && existing.status==='approved'){
+    actionHtml = `<div class="msg-note">This order's return has already been <span class="status-pill status-approved">approved</span>.</div>`;
+  } else {
+    actionHtml = `
+      <label class="ck-label">Reason for return</label>
+      <textarea id="retReason" rows="4" placeholder="Tell us why you'd like to return this order..." style="width:100%; margin:6px 0 12px; resize:vertical;"></textarea>
+      <div style="font-size:11px; color:var(--muted); line-height:1.5; margin-bottom:16px;">${RETURN_POLICY_TEXT}</div>
+      <button class="btn" style="width:100%;" onclick="submitReturnRequest('${order.id}')">Submit Return Request</button>
+      <div class="msg-note" id="retSubmitMsg"></div>
+    `;
+  }
+  box.classList.remove('hidden');
+  box.innerHTML = `
+    <div style="border:1px solid var(--line); border-radius:8px; padding:16px; margin-bottom:18px;">
+      <div style="font-size:13px; color:var(--muted); letter-spacing:1px;">ORDER ${order.id}</div>
+      <div style="font-size:18px; margin-top:4px;" class="serif">${fmtMoney(order.amount)}</div>
+      <div style="font-size:12px; color:var(--muted); margin-top:6px;">${count} item(s) · Placed on ${order.date}</div>
+      <div style="margin-top:8px;"><span class="status-pill status-${order.status}">${order.status}</span></div>
+    </div>
+    ${actionHtml}
+  `;
+}
+async function submitReturnRequest(orderId){
+  const order = ORDERS.find(o=>o.id===orderId);
+  if(!order) return;
+  const reasonEl = document.getElementById('retReason');
+  const reason = reasonEl ? reasonEl.value.trim() : '';
+  const submitMsg = document.getElementById('retSubmitMsg');
+  if(!reason){ if(submitMsg){ submitMsg.style.color='var(--danger)'; submitMsg.textContent='Please tell us the reason for your return.'; } return; }
+  const request = { id: uid('retreq'), orderId: order.id, phone: order.phone, customer: order.customer, amount: order.amount, reason, status:'pending', date: todayStr() };
+  RETURN_REQUESTS.unshift(request);
+  await Promise.allSettled([
+    setData('aura:returnrequests', RETURN_REQUESTS, true),
+    addNotification('return', `New return request for order ${order.id} from ${order.customer}`)
+  ]);
+  const box = document.getElementById('retFormBox');
+  box.innerHTML = `<div style="text-align:center; padding:10px 0;">
+    <div style="width:52px; height:52px; border-radius:50%; background:var(--maroon-light); display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-size:22px; color:#fff;">✓</div>
+    <div class="serif" style="font-size:18px; margin-bottom:8px;">Return request submitted</div>
+    <div style="font-size:12px; color:var(--muted);">We'll review your request for order ${order.id} and get back to you.</div>
+  </div>`;
+  showToast('Return request submitted');
+}
+/* ================= RETURN REQUESTS (ADMIN) ================= */
+function renderReturnRequestsAdmin(){
+  const tbody = document.getElementById('returnRequestsTable');
+  if(!tbody) return;
+  const list = RETURN_REQUESTS.slice().reverse();
+  const pendingCount = RETURN_REQUESTS.filter(r=>r.status==='pending').length;
+  const badge = document.getElementById('returnReqBadge');
+  if(badge){ badge.textContent = pendingCount; badge.classList.toggle('hidden', pendingCount===0); }
+  tbody.innerHTML = list.map(r=>`
+    <tr>
+      <td>${r.orderId}</td>
+      <td>${r.customer||''}</td>
+      <td>${r.phone||''}</td>
+      <td>${fmtMoney(r.amount)}</td>
+      <td style="max-width:220px;">${r.reason||''}</td>
+      <td>${r.date||''}</td>
+      <td><span class="status-pill status-${r.status}">${r.status}</span></td>
+      <td style="white-space:nowrap;">
+        ${r.status==='pending' ? `<button class="btn small" onclick="acceptReturnRequest('${r.id}')">Accept</button>
+        <button class="btn small secondary" onclick="rejectReturnRequest('${r.id}')">Reject</button>` : ''}
+      </td>
+    </tr>
+  `).join('') || '<tr><td colspan="8" class="empty-note">No return requests yet.</td></tr>';
+}
+/* Accepting a return request marks the order as Returned (so it stops counting toward
+   Total Sales / bestsellers, the same way a Cancelled order does) and reduces the
+   customer's recorded total spend by the order amount. */
+async function acceptReturnRequest(id){
+  const req = RETURN_REQUESTS.find(r=>r.id===id);
+  if(!req || req.status!=='pending') return;
+  if(!confirm(`Accept the return for order ${req.orderId}? This will mark the order as Returned and remove ${fmtMoney(req.amount)} from Total Sales.`)) return;
+  const order = ORDERS.find(o=>o.id===req.orderId);
+  req.status = 'approved';
+  const tasks = [setData('aura:returnrequests', RETURN_REQUESTS, true)];
+  if(order){
+    order.status = 'Returned';
+    tasks.push(setData('aura:orders', ORDERS, true));
+    const cust = CUSTOMERS.find(c=>c.phone===order.phone);
+    if(cust){ cust.totalSpent = Math.max(0, (cust.totalSpent||0) - order.amount); tasks.push(setData('aura:customers', CUSTOMERS, true)); }
+  }
+  await Promise.allSettled(tasks);
+  renderReturnRequestsAdmin();
+  if(typeof renderOrdersTable==='function' && document.getElementById('sec-orders')) renderOrdersTable();
+  if(typeof renderCustomersTable==='function' && document.getElementById('sec-customers')) renderCustomersTable();
+  if(typeof renderStatistics==='function' && document.getElementById('sec-statistics')) renderStatistics();
+  showToast('Return accepted — order marked as Returned');
+}
+async function rejectReturnRequest(id){
+  const req = RETURN_REQUESTS.find(r=>r.id===id);
+  if(!req || req.status!=='pending') return;
+  if(!confirm(`Reject the return request for order ${req.orderId}?`)) return;
+  req.status = 'rejected';
+  await setData('aura:returnrequests', RETURN_REQUESTS, true);
+  renderReturnRequestsAdmin();
+  showToast('Return request rejected');
 }
 function openTrackOrder(){
   document.getElementById('trkOrderId').value='';
@@ -2122,7 +2292,7 @@ function renderOrderConfirm(order){
       <div style="font-size:12px; color:var(--muted);">${count} item(s) · Total ${fmtMoney(order.amount)}</div>
       <div style="font-size:12px; color:var(--muted); margin-top:4px;">Delivery to ${order.governorate}</div>
     </div>
-    <div style="font-size:12px; color:var(--muted); margin-bottom:18px;">Save your order number — you can track it any time from the Track button, or find it later under My Orders.</div>
+    <div style="font-size:12px; color:var(--muted); margin-bottom:18px;">Save your order number — you can track it any time using the Track button, and use it to request a return if you ever need to.</div>
     ${waAvailable ? `<button class="btn" style="width:100%; margin-bottom:10px;" onclick='confirmOrderViaWhatsApp(${JSON.stringify(order).replace(/'/g,"&#39;")})'>💬 Confirm via WhatsApp</button>` : ''}
     <button class="btn secondary" style="width:100%; margin-bottom:10px;" onclick="trackOrderFromConfirm('${order.id}','${order.phone}')">Track This Order</button>
     <button class="btn secondary" style="width:100%;" onclick="navigateTo('home')">Continue Shopping</button>
@@ -2414,9 +2584,6 @@ async function placeOrder(){
     const order = { id: 'AUR-' + Math.floor(10000+Math.random()*89999), customer:name, phone, phone2, governorate:gov, address, items: CHECKOUT_ITEMS.map(i=>({...i})), subtotal, shipping, amount, coupon: appliedCoupon?appliedCoupon.code:null, status:'Pending', tracking:'', date: todayStr() };
     ORDERS.unshift(order);
 
-    MY_ORDERS.unshift({id: order.id, phone: order.phone});
-    renderMyOrdersBadge();
-
     // Fired here, before any `await`, so it still runs inside the original tap/click —
     // most browsers block window.open() once control has been yielded back to the event loop.
     confirmOrderViaWhatsApp(order);
@@ -2436,7 +2603,6 @@ async function placeOrder(){
     const syncTasks = [
       setData('aura:orders', ORDERS, true),
       setData('aura:customers', CUSTOMERS, true),
-      setData('aura:myorders', MY_ORDERS, false),
       persistProducts(),
       setData('aura:stats', STATS, true),
       addNotification('order', `New order ${order.id} from ${name} — ${fmtMoney(amount)}`)
@@ -2537,6 +2703,7 @@ function switchAdminSection(sec){
   if(sec==='banner') renderBannerAdmin();
   if(sec==='orders') renderOrdersTable();
   if(sec==='returns'){ populateReturnProductSelect(); renderReturnsAdmin(); }
+  if(sec==='returnrequests') renderReturnRequestsAdmin();
   if(sec==='customers') renderCustomersTable();
   if(sec==='coupons') renderCouponsTable();
   if(sec==='shipping') renderShippingAdmin();
@@ -2548,7 +2715,7 @@ function switchAdminSection(sec){
 }
 function last7Days(){ const days=[]; for(let i=6;i>=0;i--){ const d=new Date(); d.setDate(d.getDate()-i); days.push(todayStr(d)); } return days; }
 
-function activeOrders(list){ return (list||ORDERS).filter(o=>o.status!=='Cancelled'); }
+function activeOrders(list){ return (list||ORDERS).filter(o=>o.status!=='Cancelled' && o.status!=='Returned'); }
 function cancelledOrders(list){ return (list||ORDERS).filter(o=>o.status==='Cancelled'); }
 function salesLostTotal(list){ return cancelledOrders(list).reduce((s,o)=>s+o.amount,0); }
 function drawChart(canvasId, type, labels, data, color){
@@ -2833,7 +3000,7 @@ function filteredOrders(){
   });
 }
 function renderOrdersTable(){
-  const statuses = ['Pending','Confirmed','Shipping','Delivered','Cancelled'];
+  const statuses = ['Pending','Confirmed','Shipping','Delivered','Cancelled','Returned'];
   const list = filteredOrders();
   document.getElementById('ordersTable').innerHTML = list.map(o=>`
     <tr><td>${o.id}</td><td>${o.customer}</td><td>${o.phone||''}</td><td>${o.governorate||''}</td><td>${fmtMoney(o.amount)}</td><td>${o.date}</td>
@@ -3400,6 +3567,7 @@ async function removeDataSection(section){
     products: async()=>{ PRODUCTS=[]; await setData('aura:products', PRODUCTS, true); renderProductsTable(); },
     orders: async()=>{ ORDERS=[]; await setData('aura:orders', ORDERS, true); renderOrdersTable(); },
     returns: async()=>{ RETURNS=[]; await setData('aura:returns', RETURNS, true); renderReturnsAdmin(); },
+    returnrequests: async()=>{ RETURN_REQUESTS=[]; await setData('aura:returnrequests', RETURN_REQUESTS, true); renderReturnRequestsAdmin(); },
     customers: async()=>{ CUSTOMERS=[]; await setData('aura:customers', CUSTOMERS, true); renderCustomersTable(); },
     stats: async()=>{ STATS={visitorsByDay:{},salesByDay:{},ordersByDay:{}}; await setData('aura:stats', STATS, true); },
     banner: async()=>{ BANNER={image:null,eyebrow:'New Season',sub:''}; await setData('aura:banner', BANNER, true); renderBannerAdmin(); renderBanner(); },
@@ -3412,8 +3580,8 @@ async function removeDataSection(section){
 }
 async function removeAllData(){
   if(!confirmAdminPassword('Type your admin password to remove ALL data:')){ showToast('Incorrect password — cancelled'); return; }
-  if(!confirm('This will permanently delete ALL store data — products, orders, returns, customers, statistics, banners, coupons and shipping. This cannot be undone. Continue?')) return;
-  for(const s of ['products','orders','returns','customers','stats','banner','shipping','coupons','cart']){
+  if(!confirm('This will permanently delete ALL store data — products, orders, returns, return requests, customers, statistics, banners, coupons and shipping. This cannot be undone. Continue?')) return;
+  for(const s of ['products','orders','returns','returnrequests','customers','stats','banner','shipping','coupons','cart']){
     await removeDataSectionSilent(s);
   }
   showToast('All data removed');
@@ -3424,6 +3592,7 @@ async function removeDataSectionSilent(section){
     products: async()=>{ PRODUCTS=[]; await setData('aura:products', PRODUCTS, true); },
     orders: async()=>{ ORDERS=[]; await setData('aura:orders', ORDERS, true); },
     returns: async()=>{ RETURNS=[]; await setData('aura:returns', RETURNS, true); },
+    returnrequests: async()=>{ RETURN_REQUESTS=[]; await setData('aura:returnrequests', RETURN_REQUESTS, true); },
     customers: async()=>{ CUSTOMERS=[]; await setData('aura:customers', CUSTOMERS, true); },
     stats: async()=>{ STATS={visitorsByDay:{},salesByDay:{},ordersByDay:{}}; await setData('aura:stats', STATS, true); },
     banner: async()=>{ BANNER={image:null,eyebrow:'New Season',sub:''}; await setData('aura:banner', BANNER, true); },
