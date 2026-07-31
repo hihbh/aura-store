@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AURA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@500;600;700&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@500;600;700&family=Jost:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -25,7 +25,7 @@
   --maroon-glow: rgba(161,49,72,0.35);
   --cream:#ece7de;
   --muted:#9b8b87;
-  --gold:#c9a35c;
+  --gold:var(--maroon-light); /* accent color unified to the logo's burgundy identity — no separate pink tone */
   --danger:#c0392b;
   --ok:#5c8a5c;
   --phone-w:480px;
@@ -42,6 +42,21 @@ input:focus,select:focus,textarea:focus{border-color:var(--maroon-light);}
 ::selection{background:var(--maroon-light); color:#fff;}
 ::-webkit-scrollbar{width:6px;}
 ::-webkit-scrollbar-thumb{background:var(--line);}
+
+/* ---------- RTL / ARABIC ---------- */
+html[dir="rtl"] body{font-family:'Tajawal',sans-serif;}
+html[dir="rtl"] .serif{font-family:'Tajawal',sans-serif; font-weight:600;}
+html[dir="rtl"] .pp-topbar > button:first-child{transform:scaleX(-1);}
+html[dir="rtl"] .ti svg{transform:scaleX(-1);}
+html[dir="rtl"] .search-result-item,
+html[dir="rtl"] .notif-item,
+html[dir="rtl"] .cart-item,
+html[dir="rtl"] .row{direction:rtl;}
+html[dir="rtl"] .menu-links a{text-align:right;}
+html[dir="rtl"] input,html[dir="rtl"] select,html[dir="rtl"] textarea{text-align:right;}
+.lang-switch{display:inline-flex; border:1px solid var(--line); border-radius:20px; padding:3px; gap:2px; margin-top:14px;}
+.lang-switch button{padding:6px 16px; border-radius:16px; font-size:11px; letter-spacing:1px; background:none; color:var(--muted);}
+.lang-switch button.active{background:var(--maroon); color:#fff;}
 
 /* ---------- SPLASH / INTRO ---------- */
 /* Cinematic reveal: two maroon curtains sweep in and meet at center, hold for a beat,
@@ -69,6 +84,20 @@ body.splash-active{overflow:hidden;}
 
 /* ---------- PHONE FRAME ---------- */
 #storeStage{max-width:var(--phone-w); margin:0 auto; background:var(--bg); min-height:100vh; position:relative; overflow-x:hidden; box-shadow:0 0 70px rgba(0,0,0,.7);}
+/* ---------- DESKTOP / LAPTOP LAYOUT ---------- */
+/* Below this width the store keeps its phone-shaped column (unchanged).
+   Above it, the stage widens into a proper desktop storefront: wider
+   container, multi-column grids, larger banner text. */
+@media(min-width:860px){
+  #storeStage{max-width:1180px; box-shadow:none;}
+  .grid{grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:20px;}
+  .cat-grid{grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:16px;}
+  .section-wrap{padding-left:32px; padding-right:32px;}
+  header.site-header{padding:0 32px;}
+  .banner-content h1{font-size:clamp(48px,6vw,72px);}
+  .tabbar{display:none;} /* bottom tab bar is a phone pattern; desktop uses the header icons + menu instead */
+}
+
 
 /* ---------- HEADER PILL ---------- */
 header.site-header{position:absolute; top:14px; left:0; right:0; z-index:40; padding:0 14px;}
@@ -113,6 +142,16 @@ header.site-header{position:absolute; top:14px; left:0; right:0; z-index:40; pad
 .banner-content .cta{margin-top:24px; display:inline-block; padding:13px 32px; border:1px solid var(--maroon-light); color:var(--cream); letter-spacing:3px; font-size:11px; text-transform:uppercase; transition:.25s;}
 .banner-content .cta:hover{background:var(--maroon-light); box-shadow:0 0 25px var(--maroon-glow);}
 
+/* ---------- AUTO-MOVING SLIDES BANNER ---------- */
+.slides-banner{position:relative; width:100%; aspect-ratio:16/8; overflow:hidden; background:var(--bg-alt);}
+.slides-banner.hidden{display:none;}
+.slides-track{display:flex; height:100%; transition:transform .7s cubic-bezier(.4,0,.2,1);}
+.slides-track img{width:100%; height:100%; object-fit:cover; flex-shrink:0;}
+.slides-dots{position:absolute; bottom:10px; left:0; right:0; display:flex; justify-content:center; gap:6px; z-index:2;}
+.slides-dots span{width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.45); transition:.2s;}
+.slides-dots span.active{background:#fff; width:16px; border-radius:4px;}
+@media(min-width:860px){ .slides-banner{aspect-ratio:16/5;} }
+
 .ship-strip{background:var(--maroon); color:#fff; text-align:center; padding:8px; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; overflow:hidden; white-space:nowrap;}
 
 /* ---------- SECTIONS ---------- */
@@ -135,7 +174,7 @@ header.site-header{position:absolute; top:14px; left:0; right:0; z-index:40; pad
 .card .imgwrap{position:relative; aspect-ratio:3/4; overflow:hidden; background:#1c1518;}
 .card .imgwrap img{width:100%; height:100%; object-fit:cover; filter:grayscale(.55) contrast(1.08) brightness(.92);}
 .card .imgwrap::after{content:''; position:absolute; inset:0; background:linear-gradient(160deg, var(--maroon-glow), transparent 55%); mix-blend-mode:screen; opacity:.5;}
-.tag{position:absolute; top:8px; left:8px; background:var(--gold); color:#1a1310; font-size:10px; font-weight:600; padding:3px 7px; letter-spacing:.5px; z-index:2;}
+.tag{position:absolute; top:8px; left:8px; background:var(--maroon); color:#fff; font-size:10px; font-weight:600; padding:3px 7px; letter-spacing:.5px; z-index:2;}
 .soldout-badge{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(10,9,9,0.55); z-index:2;}
 .soldout-badge span{border:1px solid var(--cream); padding:6px 14px; font-size:10px; letter-spacing:1.5px; text-transform:uppercase;}
 .card-body{padding:12px;}
@@ -153,7 +192,8 @@ footer.site-footer{border-top:1px solid var(--line); margin-top:20px; padding:40
 footer.site-footer .flogo{font-family:'Cormorant SC',serif; color:var(--maroon-light); font-size:20px; letter-spacing:5px; margin-bottom:12px;}
 footer.site-footer p{max-width:340px; margin:0 auto 16px; line-height:1.7;}
 .foot-icons{display:flex; justify-content:center; gap:14px; margin-bottom:20px;}
-.foot-icons span{width:32px; height:32px; border:1px solid var(--line); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px;}
+.foot-icons span, .foot-icons a{width:32px; height:32px; border:1px solid var(--line); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; color:var(--cream);}
+.foot-icons a:hover{border-color:var(--maroon-light); color:var(--maroon-light);}
 
 /* bottom tab bar like reference app */
 .tabbar{position:sticky; bottom:0; z-index:30; background:rgba(10,9,9,0.94); backdrop-filter:blur(10px); border-top:1px solid var(--line); display:flex;}
@@ -195,7 +235,7 @@ footer.site-footer p{max-width:340px; margin:0 auto 16px; line-height:1.7;}
 .pp-body h2{font-family:'Cormorant SC',serif; font-size:26px; margin-bottom:12px;}
 .pp-price-row{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:16px;}
 .pp-price-row .price{font-size:22px;}
-.off-pill{background:rgba(201,163,92,0.15); color:var(--gold); border:1px solid var(--gold); font-size:11px; padding:3px 10px; border-radius:14px;}
+.off-pill{background:rgba(161,49,72,0.15); color:var(--gold); border:1px solid var(--gold); font-size:11px; padding:3px 10px; border-radius:14px;}
 .stock-row{display:flex; align-items:center; gap:8px; font-size:12px; color:var(--muted); margin-bottom:8px;}
 .stock-dot{width:8px; height:8px; border-radius:50%; background:var(--ok);}
 .stock-dot.low{background:var(--gold);}
@@ -223,8 +263,8 @@ footer.site-footer p{max-width:340px; margin:0 auto 16px; line-height:1.7;}
 .add-cart-btn:hover{background:var(--maroon-light);}
 .wish-btn{width:50px; border:1px solid var(--line); color:var(--cream); font-size:17px;}
 .wish-btn.active{color:var(--maroon-light); border-color:var(--maroon-light);}
-.buy-now-btn{width:100%; margin-top:10px; padding:15px; background:var(--gold); color:#1a1310; letter-spacing:2.5px; font-size:12px; text-transform:uppercase; font-weight:500;}
-.buy-now-btn:hover{filter:brightness(1.08);}
+.buy-now-btn{width:100%; margin-top:10px; padding:15px; background:var(--maroon-light); color:#fff; letter-spacing:2.5px; font-size:12px; text-transform:uppercase; font-weight:500;}
+.buy-now-btn:hover{filter:brightness(1.1);}
 
 .pp-tabs{display:flex; gap:24px; margin-top:26px; border-bottom:1px solid var(--line);}
 .pp-tabs button{background:none; color:var(--muted); font-size:13px; padding:0 0 10px; letter-spacing:.5px; border-bottom:2px solid transparent;}
@@ -327,6 +367,21 @@ footer.site-footer p{max-width:340px; margin:0 auto 16px; line-height:1.7;}
 .admin-exit button{width:100%; padding:10px; background:none; border:1px solid var(--line); color:var(--cream); font-size:12px; letter-spacing:1px;}
 .admin-exit button:hover{border-color:var(--maroon-light);}
 .admin-main{flex:1; overflow-y:auto; padding:34px 40px;}
+.admin-mobile-bar{display:none;}
+.admin-sidebar-backdrop{display:none;}
+@media(max-width:860px){
+  #admin{flex-direction:column;}
+  .admin-mobile-bar{display:flex; align-items:center; gap:12px; padding:14px 16px; background:var(--panel); border-bottom:1px solid var(--line); flex-shrink:0;}
+  .admin-hamburger{background:none; color:var(--cream); font-size:20px; padding:4px 6px;}
+  .admin-mobile-bar .serif{font-size:18px; letter-spacing:3px; color:var(--maroon-light);}
+  .admin-sidebar{position:fixed; top:0; bottom:0; left:0; width:78vw; max-width:280px; z-index:120; transform:translateX(-100%); box-shadow:0 0 40px rgba(0,0,0,.5);}
+  html[dir="rtl"] .admin-sidebar{left:auto; right:0; transform:translateX(100%);}
+  .admin-sidebar.open{transform:translateX(0);}
+  .admin-sidebar-backdrop.open{display:block; position:fixed; inset:0; background:rgba(4,4,4,0.6); z-index:115;}
+  .admin-main{padding:20px 16px 90px;}
+  .admin-h1{font-size:24px;}
+  .admin-toolbar{gap:8px;}
+}
 .admin-section{display:none;}
 .admin-section.active{display:block;}
 .admin-h1{font-family:'Cormorant SC',serif; font-size:30px; letter-spacing:2px; margin-bottom:6px;}
@@ -499,13 +554,13 @@ button:active, .icon-btn:active, .quick-add:active, .btn:active, .checkout-btn:a
 .gal-dots span.active{background:#fff; width:16px; border-radius:4px;}
 
 /* ---------- SHARE BUTTON ---------- */
-.share-btn{width:50px; border:1px solid var(--line); color:var(--cream); font-size:16px; display:flex; align-items:center; justify-content:center;}
+.share-btn{width:50px; border:1px solid var(--maroon-light); color:var(--maroon-light); font-size:16px; display:flex; align-items:center; justify-content:center;}
 .share-btn:hover{color:var(--maroon-light); border-color:var(--maroon-light);}
 .share-btn svg{width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round;}
 
 /* ---------- REVIEW TOGGLE (no longer link-styled) ---------- */
 .review-toggle{margin-top:18px; padding:11px 18px; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--cream); background:transparent; border:1px solid var(--gold); border-radius:3px; display:inline-flex; align-items:center; gap:8px;}
-.review-toggle:hover{background:var(--gold); color:#1a1310;}
+.review-toggle:hover{background:var(--maroon-light); color:#fff;}
 .review-toggle::before{content:'✎';}
 
 /* ---------- ADMIN VISUAL REFRESH ---------- */
@@ -546,8 +601,8 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
 .sg-actions{display:flex; gap:8px; flex-shrink:0;}
 
 /* Size Guide button (product page) + modal */
-.size-guide-btn{background:none; border:none; color:var(--gold); font-size:11px; letter-spacing:1px; text-transform:uppercase; text-decoration:underline; padding:0;}
-.size-guide-btn:hover{color:var(--maroon-light);}
+.size-guide-btn{background:transparent; border:1px solid var(--maroon-light); color:var(--cream); font-size:11px; letter-spacing:1.5px; text-transform:uppercase; padding:8px 14px; border-radius:3px; display:inline-flex; align-items:center; gap:6px;}
+.size-guide-btn:hover{background:var(--maroon-light); color:#fff;}
 .size-guide-modal-backdrop{position:fixed; inset:0; background:rgba(4,4,4,0.82); z-index:200; display:flex; align-items:center; justify-content:center; padding:20px;}
 .size-guide-modal{background:var(--bg); border:1px solid var(--maroon-light); max-width:420px; width:100%; max-height:82vh; overflow-y:auto; padding:16px;}
 .size-guide-modal-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;}
@@ -590,7 +645,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
     </div>
     <div class="search-drop" id="searchDrop">
       <div class="search-drop-inner">
-        <input type="text" id="searchInput" placeholder="Search products..." autocomplete="off">
+        <input type="text" id="searchInput" placeholder="Search products..." data-i18n-placeholder="searchPlaceholder" autocomplete="off">
       </div>
       <div class="search-results" id="searchResults"></div>
     </div>
@@ -600,46 +655,58 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
     <div class="banner-bg" id="bannerBg"></div>
     <div class="banner-glow"></div>
     <div class="banner-content">
-      <div class="eyebrow" id="bannerEyebrow">New Season</div>
       <h1 id="bannerTitle">AURA</h1>
       <p id="bannerSub">Minimal streetwear for those who move differently.</p>
-      <a href="#categories" class="cta">Shop Now</a>
+      <a href="javascript:void(0)" onclick="scrollToShop()" class="cta" data-i18n="shopNow">Shop Now</a>
     </div>
+  </section>
+
+  <section class="slides-banner hidden" id="slidesBanner">
+    <div class="slides-track" id="slidesTrack"></div>
+    <div class="slides-dots" id="slidesDots"></div>
   </section>
 
   <div class="ship-strip" id="shipStrip"><div class="marquee-track" id="shipStripTrack"><span></span><span></span></div></div>
 
   <div class="section-wrap" id="categories">
-    <h2 class="section-title">Shop by Category</h2>
-    <p class="section-sub">Find your fit</p>
+    <h2 class="section-title" data-i18n="shopByCategory">Shop by Category</h2>
+    <p class="section-sub" data-i18n="findYourFit">Find your fit</p>
     <div class="cat-grid" id="catGrid"></div>
   </div>
 
   <div class="section-wrap">
-    <h2 class="section-title">Best Sellers</h2>
-    <p class="section-sub">Our most-loved styles</p>
+    <h2 class="section-title" data-i18n="bestSellers">Best Sellers</h2>
+    <p class="section-sub" data-i18n="mostLoved">Our most-loved styles</p>
     <div class="grid" id="bestSellersGrid"></div>
   </div>
 
   <div class="section-wrap" id="shop">
-    <h2 class="section-title">All Products</h2>
-    <p class="section-sub">Every piece, one energy</p>
+    <h2 class="section-title" data-i18n="allProducts">All Products</h2>
+    <p class="section-sub" data-i18n="everyPiece">Every piece, one energy</p>
     <div class="grid" id="productGrid"></div>
   </div>
 
   <footer class="site-footer">
     <div class="flogo" id="footerLogo">AURA</div>
-    <p>We design for those who value simplicity and individuality. Minimal silhouettes, considered fabrics, made to move with you.</p>
-    <div class="foot-icons" id="footIcons"><span>f</span><span>◎</span><span>▶</span><span>♪</span></div>
-    <div>© <span id="year"></span> <span id="footerYearName">AURA</span>. All rights reserved.</div>
+    <p data-i18n="footerBlurb">We design for those who value simplicity and individuality. Minimal silhouettes, considered fabrics, made to move with you.</p>
+    <div class="foot-icons" id="footIcons">
+      <span aria-label="Facebook"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V8c0-.9.2-1.5 1.5-1.5h1.7V3.7C15.9 3.6 15 3.5 14 3.5c-2.5 0-4.2 1.5-4.2 4.3v2.1H7v3.1h2.8V21h3.7Z"></path></svg></span>
+      <span aria-label="Instagram"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"></circle></svg></span>
+      <span aria-label="TikTok"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M16.5 3c.4 2.2 1.9 3.8 4 4.1v2.7c-1.5-.1-2.9-.6-4-1.5v6.4c0 3.1-2.5 5.6-5.6 5.6S5.3 17.8 5.3 14.7c0-3 2.4-5.5 5.4-5.6v2.8c-1.5.1-2.7 1.3-2.7 2.8 0 1.6 1.3 2.9 2.9 2.9s2.9-1.3 2.9-2.9V3h2.7Z"></path></svg></span>
+    </div>
+    <div>© <span id="year"></span> <span id="footerYearName">AURA</span>. <span data-i18n="rightsReserved">All rights reserved.</span></div>
+    <div class="lang-switch" id="langSwitch">
+      <button data-lang="en" onclick="setLang('en')">English</button>
+      <button data-lang="ar" onclick="setLang('ar')">العربية</button>
+    </div>
   </footer>
 
   <div class="tabbar">
-    <button class="active" onclick="scrollToShop()"><span class="ti">▦</span>Shop</button>
-    <button onclick="openTrackOrder()"><span class="ti"><svg viewBox="0 0 24 24"><path d="M3 7h11v9H3z"></path><path d="M14 10h4l3 3v3h-7z"></path><circle cx="7" cy="18" r="1.6"></circle><circle cx="17.5" cy="18" r="1.6"></circle></svg></span>Track</button>
-    <button class="cart-tab" onclick="openCart()"><span class="cart-fab"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1.2 11a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 8Z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="badge" id="cartBadge2">0</span></span><span class="cart-tab-label">Cart</span></button>
-    <button onclick="openWishlist()"><span class="ti"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.35-9.5-8.5C.8 8 2.2 4.5 5.5 4c2-.3 3.7.7 4.5 2 .8-1.3 2.5-2.3 4.5-2 3.3.5 4.7 4 3 7.5C19 15.65 12 20 12 20Z"></path></svg><span class="badge hidden" id="wishBadge2">0</span></span>Wishlist</button>
-    <button onclick="openReturnRequest()"><span class="ti"><svg viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"></path><path d="M4 9h10a6 6 0 0 1 0 12h-3"></path></svg></span>Return</button>
+    <button class="active" onclick="scrollToShop()"><span class="ti">▦</span><span data-i18n="tabShop">Shop</span></button>
+    <button onclick="openTrackOrder()"><span class="ti"><svg viewBox="0 0 24 24"><path d="M3 7h11v9H3z"></path><path d="M14 10h4l3 3v3h-7z"></path><circle cx="7" cy="18" r="1.6"></circle><circle cx="17.5" cy="18" r="1.6"></circle></svg></span><span data-i18n="tabTrack">Track</span></button>
+    <button class="cart-tab" onclick="openCart()"><span class="cart-fab"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1.2 11a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 8Z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="badge" id="cartBadge2">0</span></span><span class="cart-tab-label" data-i18n="tabCart">Cart</span></button>
+    <button onclick="openWishlist()"><span class="ti"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.35-9.5-8.5C.8 8 2.2 4.5 5.5 4c2-.3 3.7.7 4.5 2 .8-1.3 2.5-2.3 4.5-2 3.3.5 4.7 4 3 7.5C19 15.65 12 20 12 20Z"></path></svg><span class="badge hidden" id="wishBadge2">0</span></span><span data-i18n="tabWishlist">Wishlist</span></button>
+    <button onclick="openReturnRequest()"><span class="ti"><svg viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"></path><path d="M4 9h10a6 6 0 0 1 0 12h-3"></path></svg></span><span data-i18n="tabReturn">Return</span></button>
   </div>
 </div>
 </div>
@@ -658,7 +725,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
 <div class="overlay hidden" id="productOverlay">
   <div class="stage">
     <div class="product-panel">
-      <div class="pp-topbar"><button onclick="closeProductModal()">←</button><span style="font-size:11px; letter-spacing:2px; color:var(--muted); text-transform:uppercase;">Product</span><span></span></div>
+      <div class="pp-topbar"><button onclick="closeProductModal()">←</button><span style="font-size:11px; letter-spacing:2px; color:var(--muted); text-transform:uppercase;" data-i18n="product">Product</span><span></span></div>
       <div id="ppContent"></div>
     </div>
   </div>
@@ -680,16 +747,16 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
 <div class="overlay hidden" id="cartOverlay">
   <div class="stage">
     <div class="cart-panel">
-      <div class="drawer-head"><h3>Shopping Bag</h3><button onclick="closeCart()">✕</button></div>
+      <div class="drawer-head"><h3 data-i18n="shoppingBag">Shopping Bag</h3><button onclick="closeCart()">✕</button></div>
       <div class="cart-items" id="cartItems"></div>
       <div class="drawer-foot">
         <div class="coupon-row">
-          <input type="text" id="couponInput" placeholder="Coupon code">
-          <button onclick="applyCoupon()">Apply</button>
+          <input type="text" id="couponInput" placeholder="Coupon code" data-i18n-placeholder="couponCode">
+          <button onclick="applyCoupon()" data-i18n="apply">Apply</button>
         </div>
         <div class="msg-note" id="couponMsg"></div>
-        <div class="subtotal-row"><span>Subtotal</span><span id="cartSubtotal">$0.00</span></div>
-        <button class="checkout-btn" onclick="openCheckout()">Checkout</button>
+        <div class="subtotal-row"><span data-i18n="subtotal">Subtotal</span><span id="cartSubtotal">$0.00</span></div>
+        <button class="checkout-btn" onclick="openCheckout()" data-i18n="checkout">Checkout</button>
       </div>
     </div>
   </div>
@@ -699,7 +766,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
 <div class="overlay hidden" id="wishlistOverlay">
   <div class="stage">
     <div class="cart-panel">
-      <div class="drawer-head"><h3>Wishlist</h3><button onclick="closeWishlist()">✕</button></div>
+      <div class="drawer-head"><h3 data-i18n="wishlist">Wishlist</h3><button onclick="closeWishlist()">✕</button></div>
       <div class="cart-items" id="wishlistItems" style="margin-top:10px;"></div>
     </div>
   </div>
@@ -709,14 +776,14 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
 <div class="overlay hidden" id="returnOverlay">
   <div class="stage">
     <div class="product-panel">
-      <div class="pp-topbar"><button onclick="closeReturnRequest()">←</button><span style="font-size:11px; letter-spacing:2px; color:var(--muted); text-transform:uppercase;">Return Order</span><span></span></div>
+      <div class="pp-topbar"><button onclick="closeReturnRequest()">←</button><span style="font-size:11px; letter-spacing:2px; color:var(--muted); text-transform:uppercase;" data-i18n="returnOrder">Return Order</span><span></span></div>
       <div class="section-wrap" style="padding-top:10px;">
         <div id="retLookupBox">
-          <label class="ck-label">Order ID</label>
+          <label class="ck-label" data-i18n="orderId">Order ID</label>
           <input type="text" id="retOrderId" placeholder="e.g. AUR-12345" style="width:100%; margin:6px 0 14px;">
-          <label class="ck-label">Phone number</label>
+          <label class="ck-label" data-i18n="phoneNumber">Phone number</label>
           <input type="tel" id="retPhone" placeholder="01xxxxxxxxx" style="width:100%; margin:6px 0 14px;">
-          <button class="btn" style="width:100%;" onclick="lookupReturnOrder()">Find My Order</button>
+          <button class="btn" style="width:100%;" onclick="lookupReturnOrder()" data-i18n="findMyOrder">Find My Order</button>
           <div id="retLookupMsg" class="msg-note"></div>
         </div>
         <div id="retFormBox" class="hidden" style="margin-top:20px;"></div>
@@ -729,13 +796,13 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
 <div class="overlay hidden" id="trackOrderOverlay">
   <div class="stage">
     <div class="product-panel">
-      <div class="pp-topbar"><button onclick="closeTrackOrder()">←</button><span style="font-size:11px; letter-spacing:2px; color:var(--muted); text-transform:uppercase;">Track Order</span><span></span></div>
+      <div class="pp-topbar"><button onclick="closeTrackOrder()">←</button><span style="font-size:11px; letter-spacing:2px; color:var(--muted); text-transform:uppercase;" data-i18n="trackOrder">Track Order</span><span></span></div>
       <div class="section-wrap" style="padding-top:10px;">
-        <label class="ck-label">Order ID</label>
+        <label class="ck-label" data-i18n="orderId">Order ID</label>
         <input type="text" id="trkOrderId" placeholder="e.g. AUR-12345" style="width:100%; margin:6px 0 14px;">
-        <label class="ck-label">Phone number</label>
+        <label class="ck-label" data-i18n="phoneNumber">Phone number</label>
         <input type="tel" id="trkPhone" placeholder="01xxxxxxxxx" style="width:100%; margin:6px 0 14px;">
-        <button class="btn" style="width:100%;" onclick="submitTrackOrder()">Track Order</button>
+        <button class="btn" style="width:100%;" onclick="submitTrackOrder()" data-i18n="trackOrder">Track Order</button>
         <div id="trkResult" style="margin-top:22px;"></div>
       </div>
     </div>
@@ -746,22 +813,22 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
 <div class="overlay hidden" id="checkoutOverlay">
   <div class="stage">
     <div class="checkout-panel">
-      <div class="pp-topbar"><button onclick="closeCheckout()">←</button><span style="font-size:11px; letter-spacing:2px; color:var(--muted); text-transform:uppercase;">Checkout</span><span></span></div>
-      <h2 class="serif" style="font-size:22px; margin-bottom:18px;">Your details</h2>
-      <label class="ck-label">Full name</label>
+      <div class="pp-topbar"><button onclick="closeCheckout()">←</button><span style="font-size:11px; letter-spacing:2px; color:var(--muted); text-transform:uppercase;" data-i18n="checkout">Checkout</span><span></span></div>
+      <h2 class="serif" style="font-size:22px; margin-bottom:18px;" data-i18n="yourDetails">Your details</h2>
+      <label class="ck-label" data-i18n="fullName">Full name</label>
       <input type="text" id="ckName" style="width:100%; margin:6px 0 14px;">
-      <label class="ck-label">Phone number</label>
+      <label class="ck-label" data-i18n="phoneNumber">Phone number</label>
       <input type="tel" id="ckPhone" placeholder="01xxxxxxxxx" style="width:100%; margin:6px 0 14px;">
-      <label class="ck-label">Alternative phone number</label>
+      <label class="ck-label" data-i18n="altPhoneNumber">Alternative phone number</label>
       <input type="tel" id="ckPhone2" placeholder="01xxxxxxxxx" style="width:100%; margin:6px 0 14px;">
-      <label class="ck-label">Governorate</label>
+      <label class="ck-label" data-i18n="governorate">Governorate</label>
       <select id="ckGov" style="width:100%; margin:6px 0 14px;" onchange="renderCheckoutInvoice()"></select>
-      <label class="ck-label">Address</label>
+      <label class="ck-label" data-i18n="address">Address</label>
       <input type="text" id="ckAddress" style="width:100%; margin:6px 0 18px;">
 
       <div class="invoice-box" id="invoiceBox"></div>
 
-      <button class="checkout-btn" id="placeOrderBtn" onclick="placeOrder()" style="margin-top:16px;">Place Order</button>
+      <button class="checkout-btn" id="placeOrderBtn" onclick="placeOrder()" style="margin-top:16px;" data-i18n="placeOrder">Place Order</button>
       <div class="msg-note" id="ckMsg"></div>
     </div>
   </div>
@@ -771,7 +838,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
 <div class="overlay hidden" id="orderConfirmOverlay">
   <div class="stage">
     <div class="product-panel">
-      <div class="pp-topbar"><span></span><span style="font-size:11px; letter-spacing:2px; color:var(--muted); text-transform:uppercase;">Order Confirmed</span><span></span></div>
+      <div class="pp-topbar"><span></span><span style="font-size:11px; letter-spacing:2px; color:var(--muted); text-transform:uppercase;" data-i18n="orderConfirmed">Order Confirmed</span><span></span></div>
       <div class="section-wrap" style="padding-top:26px; text-align:center;" id="orderConfirmBody"></div>
     </div>
   </div>
@@ -790,7 +857,12 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
 
 <!-- ================= ADMIN ================= -->
 <div id="admin" class="hidden">
-  <div class="admin-sidebar">
+  <div class="admin-mobile-bar">
+    <button class="admin-hamburger" onclick="toggleAdminSidebar()" aria-label="Menu">☰</button>
+    <span class="serif">AURA<span style="font-size:10px; letter-spacing:2px; color:var(--muted); margin-left:8px;">Admin Panel</span></span>
+  </div>
+  <div class="admin-sidebar-backdrop" id="adminSidebarBackdrop" onclick="toggleAdminSidebar(false)"></div>
+  <div class="admin-sidebar" id="adminSidebar">
     <div class="admin-logo">AURA<span>Admin Panel</span></div>
     <div class="admin-nav" id="adminNav">
       <button data-sec="products" class="active">📦 Products</button>
@@ -874,13 +946,18 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
       <div class="file-drop" onclick="document.getElementById('bannerFile').click()" style="max-width:520px;">Click to upload a new banner image</div>
       <input type="file" id="bannerFile" accept="image/*" class="hidden">
       <div class="form-grid" style="max-width:520px; margin-top:18px;">
-        <div class="full"><label>Eyebrow text</label><input id="bnEyebrow"></div>
         <div class="full"><label>Subtitle</label><input id="bnSub"></div>
       </div>
       <div class="form-actions">
         <button class="btn" onclick="saveBannerText()">Save Text</button>
         <button class="btn danger" onclick="removeBannerImage()">Remove Image</button>
       </div>
+
+      <div class="admin-h1" style="margin-top:36px; font-size:20px;">Moving Banner</div>
+      <div class="admin-sub">Add multiple images — they'll auto-rotate on the storefront</div>
+      <div class="file-drop" onclick="document.getElementById('slidesFile').click()" style="max-width:520px;">Click to add banner image(s)</div>
+      <input type="file" id="slidesFile" accept="image/*" multiple class="hidden">
+      <div id="slidesAdminList" style="display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; max-width:520px;"></div>
     </section>
 
     <section class="admin-section" id="sec-orders">
@@ -954,7 +1031,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
       <div class="admin-sub">All registered customers</div>
       <div style="overflow-x:auto;">
       <table>
-        <thead><tr><th>Name</th><th>Phone</th><th>Orders</th><th>Total Spent</th><th>Last Login</th><th>Type</th><th>Notes</th></tr></thead>
+        <thead><tr><th>Name</th><th>Phone</th><th>Orders</th><th>Total Spent</th><th>Returns</th><th>Last Login</th><th>Type</th><th>Notes</th><th></th></tr></thead>
         <tbody id="customersTable"></tbody>
       </table>
       </div>
@@ -1143,6 +1220,16 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
       </div>
       <div class="order-modal-body" id="omBody"></div>
     </div>
+  </div>
+</div>
+
+<div class="order-modal-backdrop hidden" id="customerModalBackdrop" onclick="if(event.target===this) closeCustomerModal()">
+  <div class="order-modal">
+    <div class="order-modal-head">
+      <h3 id="cmTitle">Customer</h3>
+      <button onclick="closeCustomerModal()">✕</button>
+    </div>
+    <div class="order-modal-body" id="cmBody"></div>
   </div>
 </div>
 
@@ -1364,6 +1451,7 @@ function attachRealtimeListeners(){
     if(isNewRequest && ADMIN_LOGGED_IN){ notifyNewActivity(`New return request for order ${incoming[0].orderId}`); }
   });
   fbDb.collection('store').doc('aura:banner').onSnapshot(snap=>{ if(snap.exists){ BANNER = snap.data().value; renderBanner(); } });
+  fbDb.collection('store').doc('aura:bannerslides').onSnapshot(snap=>{ if(snap.exists){ BANNER_SLIDES = snap.data().value || []; renderSlidesBanner(); if(typeof renderSlidesAdmin==='function' && document.getElementById('sec-banner')) renderSlidesAdmin(); } });
   fbDb.collection('store').doc('aura:stats').onSnapshot(snap=>{ if(snap.exists){ STATS = snap.data().value || STATS; } });
   fbDb.collection('store').doc('aura:settings').onSnapshot(snap=>{ if(snap.exists){ SETTINGS = snap.data().value; applySettingsToStorefront(); } });
   fbDb.collection('store').doc('aura:sizeguides').onSnapshot(snap=>{
@@ -1438,7 +1526,7 @@ function requestNotifPermission(){
 }
 
 /* ================= STATE ================= */
-let PRODUCTS=[], ORDERS=[], CUSTOMERS=[], COUPONS=[], STATS=null, NOTIFS=[], BANNER=null, CART=[], SHIPPING={}, WISHLIST=[], RETURNS=[], RETURN_REQUESTS=[];
+let PRODUCTS=[], ORDERS=[], CUSTOMERS=[], COUPONS=[], STATS=null, NOTIFS=[], BANNER=null, CART=[], SHIPPING={}, WISHLIST=[], RETURNS=[], RETURN_REQUESTS=[], BANNER_SLIDES=[];
 let SETTINGS=null, ADMIN_LOGGED_IN=false;
 let SIZEGUIDES={}; // { [categoryName]: imageDataUrl } — set per-category from the admin panel
 function defaultSettings(){
@@ -1556,6 +1644,115 @@ function seedProducts(){
    seconds on first load: it was awaiting ~12 separate Firestore reads one after another
    before drawing anything at all. Now the splash can dismiss the moment local data is
    painted, and Firestore quietly catches the screen up a moment later if anything's different. */
+/* ================= I18N ================= */
+let LANG = cacheGet('aura:lang', 'en');
+const I18N = {
+  en:{
+    searchPlaceholder:'Search products...', shopNow:'Shop Now',
+    shopByCategory:'Shop by Category', findYourFit:'Find your fit',
+    bestSellers:'Best Sellers', mostLoved:'Our most-loved styles',
+    allProducts:'All Products', everyPiece:'Every piece, one energy',
+    footerBlurb:'We design for those who value simplicity and individuality. Minimal silhouettes, considered fabrics, made to move with you.',
+    rightsReserved:'All rights reserved.',
+    tabShop:'Shop', tabTrack:'Track', tabCart:'Cart', tabWishlist:'Wishlist', tabReturn:'Return',
+    product:'Product', shoppingBag:'Shopping Bag', couponCode:'Coupon code', apply:'Apply',
+    subtotal:'Subtotal', checkout:'Checkout', wishlist:'Wishlist',
+    returnOrder:'Return Order', orderId:'Order ID', phoneNumber:'Phone number', findMyOrder:'Find My Order',
+    trackOrder:'Track Order', yourDetails:'Your details', fullName:'Full name',
+    altPhoneNumber:'Alternative phone number', governorate:'Governorate', address:'Address', placeOrder:'Place Order',
+    orderConfirmed:'Order Confirmed',
+    addToCart:'Add to Cart', buyItNow:'Buy It Now', soldOut:'Sold Out', sizeGuide:'Size Guide',
+    writeReview:'Write a Review', reviews:'Reviews', yourName:'Your name', yourReview:'Your review', submit:'Submit',
+    allProductsMenu:'All Products', trackOrderMenu:'Track Order', aboutUs:'About Us', contactUs:'Contact Us',
+    delivery:'Delivery', total:'Total', itemsSubtotal:'Items Subtotal',
+    thankYou:'Thank you', orderPlacedSuccess:'Your order has been placed successfully.',
+    orderNumber:'Order Number', trackThisOrder:'Track This Order', continueShopping:'Continue Shopping',
+    yourBagEmpty:'Your bag is empty.', yourWishlistEmpty:'Your wishlist is empty.', remove:'Remove',
+    findMyOrderPrompt:'Please enter both your order ID and phone number.',
+    submitReturnRequest:'Submit Return Request', reasonForReturn:'Reason for return',
+    orderLabel:'Order', statusPending:'Pending', statusConfirmed:'Confirmed', statusShipping:'Shipping', statusDelivered:'Delivered', statusCancelled:'Cancelled',
+    quickAdd:'Quick Add', onlyLeft:'Only {n} left',
+    sizeLabel:'Size', colorLabel:'Color', inStock:'{n} in stock', outOfStock:'Out of stock',
+    description:'Description', details:'Details', noDescription:'No description yet.', noDetails:'No details added yet.',
+    leaveReview:'Leave a review', shareThoughts:'Share your thoughts...', submitReview:'Submit Review',
+    youMayAlsoLike:'You May Also Like', watchVideo:'Watch product video →', offLabel:'OFF',
+    orderSummary:'Order Summary', discount:'Discount',
+    thankYouComma:'Thank you', deliveryTo:'Delivery to', saveOrderNote:"Save your order number — you can track it any time using the Track button, and use it to request a return if you ever need to.",
+    confirmViaWhatsapp:'💬 Confirm via WhatsApp', noOrderFound:'No order found with these details. Please check your Order ID and phone number.',
+    thisOrderCancelled:'This order was cancelled.', placedOn:'Placed on', shipmentNo:'Shipment No:', itemsWord:'item(s)', orderWord:'ORDER',
+    orderCancelledNoReturn:'This order was cancelled and cannot be returned.', alreadyReturned:'This order has already been returned.',
+    returnPendingReview:'A return request for this order is already', pendingReview:'pending review.',
+    returnAlreadyApproved:"This order's return has already been", approvedWord:'approved.',
+    returnReasonPlaceholder:"Tell us why you'd like to return this order...", returnPolicyText:'Return Policy: items must be returned unused and in the same condition in which they were received, with any original tags/packaging, within a reasonable time of delivery.',
+    reasonRequired:'Please tell us the reason for your return.', returnSubmitted:'Return request submitted',
+    returnSubmittedNote:"We'll review your request for order {id} and get back to you.",
+    piecesExchangedNote:'{n} pieces exchanged & returned smoothly for our customers',
+  },
+  ar:{
+    searchPlaceholder:'ابحث عن المنتجات...', shopNow:'تسوقي الآن',
+    shopByCategory:'تسوقي حسب الفئة', findYourFit:'اختاري ما يناسبك',
+    bestSellers:'الأكثر مبيعاً', mostLoved:'المنتجات الأكثر تفضيلاً',
+    allProducts:'كل المنتجات', everyPiece:'كل قطعة بطاقتها الخاصة',
+    footerBlurb:'نصمم لمن يقدّر البساطة والتفرد. تصاميم بسيطة وخامات مدروسة تتحرك معك.',
+    rightsReserved:'جميع الحقوق محفوظة.',
+    tabShop:'المتجر', tabTrack:'تتبع', tabCart:'السلة', tabWishlist:'المفضلة', tabReturn:'إرجاع',
+    product:'المنتج', shoppingBag:'حقيبة التسوق', couponCode:'كود الخصم', apply:'تطبيق',
+    subtotal:'الإجمالي الفرعي', checkout:'إتمام الشراء', wishlist:'المفضلة',
+    returnOrder:'إرجاع الطلب', orderId:'رقم الطلب', phoneNumber:'رقم الهاتف', findMyOrder:'ابحث عن طلبي',
+    trackOrder:'تتبع الطلب', yourDetails:'بياناتك', fullName:'الاسم الكامل',
+    altPhoneNumber:'رقم هاتف بديل', governorate:'المحافظة', address:'العنوان', placeOrder:'تأكيد الطلب',
+    orderConfirmed:'تم تأكيد الطلب',
+    addToCart:'أضف إلى السلة', buyItNow:'اشترِ الآن', soldOut:'نفدت الكمية', sizeGuide:'دليل المقاسات',
+    writeReview:'أضف تقييم', reviews:'التقييمات', yourName:'اسمك', yourReview:'تقييمك', submit:'إرسال',
+    allProductsMenu:'كل المنتجات', trackOrderMenu:'تتبع الطلب', aboutUs:'من نحن', contactUs:'تواصل معنا',
+    delivery:'الشحن', total:'الإجمالي', itemsSubtotal:'إجمالي القطع',
+    thankYou:'شكراً لك', orderPlacedSuccess:'تم تسجيل طلبك بنجاح.',
+    orderNumber:'رقم الطلب', trackThisOrder:'تتبع هذا الطلب', continueShopping:'متابعة التسوق',
+    yourBagEmpty:'حقيبتك فارغة.', yourWishlistEmpty:'قائمة المفضلة فارغة.', remove:'إزالة',
+    findMyOrderPrompt:'يرجى إدخال رقم الطلب ورقم الهاتف.',
+    submitReturnRequest:'إرسال طلب الإرجاع', reasonForReturn:'سبب الإرجاع',
+    orderLabel:'الطلب', statusPending:'قيد الانتظار', statusConfirmed:'تم التأكيد', statusShipping:'قيد الشحن', statusDelivered:'تم التوصيل', statusCancelled:'ملغي',
+    quickAdd:'إضافة سريعة', onlyLeft:'باقي {n} فقط',
+    sizeLabel:'المقاس', colorLabel:'اللون', inStock:'متوفر {n}', outOfStock:'نفدت الكمية',
+    description:'الوصف', details:'التفاصيل', noDescription:'لا يوجد وصف بعد.', noDetails:'لا توجد تفاصيل بعد.',
+    leaveReview:'أضف تقييمك', shareThoughts:'شاركنا رأيك...', submitReview:'إرسال التقييم',
+    youMayAlsoLike:'قد يعجبك أيضاً', watchVideo:'شاهد فيديو المنتج ←', offLabel:'خصم',
+    orderSummary:'ملخص الطلب', discount:'خصم',
+    thankYouComma:'شكراً لك', deliveryTo:'التوصيل إلى', saveOrderNote:'احتفظي برقم طلبك — يمكنك تتبعه في أي وقت من زر التتبع، واستخدامه لطلب إرجاع إذا احتجتِ لذلك.',
+    confirmViaWhatsapp:'💬 تأكيد عبر واتساب', noOrderFound:'لم يتم العثور على طلب بهذه البيانات. يرجى التحقق من رقم الطلب ورقم الهاتف.',
+    thisOrderCancelled:'تم إلغاء هذا الطلب.', placedOn:'تم الطلب في', shipmentNo:'رقم الشحنة:', itemsWord:'قطعة', orderWord:'الطلب',
+    orderCancelledNoReturn:'تم إلغاء هذا الطلب ولا يمكن إرجاعه.', alreadyReturned:'تم إرجاع هذا الطلب بالفعل.',
+    returnPendingReview:'طلب إرجاع هذا الطلب قيد', pendingReview:'المراجعة بالفعل.',
+    returnAlreadyApproved:'تمت الموافقة بالفعل على إرجاع هذا الطلب', approvedWord:'.',
+    returnReasonPlaceholder:'أخبرينا لماذا تودين إرجاع هذا الطلب...', returnPolicyText:'سياسة الإرجاع: يجب إرجاع القطع دون استخدام وبنفس حالتها عند الاستلام، مع البطاقات والتغليف الأصلي، خلال وقت مناسب من تاريخ التسليم.',
+    reasonRequired:'يرجى ذكر سبب الإرجاع.', returnSubmitted:'تم إرسال طلب الإرجاع',
+    returnSubmittedNote:'سنراجع طلبك الخاص بالطلب {id} ونعود إليك.',
+    piecesExchangedNote:'تم استبدال وإرجاع {n} قطعة بسلاسة لعملائنا',
+  }
+};
+function tr(key){ return (I18N[LANG] && I18N[LANG][key]) || I18N.en[key] || key; }
+function applyI18n(){
+  document.documentElement.lang = LANG;
+  document.documentElement.dir = LANG==='ar' ? 'rtl' : 'ltr';
+  document.querySelectorAll('[data-i18n]').forEach(el=>{ el.textContent = tr(el.dataset.i18n); });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{ el.placeholder = tr(el.dataset.i18nPlaceholder); });
+  document.querySelectorAll('#langSwitch button').forEach(b=>{ b.classList.toggle('active', b.dataset.lang===LANG); });
+  // Re-render dynamic storefront sections so their JS-generated text picks up the new language too
+  if(typeof renderMenu==='function') renderMenu();
+  if(typeof renderProducts==='function') renderProducts();
+  if(typeof renderBestSellers==='function') renderBestSellers();
+  if(typeof renderCategoryTiles==='function') renderCategoryTiles();
+  if(typeof renderCart==='function') renderCart();
+  if(typeof renderWishlist==='function' && !document.getElementById('wishlistOverlay').classList.contains('hidden')) renderWishlist();
+  if(typeof renderProductPage==='function' && currentProduct) renderProductPage();
+  if(typeof renderReturnExchangedStat==='function' && !document.getElementById('returnOverlay').classList.contains('hidden')) renderReturnExchangedStat();
+}
+function setLang(lang){
+  LANG = lang;
+  cacheSet('aura:lang', lang);
+  applyI18n();
+}
+
 async function init(){
   document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -1564,7 +1761,7 @@ async function init(){
   CUSTOMERS = cacheGet('aura:customers', []);
   COUPONS = cacheGet('aura:coupons', []);
   NOTIFS = cacheGet('aura:notifications', []);
-  BANNER = cacheGet('aura:banner', {image:null, eyebrow:'New Season', sub:'Minimal streetwear for those who move differently.'});
+  BANNER = cacheGet('aura:banner', {image:null, sub:'Minimal streetwear for those who move differently.'});
   STATS = cacheGet('aura:stats', {visitorsByDay:{}, salesByDay:{}, ordersByDay:{}});
   CART = cacheGet('aura:cart', []);
   WISHLIST = cacheGet('aura:wishlist', []);
@@ -1573,19 +1770,23 @@ async function init(){
   SIZEGUIDES = cacheGet('aura:sizeguides', {});
   RETURNS = cacheGet('aura:returns', []);
   RETURN_REQUESTS = cacheGet('aura:returnrequests', []);
+  BANNER_SLIDES = cacheGet('aura:bannerslides', []);
 
   renderMenu();
   renderBanner();
+  renderSlidesBanner();
   renderCategoryTiles();
   renderProducts();
   renderBestSellers();
   renderCart();
   renderWishlistBadge();
   applySettingsToStorefront();
+  applyI18n();
 
   document.getElementById('searchInput').addEventListener('input', onSearchInput);
   document.getElementById('cartBtn').addEventListener('click', openCart);
   document.getElementById('bannerFile').addEventListener('change', onBannerFileChange);
+  document.getElementById('slidesFile').addEventListener('change', onSlidesFileChange);
   document.getElementById('pfImageFile').addEventListener('change', onProductFileChange);
   document.getElementById('sizeGuideFile').addEventListener('change', onSizeGuideFileChange);
   document.getElementById('stLogoFile').addEventListener('change', onStLogoFileChange);
@@ -1602,13 +1803,14 @@ async function init(){
 
 async function syncFromFirestore(){
   if(!fbReady){ return; }
-  const [products, orders, customers, coupons, notifs, banner, stats, cart, wishlist, shipping, settings, sizeguides, returns, returnrequests] = await Promise.all([
+  const [products, orders, customers, coupons, notifs, banner, bannerslides, stats, cart, wishlist, shipping, settings, sizeguides, returns, returnrequests] = await Promise.all([
     getData('aura:products', null, true),
     getData('aura:orders', [], true),
     getData('aura:customers', [], true),
     getData('aura:coupons', [], true),
     getData('aura:notifications', [], true),
-    getData('aura:banner', {image:null, eyebrow:'New Season', sub:'Minimal streetwear for those who move differently.'}, true),
+    getData('aura:banner', {image:null, sub:'Minimal streetwear for those who move differently.'}, true),
+    getData('aura:bannerslides', [], true),
     getData('aura:stats', {visitorsByDay:{}, salesByDay:{}, ordersByDay:{}}, true),
     getData('aura:cart', [], false),
     getData('aura:wishlist', [], false),
@@ -1621,12 +1823,13 @@ async function syncFromFirestore(){
 
   const prevProductsJSON = JSON.stringify(PRODUCTS);
   const prevBannerJSON = JSON.stringify(BANNER);
+  const prevSlidesJSON = JSON.stringify(BANNER_SLIDES);
   const prevSettingsJSON = JSON.stringify(SETTINGS);
 
   PRODUCTS = products || seedProducts();
   if(!products){ await setData('aura:products', PRODUCTS, true); }
   ORDERS = orders; CUSTOMERS = customers; COUPONS = coupons; NOTIFS = notifs;
-  BANNER = banner; STATS = stats; CART = cart; WISHLIST = wishlist; SHIPPING = shipping;
+  BANNER = banner; BANNER_SLIDES = bannerslides; STATS = stats; CART = cart; WISHLIST = wishlist; SHIPPING = shipping;
   SETTINGS = settings || defaultSettings();
   if(!settings){ await setData('aura:settings', SETTINGS, true); }
   SIZEGUIDES = sizeguides;
@@ -1642,6 +1845,7 @@ async function syncFromFirestore(){
     if(typeof renderProductsTable === 'function') renderProductsTable();
   }
   if(JSON.stringify(BANNER) !== prevBannerJSON) renderBanner();
+  if(JSON.stringify(BANNER_SLIDES) !== prevSlidesJSON) renderSlidesBanner();
   if(JSON.stringify(SETTINGS) !== prevSettingsJSON) applySettingsToStorefront();
   renderCart();
   renderWishlistBadge();
@@ -1839,8 +2043,38 @@ function renderBanner(){
   const bg = document.getElementById('bannerBg');
   if(BANNER.image){ bg.classList.add('has-image'); bg.style.backgroundImage = `url('${BANNER.image}')`; }
   else { bg.classList.remove('has-image'); bg.style.backgroundImage = ''; }
-  document.getElementById('bannerEyebrow').textContent = BANNER.eyebrow || 'New Season';
   document.getElementById('bannerSub').textContent = BANNER.sub || '';
+}
+
+/* ---------- AUTO-MOVING SLIDES BANNER ---------- */
+window._slidesIdx = 0;
+window._slidesTimer = null;
+function renderSlidesBanner(){
+  const wrap = document.getElementById('slidesBanner');
+  const track = document.getElementById('slidesTrack');
+  const dots = document.getElementById('slidesDots');
+  if(!wrap || !track || !dots) return;
+  if(clearInterval && window._slidesTimer){ clearInterval(window._slidesTimer); window._slidesTimer=null; }
+  if(!BANNER_SLIDES || BANNER_SLIDES.length===0){ wrap.classList.add('hidden'); return; }
+  wrap.classList.remove('hidden');
+  window._slidesIdx = 0;
+  track.innerHTML = BANNER_SLIDES.map(src=>`<img src="${src}">`).join('');
+  dots.innerHTML = BANNER_SLIDES.map((s,i)=>`<span class="${i===0?'active':''}"></span>`).join('');
+  track.style.transform = 'translateX(0%)';
+  if(BANNER_SLIDES.length > 1){
+    window._slidesTimer = setInterval(()=>{
+      window._slidesIdx = (window._slidesIdx + 1) % BANNER_SLIDES.length;
+      goToSlide(window._slidesIdx);
+    }, 4000);
+  }
+}
+function goToSlide(i){
+  const track = document.getElementById('slidesTrack');
+  const dots = document.getElementById('slidesDots');
+  if(!track || !dots) return;
+  window._slidesIdx = i;
+  track.style.transform = `translateX(-${i*100}%)`;
+  Array.from(dots.children).forEach((d,idx)=>d.classList.toggle('active', idx===i));
 }
 
 function renderCategoryTiles(){
@@ -1894,9 +2128,9 @@ function productCardHTML(p){
     <div class="card">
       <div class="imgwrap" onclick="openProductModal('${p.id}')">
         ${hasDiscount ? `<div class="tag">-${Math.round((1-p.discount/p.price)*100)}%</div>` : ''}
-        ${lowStock ? `<div class="low-stock-tag">Only ${p.qty} left</div>` : ''}
+        ${lowStock ? `<div class="low-stock-tag">${tr('onlyLeft').replace('{n}', p.qty)}</div>` : ''}
         <button class="card-wish ${wished?'active':''}" onclick="event.stopPropagation(); toggleWishlist('${p.id}')">${wished?'♥':'♡'}</button>
-        ${soldOut ? `<div class="soldout-badge"><span>Sold Out</span></div>` : ''}
+        ${soldOut ? `<div class="soldout-badge"><span>${tr('soldOut')}</span></div>` : ''}
         <img src="${p.image}" alt="${p.name}">
       </div>
       <div class="card-body">
@@ -1906,7 +2140,7 @@ function productCardHTML(p){
         <div class="price-row">
           ${hasDiscount ? `<span class="price discount">${fmtMoney(p.discount)}</span><span class="price strike">${fmtMoney(p.price)}</span>` : `<span class="price">${fmtMoney(p.price)}</span>`}
         </div>
-        <button class="quick-add" ${soldOut?'disabled':''} onclick="quickAdd('${p.id}')">${soldOut?'Sold Out':'Quick Add'}</button>
+        <button class="quick-add" ${soldOut?'disabled':''} onclick="quickAdd('${p.id}')">${soldOut?tr('soldOut'):tr('quickAdd')}</button>
       </div>
     </div>`;
 }
@@ -1988,14 +2222,14 @@ function renderProductPage(){
       <h2>${p.name}</h2>
       ${hasDiscount && p.saleEndsAt ? `<div class="sale-countdown-lg" data-end="${p.saleEndsAt}">⏳ ${formatCountdown(p.saleEndsAt)}</div>` : ''}
       <div class="pp-price-row">
-        ${hasDiscount ? `<span class="price discount">${fmtMoney(p.discount)}</span><span class="price strike">${fmtMoney(p.price)}</span><span class="off-pill">${off}% OFF</span>` : `<span class="price">${fmtMoney(p.price)}</span>`}
+        ${hasDiscount ? `<span class="price discount">${fmtMoney(p.discount)}</span><span class="price strike">${fmtMoney(p.price)}</span><span class="off-pill">${off}% ${tr('offLabel')}</span>` : `<span class="price">${fmtMoney(p.price)}</span>`}
       </div>
       <div class="stock-row"><span class="stock-dot ${stock.cls}"></span><span>${stock.label}</span></div>
       <div class="stock-bar"><span style="width:${stock.pct}%"></span></div>
 
       <div class="opt-label" style="display:flex; justify-content:space-between; align-items:center;">
-        <span>Size</span>
-        ${SIZEGUIDES[p.category] ? `<button class="size-guide-btn" onclick="openSizeGuide('${p.category.replace(/'/g,"\\'")}')">Size Guide</button>` : ''}
+        <span>${tr('sizeLabel')}</span>
+        ${SIZEGUIDES[p.category] ? `<button class="size-guide-btn" onclick="openSizeGuide('${p.category.replace(/'/g,"\\'")}')">${tr('sizeGuide')}</button>` : ''}
       </div>
       <div class="opt-row" id="sizeOpts">
         ${sizes.map(s=>{
@@ -2004,46 +2238,45 @@ function renderProductPage(){
         }).join('')}
       </div>
 
-      <div class="opt-label">Color</div>
+      <div class="opt-label">${tr('colorLabel')}</div>
       <div class="opt-row" id="colorOpts">
         ${p.colors.map(c=>`<button class="opt-btn ${c===selectedColor?'active':''}" onclick="selectColor('${c}')">${c}</button>`).join('')}
       </div>
 
       <div class="qty-row">
         <div class="stepper"><button onclick="stepModalQty(-1)">−</button><span id="modalQty">${window._modalQty}</span><button onclick="stepModalQty(1)">+</button></div>
-        <span style="color:var(--muted); font-size:12px;">${p.qty>0 ? p.qty+' in stock' : 'Out of stock'}</span>
+        <span style="color:var(--muted); font-size:12px;">${p.qty>0 ? tr('inStock').replace('{n}',p.qty) : tr('outOfStock')}</span>
       </div>
 
       <div class="pp-actions">
-        <button class="add-cart-btn" ${p.qty<=0?'disabled':''} onclick="addToCartFromModal()">${p.qty<=0?'Sold Out':'Add to Cart — '+fmtMoney((hasDiscount?p.discount:p.price)*window._modalQty)}</button>
-        <button class="wish-btn ${isWished(p.id)?'active':''}" onclick="toggleWishlist('${p.id}')">${isWished(p.id)?'♥':'♡'}</button>
+        <button class="add-cart-btn" ${p.qty<=0?'disabled':''} onclick="addToCartFromModal()">${p.qty<=0?tr('soldOut'):tr('addToCart')+' — '+fmtMoney((hasDiscount?p.discount:p.price)*window._modalQty)}</button>
         <button class="share-btn" onclick="shareProduct('${p.id}')"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"></line><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"></line></svg></button>
       </div>
-      <button class="buy-now-btn" ${p.qty<=0?'disabled':''} onclick="buyItNow()">Buy It Now</button>
+      <button class="buy-now-btn" ${p.qty<=0?'disabled':''} onclick="buyItNow()">${tr('buyItNow')}</button>
 
       <div class="pp-tabs">
-        <button class="${currentTab==='desc'?'active':''}" onclick="setTab('desc')">Description</button>
-        <button class="${currentTab==='details'?'active':''}" onclick="setTab('details')">Details</button>
+        <button class="${currentTab==='desc'?'active':''}" onclick="setTab('desc')">${tr('description')}</button>
+        <button class="${currentTab==='details'?'active':''}" onclick="setTab('details')">${tr('details')}</button>
       </div>
-      <div class="pp-tab-panel ${currentTab==='desc'?'active':''}" id="tabDesc"><p>${p.desc||'No description yet.'}</p></div>
-      <div class="pp-tab-panel ${currentTab==='details'?'active':''}" id="tabDetails"><ul>${(p.details||[]).map(d=>`<li>${d}</li>`).join('') || '<li>No details added yet.</li>'}</ul></div>
+      <div class="pp-tab-panel ${currentTab==='desc'?'active':''}" id="tabDesc"><p>${p.desc||tr('noDescription')}</p></div>
+      <div class="pp-tab-panel ${currentTab==='details'?'active':''}" id="tabDetails"><ul>${(p.details||[]).map(d=>`<li>${d}</li>`).join('') || '<li>'+tr('noDetails')+'</li>'}</ul></div>
 
-      <button class="review-toggle" onclick="toggleReviewForm()">Leave a review</button>
+      <button class="review-toggle" onclick="toggleReviewForm()">${tr('leaveReview')}</button>
       <div class="review-form" id="reviewForm">
         <div class="star-input" id="revStarInput">${[1,2,3,4,5].map(i=>`<span data-v="${i}" onclick="setReviewRating(${i})">☆</span>`).join('')}</div>
-        <input type="text" id="revName" placeholder="Your name">
-        <textarea id="revText" placeholder="Share your thoughts..."></textarea>
-        <button class="btn small" onclick="submitReview()">Submit Review</button>
+        <input type="text" id="revName" placeholder="${tr('yourName')}">
+        <textarea id="revText" placeholder="${tr('shareThoughts')}"></textarea>
+        <button class="btn small" onclick="submitReview()">${tr('submitReview')}</button>
       </div>
       <div class="review-list" id="reviewList">${renderReviewListHTML(p)}</div>
 
-      ${p.video ? `<div class="opt-label" style="margin-top:20px;">Video</div><a href="${p.video}" target="_blank" style="font-size:12px; color:var(--gold); text-decoration:underline;">Watch product video →</a>` : ''}
+      ${p.video ? `<div class="opt-label" style="margin-top:20px;">Video</div><a href="${p.video}" target="_blank" style="font-size:12px; color:var(--gold); text-decoration:underline;">${tr('watchVideo')}</a>` : ''}
 
-      ${related.length ? `<div class="rec-title">You May Also Like</div><div class="grid">${related.map(r=>`
+      ${related.length ? `<div class="rec-title">${tr('youMayAlsoLike')}</div><div class="grid">${related.map(r=>`
         <div class="card"><div class="imgwrap" onclick="openProductModal('${r.id}')"><img src="${r.image}"></div>
         <div class="card-body"><div class="cat">${r.category}</div><h3>${r.name}</h3>
         <div class="price-row"><span class="price">${fmtMoney(r.discount>0?r.discount:r.price)}</span></div>
-        <button class="quick-add" onclick="quickAdd('${r.id}')">Quick Add</button></div></div>`).join('')}</div>` : ''}
+        <button class="quick-add" onclick="quickAdd('${r.id}')">${tr('quickAdd')}</button></div></div>`).join('')}</div>` : ''}
     </div>
   `;
   attachGallerySwipe();
@@ -2117,6 +2350,15 @@ function resetReturnRequestForm(){
   const box = document.getElementById('retFormBox');
   box.classList.add('hidden');
   box.innerHTML = '';
+  renderReturnExchangedStat();
+}
+/* Small trust stat shown on the storefront's Return page: how many pieces have been
+   exchanged/returned through the store so far (approved return requests only). */
+function renderReturnExchangedStat(){
+  const el = document.getElementById('retExchangedStat');
+  if(!el) return;
+  const piecesExchanged = RETURN_REQUESTS.filter(r=>r.status==='approved').reduce((s,r)=>s+(r.qty||1),0);
+  el.textContent = tr('piecesExchangedNote').replace('{n}', piecesExchanged);
 }
 /* Finds the return request already on file for an order, if any (newest first). */
 function returnRequestForOrder(orderId){
@@ -2148,7 +2390,21 @@ function renderReturnRequestForm(order){
     actionHtml = `<div class="msg-note">This order's return has already been <span class="status-pill status-approved">approved</span>.</div>`;
   } else {
     actionHtml = `
-      <label class="ck-label">Reason for return</label>
+      <label class="ck-label">Request Type</label>
+      <select id="retType" style="width:100%; margin:6px 0 14px;">
+        <option value="Return">Return</option>
+        <option value="Exchange">Exchange</option>
+      </select>
+      <label class="ck-label">Reason</label>
+      <select id="retReasonSelect" style="width:100%; margin:6px 0 14px;">
+        <option value="">Select a reason...</option>
+        <option value="Wrong size">Wrong size</option>
+        <option value="Wrong item received">Wrong item received</option>
+        <option value="Changed my mind">Changed my mind</option>
+        <option value="Item damaged / defective">Item damaged / defective</option>
+        <option value="Other">Other</option>
+      </select>
+      <label class="ck-label">Additional details</label>
       <textarea id="retReason" rows="4" placeholder="Tell us why you'd like to return this order..." style="width:100%; margin:6px 0 12px; resize:vertical;"></textarea>
       <div style="font-size:11px; color:var(--muted); line-height:1.5; margin-bottom:16px;">${RETURN_POLICY_TEXT}</div>
       <button class="btn" style="width:100%;" onclick="submitReturnRequest('${order.id}')">Submit Return Request</button>
@@ -2169,11 +2425,17 @@ function renderReturnRequestForm(order){
 async function submitReturnRequest(orderId){
   const order = ORDERS.find(o=>o.id===orderId);
   if(!order) return;
+  const typeEl = document.getElementById('retType');
+  const reasonSelectEl = document.getElementById('retReasonSelect');
   const reasonEl = document.getElementById('retReason');
-  const reason = reasonEl ? reasonEl.value.trim() : '';
   const submitMsg = document.getElementById('retSubmitMsg');
-  if(!reason){ if(submitMsg){ submitMsg.style.color='var(--danger)'; submitMsg.textContent='Please tell us the reason for your return.'; } return; }
-  const request = { id: uid('retreq'), orderId: order.id, phone: order.phone, customer: order.customer, amount: order.amount, reason, status:'pending', date: todayStr() };
+  const type = typeEl ? typeEl.value : 'Return';
+  const reasonChoice = reasonSelectEl ? reasonSelectEl.value : '';
+  const details = reasonEl ? reasonEl.value.trim() : '';
+  if(!reasonChoice){ if(submitMsg){ submitMsg.style.color='var(--danger)'; submitMsg.textContent='Please choose a reason for your request.'; } return; }
+  const reason = `[${type}] ${reasonChoice}` + (details ? ' — ' + details : '');
+  const qty = (order.items||[]).reduce((s,i)=>s+i.qty,0);
+  const request = { id: uid('retreq'), orderId: order.id, type, phone: order.phone, customer: order.customer, amount: order.amount, qty, reason, status:'pending', date: todayStr() };
   RETURN_REQUESTS.unshift(request);
   await Promise.allSettled([
     setData('aura:returnrequests', RETURN_REQUESTS, true),
@@ -2284,43 +2546,44 @@ function renderOrderConfirm(order){
   const waAvailable = !!(SETTINGS && SETTINGS.whatsapp);
   box.innerHTML = `
     <div style="width:64px; height:64px; border-radius:50%; background:var(--maroon-light); display:flex; align-items:center; justify-content:center; margin:0 auto 18px; font-size:28px; color:#fff;">✓</div>
-    <h2 class="serif" style="font-size:24px; margin-bottom:8px;">Thank you, ${order.customer.split(' ')[0]}!</h2>
-    <div style="color:var(--muted); font-size:13px; margin-bottom:22px;">Your order has been placed successfully.</div>
+    <h2 class="serif" style="font-size:24px; margin-bottom:8px;">${tr('thankYouComma')}, ${order.customer.split(' ')[0]}!</h2>
+    <div style="color:var(--muted); font-size:13px; margin-bottom:22px;">${tr('orderPlacedSuccess')}</div>
     <div style="border:1px solid var(--line); border-radius:8px; padding:18px; text-align:left; margin-bottom:22px;">
-      <div style="font-size:11px; letter-spacing:1.5px; color:var(--muted); text-transform:uppercase;">Order Number</div>
+      <div style="font-size:11px; letter-spacing:1.5px; color:var(--muted); text-transform:uppercase;">${tr('orderNumber')}</div>
       <div class="serif" style="font-size:22px; margin:4px 0 12px; color:var(--gold);">${order.id}</div>
-      <div style="font-size:12px; color:var(--muted);">${count} item(s) · Total ${fmtMoney(order.amount)}</div>
-      <div style="font-size:12px; color:var(--muted); margin-top:4px;">Delivery to ${order.governorate}</div>
+      <div style="font-size:12px; color:var(--muted);">${count} ${tr('itemsWord')} · ${tr('total')} ${fmtMoney(order.amount)}</div>
+      <div style="font-size:12px; color:var(--muted); margin-top:4px;">${tr('deliveryTo')} ${order.governorate}</div>
     </div>
-    <div style="font-size:12px; color:var(--muted); margin-bottom:18px;">Save your order number — you can track it any time using the Track button, and use it to request a return if you ever need to.</div>
-    ${waAvailable ? `<button class="btn" style="width:100%; margin-bottom:10px;" onclick='confirmOrderViaWhatsApp(${JSON.stringify(order).replace(/'/g,"&#39;")})'>💬 Confirm via WhatsApp</button>` : ''}
-    <button class="btn secondary" style="width:100%; margin-bottom:10px;" onclick="trackOrderFromConfirm('${order.id}','${order.phone}')">Track This Order</button>
-    <button class="btn secondary" style="width:100%;" onclick="navigateTo('home')">Continue Shopping</button>
+    <div style="font-size:12px; color:var(--muted); margin-bottom:18px;">${tr('saveOrderNote')}</div>
+    ${waAvailable ? `<button class="btn" style="width:100%; margin-bottom:10px;" onclick='confirmOrderViaWhatsApp(${JSON.stringify(order).replace(/'/g,"&#39;")})'>${tr('confirmViaWhatsapp')}</button>` : ''}
+    <button class="btn secondary" style="width:100%; margin-bottom:10px;" onclick="trackOrderFromConfirm('${order.id}','${order.phone}')">${tr('trackThisOrder')}</button>
+    <button class="btn secondary" style="width:100%;" onclick="navigateTo('home')">${tr('continueShopping')}</button>
   `;
 }
 function submitTrackOrder(){
   const id = document.getElementById('trkOrderId').value.trim();
   const phone = document.getElementById('trkPhone').value.trim();
   const resultEl = document.getElementById('trkResult');
-  if(!id || !phone){ resultEl.innerHTML = '<div class="empty-note">Please enter both your order ID and phone number.</div>'; return; }
+  if(!id || !phone){ resultEl.innerHTML = `<div class="empty-note">${tr('findMyOrderPrompt')}</div>`; return; }
   const order = ORDERS.find(o=>o.id.toLowerCase()===id.toLowerCase() && (o.phone===phone || o.phone2===phone));
-  if(!order){ resultEl.innerHTML = '<div class="empty-note">No order found with these details. Please check your Order ID and phone number.</div>'; return; }
+  if(!order){ resultEl.innerHTML = `<div class="empty-note">${tr('noOrderFound')}</div>`; return; }
   const steps = ['Pending','Confirmed','Shipping','Delivered'];
+  const stepKeys = {'Pending':'statusPending','Confirmed':'statusConfirmed','Shipping':'statusShipping','Delivered':'statusDelivered'};
   const isCancelled = order.status === 'Cancelled';
   const currentIdx = steps.indexOf(order.status);
   resultEl.innerHTML = `
     <div style="border:1px solid var(--line); border-radius:8px; padding:16px; margin-bottom:18px;">
-      <div style="font-size:13px; color:var(--muted); letter-spacing:1px;">ORDER ${order.id}</div>
+      <div style="font-size:13px; color:var(--muted); letter-spacing:1px;">${tr('orderWord')} ${order.id}</div>
       <div style="font-size:18px; margin-top:4px;" class="serif">${fmtMoney(order.amount)}</div>
-      <div style="font-size:12px; color:var(--muted); margin-top:6px;">${order.items.reduce((s,i)=>s+i.qty,0)} item(s) · Placed on ${order.date}</div>
-      ${order.tracking ? `<div style="font-size:12px; color:var(--muted); margin-top:6px;">Shipment No: <span style="color:var(--cream);">${order.tracking}</span></div>` : ''}
+      <div style="font-size:12px; color:var(--muted); margin-top:6px;">${order.items.reduce((s,i)=>s+i.qty,0)} ${tr('itemsWord')} · ${tr('placedOn')} ${order.date}</div>
+      ${order.tracking ? `<div style="font-size:12px; color:var(--muted); margin-top:6px;">${tr('shipmentNo')} <span style="color:var(--cream);">${order.tracking}</span></div>` : ''}
     </div>
-    ${isCancelled ? `<div class="empty-note" style="color:var(--danger);">This order was cancelled.</div>` : `
+    ${isCancelled ? `<div class="empty-note" style="color:var(--danger);">${tr('thisOrderCancelled')}</div>` : `
     <div style="display:flex; justify-content:space-between; position:relative;">
       ${steps.map((s,i)=>`
         <div style="flex:1; text-align:center; position:relative; z-index:1;">
           <div style="width:26px; height:26px; border-radius:50%; margin:0 auto 6px; display:flex; align-items:center; justify-content:center; font-size:12px; background:${i<=currentIdx?'var(--maroon-light)':'var(--panel)'}; color:${i<=currentIdx?'#fff':'var(--muted)'}; border:1px solid ${i<=currentIdx?'var(--maroon-light)':'var(--line)'};">${i<currentIdx?'✓':i+1}</div>
-          <div style="font-size:10px; letter-spacing:.5px; color:${i<=currentIdx?'var(--cream)':'var(--muted)'};">${s}</div>
+          <div style="font-size:10px; letter-spacing:.5px; color:${i<=currentIdx?'var(--cream)':'var(--muted)'};">${tr(stepKeys[s])}</div>
         </div>
       `).join('')}
       <div style="position:absolute; top:13px; left:12%; right:12%; height:1px; background:var(--line); z-index:0;"></div>
@@ -2331,7 +2594,7 @@ function submitTrackOrder(){
 function renderWishlist(){
   const wrap = document.getElementById('wishlistItems');
   const items = WISHLIST.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean);
-  if(items.length===0){ wrap.innerHTML = '<div class="cart-empty">Your wishlist is empty.</div>'; return; }
+  if(items.length===0){ wrap.innerHTML = `<div class="cart-empty">${tr('yourWishlistEmpty')}</div>`; return; }
   wrap.innerHTML = items.map(p=>{
     const hasDiscount = p.discount && p.discount>0;
     const soldOut = p.qty<=0;
@@ -2341,8 +2604,8 @@ function renderWishlist(){
         <div class="nm">${p.name}</div>
         <div class="meta">${hasDiscount ? fmtMoney(p.discount)+' (was '+fmtMoney(p.price)+')' : fmtMoney(p.price)}</div>
         <div class="wish-actions">
-          <button class="wa-add" ${soldOut?'disabled':''} onclick="quickAdd('${p.id}')">${soldOut?'Sold Out':'Add to Cart'}</button>
-          <button class="wa-remove" onclick="toggleWishlist('${p.id}')">Remove</button>
+          <button class="wa-add" ${soldOut?'disabled':''} onclick="quickAdd('${p.id}')">${soldOut?tr('soldOut'):tr('addToCart')}</button>
+          <button class="wa-remove" onclick="toggleWishlist('${p.id}')">${tr('remove')}</button>
         </div>
       </div>
     </div>`;
@@ -2379,13 +2642,13 @@ async function submitReview(){
   // realtime-listener rebuild that would otherwise yank focus out from under the user.
   if(document.activeElement && typeof document.activeElement.blur === 'function') document.activeElement.blur();
   currentProduct.reviews = currentProduct.reviews || [];
-  currentProduct.reviews.push({id:uid('rev'), name, text, rating, date: todayStr(), status:'approved'});
+  currentProduct.reviews.push({id:uid('rev'), name, text, rating, date: todayStr(), status:'pending'});
   await persistProducts();
-  await addNotification('review', `${name} left a ${rating}★ review on "${currentProduct.name}"`);
+  await addNotification('review', `${name} left a ${rating}★ review on "${currentProduct.name}" — awaiting approval`);
   document.getElementById('revName').value=''; document.getElementById('revText').value='';
   document.getElementById('reviewForm').classList.remove('open');
   renderProductPage();
-  showToast('Review submitted');
+  showToast('Thanks! Your review will appear once approved.');
 }
 
 /* ================= REVIEWS ADMIN ================= */
@@ -2485,7 +2748,7 @@ function renderCart(){
   document.getElementById('cartBadge').textContent = count;
   document.getElementById('cartBadge2').textContent = count;
 
-  if(CART.length===0){ wrap.innerHTML = '<div class="cart-empty">Your bag is empty.</div>'; }
+  if(CART.length===0){ wrap.innerHTML = `<div class="cart-empty">${tr('yourBagEmpty')}</div>`; }
   else {
     wrap.innerHTML = CART.map((i,idx)=>`
       <div class="cart-item">
@@ -2494,7 +2757,7 @@ function renderCart(){
           <div class="nm">${i.name}</div>
           <div class="meta">${i.size} / ${i.color} · ${fmtMoney(i.price)}</div>
           <div class="stepper"><button onclick="stepCartQty(${idx},-1)">−</button><span>${i.qty}</span><button onclick="stepCartQty(${idx},1)">+</button></div>
-          <button class="remove" onclick="removeCartItem(${idx})">Remove</button>
+          <button class="remove" onclick="removeCartItem(${idx})">${tr('remove')}</button>
         </div>
       </div>`).join('');
   }
@@ -2548,12 +2811,12 @@ function renderCheckoutInvoice(){
   const discountAmt = appliedCoupon ? rawSub - discountedSub : 0;
   const total = discountedSub + shipping;
   box.innerHTML = `
-    <h4>Order Summary</h4>
+    <h4>${tr('orderSummary')}</h4>
     ${CHECKOUT_ITEMS.map(i=>`<div class="invoice-row"><span class="invoice-item-name">${i.name} (${i.size} / ${i.color}) × ${i.qty}</span><span>${fmtMoney(i.price*i.qty)}</span></div>`).join('')}
-    <div class="invoice-row"><span>Subtotal</span><span>${fmtMoney(rawSub)}</span></div>
-    ${appliedCoupon ? `<div class="invoice-row"><span>Discount (${appliedCoupon.code})</span><span>-${fmtMoney(discountAmt)}</span></div>` : ''}
-    <div class="invoice-row"><span>Delivery${gov?' — '+gov:''}</span><span>${fmtMoney(shipping)}</span></div>
-    <div class="invoice-total-row"><span>Total</span><span>${fmtMoney(total)}</span></div>
+    <div class="invoice-row"><span>${tr('subtotal')}</span><span>${fmtMoney(rawSub)}</span></div>
+    ${appliedCoupon ? `<div class="invoice-row"><span>${tr('discount')} (${appliedCoupon.code})</span><span>-${fmtMoney(discountAmt)}</span></div>` : ''}
+    <div class="invoice-row"><span>${tr('delivery')}${gov?' — '+gov:''}</span><span>${fmtMoney(shipping)}</span></div>
+    <div class="invoice-total-row"><span>${tr('total')}</span><span>${fmtMoney(total)}</span></div>
   `;
 }
 
@@ -2700,7 +2963,7 @@ function switchAdminSection(sec){
   document.querySelectorAll('.admin-section').forEach(s=>s.classList.remove('active'));
   document.getElementById('sec-'+sec).classList.add('active');
   if(sec==='products') renderProductsTable();
-  if(sec==='banner') renderBannerAdmin();
+  if(sec==='banner'){ renderBannerAdmin(); renderSlidesAdmin(); }
   if(sec==='orders') renderOrdersTable();
   if(sec==='returns'){ populateReturnProductSelect(); renderReturnsAdmin(); }
   if(sec==='returnrequests') renderReturnRequestsAdmin();
@@ -2712,6 +2975,17 @@ function switchAdminSection(sec){
   if(sec==='notifications') renderNotifications();
   if(sec==='reviews') renderReviewsTable();
   if(sec==='settings') renderSettingsForm();
+  toggleAdminSidebar(false); // collapse the mobile drawer once a section is picked
+}
+/* Slide-in admin sidebar for phones/small screens. With no args it toggles;
+   pass true/false to force it open/closed. */
+function toggleAdminSidebar(force){
+  const sidebar = document.getElementById('adminSidebar');
+  const backdrop = document.getElementById('adminSidebarBackdrop');
+  if(!sidebar) return;
+  const open = typeof force==='boolean' ? force : !sidebar.classList.contains('open');
+  sidebar.classList.toggle('open', open);
+  if(backdrop) backdrop.classList.toggle('open', open);
 }
 function last7Days(){ const days=[]; for(let i=6;i>=0;i--){ const d=new Date(); d.setDate(d.getDate()-i); days.push(todayStr(d)); } return days; }
 
@@ -2956,7 +3230,6 @@ async function deleteProduct(id){
 function renderBannerAdmin(){
   const prev = document.getElementById('bannerAdminPreview');
   prev.src = BANNER.image || 'https://picsum.photos/seed/aurabanner/900/450';
-  document.getElementById('bnEyebrow').value = BANNER.eyebrow || '';
   document.getElementById('bnSub').value = BANNER.sub || '';
 }
 async function onBannerFileChange(e){
@@ -2970,11 +3243,42 @@ async function onBannerFileChange(e){
 }
 async function removeBannerImage(){ BANNER.image = null; await setData('aura:banner', BANNER, true); renderBannerAdmin(); renderBanner(); showToast('Banner image removed'); }
 async function saveBannerText(){
-  BANNER.eyebrow = document.getElementById('bnEyebrow').value.trim();
   BANNER.sub = document.getElementById('bnSub').value.trim();
   await setData('aura:banner', BANNER, true);
   renderBanner();
   showToast('Banner text updated');
+}
+
+/* ---------- MOVING BANNER (multiple images) — ADMIN ---------- */
+function renderSlidesAdmin(){
+  const list = document.getElementById('slidesAdminList');
+  if(!list) return;
+  list.innerHTML = (BANNER_SLIDES||[]).map((src,i)=>`
+    <div style="position:relative; width:110px; height:70px; border-radius:6px; overflow:hidden; border:1px solid var(--line);">
+      <img src="${src}" style="width:100%; height:100%; object-fit:cover;">
+      <button onclick="removeSlide(${i})" title="Remove" style="position:absolute; top:3px; right:3px; width:20px; height:20px; border-radius:50%; background:rgba(10,9,9,0.75); color:#fff; font-size:12px; display:flex; align-items:center; justify-content:center;">✕</button>
+    </div>
+  `).join('') || '<div class="empty-note">No slides added yet.</div>';
+}
+async function onSlidesFileChange(e){
+  const files = Array.from(e.target.files||[]);
+  if(!files.length) return;
+  for(const file of files){
+    const compressed = await compressImageFile(file, 1600, 0.75);
+    if(compressed) BANNER_SLIDES.push(compressed);
+  }
+  e.target.value = '';
+  await setData('aura:bannerslides', BANNER_SLIDES, true);
+  renderSlidesAdmin();
+  renderSlidesBanner();
+  showToast('Slide(s) added');
+}
+async function removeSlide(i){
+  BANNER_SLIDES.splice(i,1);
+  await setData('aura:bannerslides', BANNER_SLIDES, true);
+  renderSlidesAdmin();
+  renderSlidesBanner();
+  showToast('Slide removed');
 }
 
 let ORDERS_FILTER = {status:'all', from:'', to:''};
@@ -3065,7 +3369,7 @@ function printOrderInvoice(id){
       .inv-brand{display:flex; align-items:center; gap:12px;}
       .inv-brand img{height:46px; width:auto; object-fit:contain;}
       .inv-brand h1{font-size:25px; letter-spacing:4px; color:#ece7de; margin:0;}
-      .inv-brand span{display:block; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:#c98a97; margin-top:3px;}
+      .inv-brand span{display:block; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:#c9bdbd; margin-top:3px;}
       .inv-meta{text-align:right; font-size:12px; color:#c9bdbd;}
       .inv-meta .inv-num{font-size:17px; font-weight:700; color:#fff; letter-spacing:1px;}
       .inv-status{display:inline-block; margin-top:7px; padding:3px 12px; border-radius:2px; font-size:11px; letter-spacing:1px; text-transform:uppercase; background:#a13148; color:#fff;}
@@ -3195,14 +3499,64 @@ function customerType(c){
   if((c.ordersCount||0) <= 1) return {label:'New', color:'var(--ok)'};
   return {label:'Regular', color:'var(--cream)'};
 }
+/* How many times this customer has had a return approved — matched by phone number
+   against the store's return requests, the same records the storefront's Return
+   button and the admin's Return Requests section use. */
+function customerReturnsCount(phone){
+  return RETURN_REQUESTS.filter(r=>r.phone===phone && r.status==='approved').length;
+}
 function renderCustomersTable(){
   document.getElementById('customersTable').innerHTML = CUSTOMERS.map(c=>{
     const t = customerType(c);
-    return `<tr><td>${c.name}</td><td>${c.phone}</td><td>${c.ordersCount}</td><td>${fmtMoney(c.totalSpent)}</td><td>${c.lastLogin}</td>
+    const returns = customerReturnsCount(c.phone);
+    return `<tr><td>${c.name}</td><td>${c.phone}</td><td>${c.ordersCount}</td><td>${fmtMoney(c.totalSpent)}</td><td>${returns}</td><td>${c.lastLogin}</td>
     <td><span style="color:${t.color};">${t.label}</span></td>
-    <td class="row-actions"><span style="font-size:11px; color:var(--muted); display:block; max-width:160px; white-space:normal;">${c.notes||'—'}</span><button title="Edit note" onclick="editCustomerNote('${c.id}')">✎</button></td></tr>`;
-  }).join('') || '<tr><td colspan="7" class="empty-note">No customers yet.</td></tr>';
+    <td class="row-actions"><span style="font-size:11px; color:var(--muted); display:block; max-width:160px; white-space:normal;">${c.notes||'—'}</span><button title="Edit note" onclick="editCustomerNote('${c.id}')">✎</button></td>
+    <td class="row-actions"><button class="btn small secondary" onclick="openCustomerModal('${c.id}')">View</button></td></tr>`;
+  }).join('') || '<tr><td colspan="9" class="empty-note">No customers yet.</td></tr>';
 }
+/* Full customer profile: every order they've placed (id, date, amount, status, items),
+   how many times they've bought, how much they've spent in total, and their contact/notes. */
+function openCustomerModal(id){
+  const c = CUSTOMERS.find(x=>x.id===id);
+  if(!c) return;
+  const custOrders = ORDERS.filter(o=>o.phone===c.phone).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const t = customerType(c);
+  document.getElementById('cmTitle').textContent = c.name;
+  document.getElementById('cmBody').innerHTML = `
+    <div style="border:1px solid var(--line); border-radius:8px; padding:16px; margin-bottom:18px;">
+      <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+        <div><div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Phone</div><div style="margin-top:2px;">${c.phone}</div></div>
+        <div><div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Customer Since</div><div style="margin-top:2px;">${c.createdAt||'—'}</div></div>
+        <div><div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Last Login</div><div style="margin-top:2px;">${c.lastLogin||'—'}</div></div>
+        <div><div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Type</div><div style="margin-top:2px; color:${t.color};">${t.label}</div></div>
+      </div>
+      <div style="display:flex; gap:24px; margin-top:16px; padding-top:16px; border-top:1px solid var(--line);">
+        <div><div class="serif" style="font-size:22px; color:var(--maroon-light);">${c.ordersCount||0}</div><div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Times Purchased</div></div>
+        <div><div class="serif" style="font-size:22px; color:var(--maroon-light);">${fmtMoney(c.totalSpent||0)}</div><div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Total Spent</div></div>
+        <div><div class="serif" style="font-size:22px; color:var(--maroon-light);">${customerReturnsCount(c.phone)}</div><div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Times Returned</div></div>
+      </div>
+      ${c.notes ? `<div style="margin-top:14px; padding-top:14px; border-top:1px solid var(--line); font-size:12px; color:var(--muted);">Note: ${c.notes}</div>` : ''}
+    </div>
+    <div style="font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:10px;">Order History (${custOrders.length})</div>
+    <div style="display:flex; flex-direction:column; gap:8px;">
+      ${custOrders.map(o=>`
+        <div style="border:1px solid var(--line); border-radius:6px; padding:12px; cursor:pointer;" onclick="closeCustomerModal(); viewOrder('${o.id}');">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="serif" style="font-size:15px;">${o.id}</span>
+            <span class="status-pill status-${o.status}">${o.status}</span>
+          </div>
+          <div style="font-size:12px; color:var(--muted); margin-top:4px; display:flex; justify-content:space-between;">
+            <span>${o.date} · ${(o.items||[]).reduce((s,i)=>s+i.qty,0)} item(s)</span>
+            <span style="color:var(--cream);">${fmtMoney(o.amount)}</span>
+          </div>
+        </div>
+      `).join('') || '<div class="empty-note">No orders on file.</div>'}
+    </div>
+  `;
+  document.getElementById('customerModalBackdrop').classList.remove('hidden');
+}
+function closeCustomerModal(){ document.getElementById('customerModalBackdrop').classList.add('hidden'); }
 async function editCustomerNote(id){
   const c = CUSTOMERS.find(x=>x.id===id);
   if(!c) return;
@@ -3385,11 +3739,15 @@ function renderStatistics(){
   const repeatCustomers = CUSTOMERS.filter(c=>c.ordersCount>1).length;
   const returnsInRange = RETURNS.filter(r=>inStatsRange(r.date));
   const totalReturns = returnsInRange.reduce((s,r)=>s+(r.qty||1),0);
+  // Pieces exchanged/returned specifically through the storefront's Return button (customer-submitted, admin-approved requests)
+  const approvedReqInRange = RETURN_REQUESTS.filter(r=>r.status==='approved' && inStatsRange(r.date));
+  const piecesExchanged = approvedReqInRange.reduce((s,r)=>s+(r.qty||1),0);
   const cards = [
     ['👥', totalVisitors, hasFilter?'Visitors (range)':'Total Visitors'],['📅', todayVisitors, "Today's Visitors"],['🗓', monthVisitors, "This Month's Visitors"],
     ['💰', fmtMoney(totalSales), hasFilter?'Sales (range)':'Total Sales'],['🚫', fmtMoney(salesLost), 'Sales Lost (Cancelled)'],['📦', ordersInRange.length, hasFilter?'Orders (range)':'Total Orders'],
     ['🛍', PRODUCTS.length, 'Total Products'],['📏', topSize, 'Top Selling Size'],['🎨', topColor, 'Top Selling Color'],
     ['🆕', newCustomers, 'New Customers (7d)'],['♻️', repeatCustomers, 'Repeat Customers'],['↩', totalReturns, hasFilter?'Returns (range)':'Total Returns'],
+    ['🔄', piecesExchanged, hasFilter?'Pieces Exchanged, Store Returns (range)':'Pieces Exchanged (Store Returns)'],
   ];
   document.getElementById('statsGridFull').innerHTML = cards.map(c=>`<div class="stat-card"><div class="si">${c[0]}</div><div class="sv">${c[1]}</div><div class="sl">${c[2]}</div></div>`).join('');
   const bs = bestSellersInRange(activeInRange);
@@ -3532,11 +3890,13 @@ function applySettingsToStorefront(){
   });
   const icons = document.getElementById('footIcons');
   if(icons && s.social){
+    const fbIcon = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V8c0-.9.2-1.5 1.5-1.5h1.7V3.7C15.9 3.6 15 3.5 14 3.5c-2.5 0-4.2 1.5-4.2 4.3v2.1H7v3.1h2.8V21h3.7Z"></path></svg>';
+    const igIcon = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"></circle></svg>';
+    const ttIcon = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M16.5 3c.4 2.2 1.9 3.8 4 4.1v2.7c-1.5-.1-2.9-.6-4-1.5v6.4c0 3.1-2.5 5.6-5.6 5.6S5.3 17.8 5.3 14.7c0-3 2.4-5.5 5.4-5.6v2.8c-1.5.1-2.7 1.3-2.7 2.8 0 1.6 1.3 2.9 2.9 2.9s2.9-1.3 2.9-2.9V3h2.7Z"></path></svg>';
     icons.innerHTML = `
-      ${s.social.facebook?`<a href="${s.social.facebook}" target="_blank">f</a>`:'<span>f</span>'}
-      ${s.social.instagram?`<a href="${s.social.instagram}" target="_blank">◎</a>`:'<span>◎</span>'}
-      ${s.social.tiktok?`<a href="${s.social.tiktok}" target="_blank">♪</a>`:'<span>♪</span>'}
-      ${s.whatsapp?`<a href="https://wa.me/${s.whatsapp}" target="_blank">☎</a>`:''}
+      ${s.social.facebook?`<a href="${s.social.facebook}" target="_blank" aria-label="Facebook">${fbIcon}</a>`:`<span aria-label="Facebook">${fbIcon}</span>`}
+      ${s.social.instagram?`<a href="${s.social.instagram}" target="_blank" aria-label="Instagram">${igIcon}</a>`:`<span aria-label="Instagram">${igIcon}</span>`}
+      ${s.social.tiktok?`<a href="${s.social.tiktok}" target="_blank" aria-label="TikTok">${ttIcon}</a>`:`<span aria-label="TikTok">${ttIcon}</span>`}
     `;
   }
   const banner = document.getElementById('storeOfflineBanner');
@@ -3570,7 +3930,7 @@ async function removeDataSection(section){
     returnrequests: async()=>{ RETURN_REQUESTS=[]; await setData('aura:returnrequests', RETURN_REQUESTS, true); renderReturnRequestsAdmin(); },
     customers: async()=>{ CUSTOMERS=[]; await setData('aura:customers', CUSTOMERS, true); renderCustomersTable(); },
     stats: async()=>{ STATS={visitorsByDay:{},salesByDay:{},ordersByDay:{}}; await setData('aura:stats', STATS, true); },
-    banner: async()=>{ BANNER={image:null,eyebrow:'New Season',sub:''}; await setData('aura:banner', BANNER, true); renderBannerAdmin(); renderBanner(); },
+    banner: async()=>{ BANNER={image:null,sub:''}; BANNER_SLIDES=[]; await Promise.all([setData('aura:banner', BANNER, true), setData('aura:bannerslides', BANNER_SLIDES, true)]); renderBannerAdmin(); renderSlidesAdmin(); renderBanner(); renderSlidesBanner(); },
     shipping: async()=>{ SHIPPING=defaultShippingRates(); await setData('aura:shipping', SHIPPING, true); renderShippingAdmin(); },
     coupons: async()=>{ COUPONS=[]; await setData('aura:coupons', COUPONS, true); renderCouponsTable(); },
     cart: async()=>{ CART=[]; await setData('aura:cart', CART, false); renderCart(); }
@@ -3595,7 +3955,7 @@ async function removeDataSectionSilent(section){
     returnrequests: async()=>{ RETURN_REQUESTS=[]; await setData('aura:returnrequests', RETURN_REQUESTS, true); },
     customers: async()=>{ CUSTOMERS=[]; await setData('aura:customers', CUSTOMERS, true); },
     stats: async()=>{ STATS={visitorsByDay:{},salesByDay:{},ordersByDay:{}}; await setData('aura:stats', STATS, true); },
-    banner: async()=>{ BANNER={image:null,eyebrow:'New Season',sub:''}; await setData('aura:banner', BANNER, true); },
+    banner: async()=>{ BANNER={image:null,sub:''}; BANNER_SLIDES=[]; await Promise.all([setData('aura:banner', BANNER, true), setData('aura:bannerslides', BANNER_SLIDES, true)]); },
     shipping: async()=>{ SHIPPING=defaultShippingRates(); await setData('aura:shipping', SHIPPING, true); },
     coupons: async()=>{ COUPONS=[]; await setData('aura:coupons', COUPONS, true); },
     cart: async()=>{ CART=[]; await setData('aura:cart', CART, false); }
@@ -3606,7 +3966,7 @@ async function removeDataSectionSilent(section){
 /* ================= BACKUP ================= */
 function exportBackup(){
   const backup = { exportedAt: new Date().toISOString(), products:PRODUCTS, orders:ORDERS, customers:CUSTOMERS,
-    coupons:COUPONS, notifications:NOTIFS, banner:BANNER, stats:STATS, shipping:SHIPPING, settings:SETTINGS, sizeguides:SIZEGUIDES, returns:RETURNS };
+    coupons:COUPONS, notifications:NOTIFS, banner:BANNER, bannerslides:BANNER_SLIDES, stats:STATS, shipping:SHIPPING, settings:SETTINGS, sizeguides:SIZEGUIDES, returns:RETURNS };
   const blob = new Blob([JSON.stringify(backup, null, 2)], {type:'application/json'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
