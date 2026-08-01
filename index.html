@@ -626,6 +626,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
       <div class="logo" id="headerLogo">AURA</div>
       <div class="header-side">
         <button class="icon-btn" onclick="toggleSearch()"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+        <button class="icon-btn" onclick="openAccount()" aria-label="My Account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="3.6"></circle><path d="M4.5 20c1.4-4 4.2-6 7.5-6s6.1 2 7.5 6"></path></svg></button>
         <button class="icon-btn" id="cartBtn"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1.2 11a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 8Z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="badge" id="cartBadge">0</span></button>
       </div>
     </div>
@@ -678,6 +679,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
       <span aria-label="Facebook"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V8c0-.9.2-1.5 1.5-1.5h1.7V3.7C15.9 3.6 15 3.5 14 3.5c-2.5 0-4.2 1.5-4.2 4.3v2.1H7v3.1h2.8V21h3.7Z"></path></svg></span>
       <span aria-label="Instagram"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"></circle></svg></span>
       <span aria-label="TikTok"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M16.5 3c.4 2.2 1.9 3.8 4 4.1v2.7c-1.5-.1-2.9-.6-4-1.5v6.4c0 3.1-2.5 5.6-5.6 5.6S5.3 17.8 5.3 14.7c0-3 2.4-5.5 5.4-5.6v2.8c-1.5.1-2.7 1.3-2.7 2.8 0 1.6 1.3 2.9 2.9 2.9s2.9-1.3 2.9-2.9V3h2.7Z"></path></svg></span>
+      <span aria-label="Snapchat"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2.7c-2.9 0-4.9 2.2-4.9 5.1 0 .7 0 1.6-.05 2.2-.06.1-.2.2-.5.3-.5.2-1.2.3-1.6.4-.3.05-.5.3-.4.6.1.5.7.9 1.5 1.2-.1.3-.2.6-.15.9.1.4.5.6.9.7-.05.3-.05.6.1.9.25.5 1 .6 1.5.6.2.6.9 1.6 3.55 1.6s3.35-1 3.55-1.6c.5 0 1.25-.1 1.5-.6.15-.3.15-.6.1-.9.4-.1.8-.3.9-.7.05-.3-.05-.6-.15-.9.8-.3 1.4-.7 1.5-1.2.1-.3-.1-.55-.4-.6-.4-.1-1.1-.2-1.6-.4-.3-.1-.44-.2-.5-.3-.05-.6-.05-1.5-.05-2.2 0-2.9-2-5.1-4.9-5.1Z"></path></svg></span>
     </div>
     <div>© <span id="year"></span> <span id="footerYearName">AURA</span>. <span data-i18n="rightsReserved">All rights reserved.</span></div>
     <div class="lang-switch" id="langSwitch">
@@ -740,6 +742,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
           <button onclick="applyCoupon()" data-i18n="apply">Apply</button>
         </div>
         <div class="msg-note" id="couponMsg"></div>
+        <div id="pointsRedeemBox" style="margin-top:4px;"></div>
         <div class="subtotal-row"><span data-i18n="subtotal">Subtotal</span><span id="cartSubtotal">$0.00</span></div>
         <button class="checkout-btn" onclick="openCheckout()" data-i18n="checkout">Checkout</button>
       </div>
@@ -753,6 +756,16 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
     <div class="cart-panel">
       <div class="drawer-head"><h3 data-i18n="wishlist">Wishlist</h3><button onclick="closeWishlist()">✕</button></div>
       <div class="cart-items" id="wishlistItems" style="margin-top:10px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- My Account -->
+<div class="overlay hidden" id="accountOverlay">
+  <div class="stage">
+    <div class="product-panel">
+      <div class="pp-topbar"><button onclick="closeAccount()">←</button><span style="font-size:11px; letter-spacing:2px; color:var(--muted); text-transform:uppercase;">My Account</span><span></span></div>
+      <div class="section-wrap" style="padding-top:10px;" id="accountBody"></div>
     </div>
   </div>
 </div>
@@ -859,9 +872,11 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
       <button data-sec="coupons">🏷 Coupons</button>
       <button data-sec="shipping">🚚 Shipping</button>
       <button data-sec="sizeguides">📏 Size Guides</button>
+      <button data-sec="categoryimages">🖼 Category Images</button>
       <button data-sec="statistics">📈 Statistics</button>
       <button data-sec="notifications">🔔 Notifications <span class="nbadge hidden" id="notifBadge">0</span></button>
       <button data-sec="reviews">⭐ Reviews <span class="nbadge hidden" id="reviewBadge">0</span></button>
+      <button data-sec="wablast">💬 WhatsApp Blast</button>
       <button data-sec="settings">⚙️ Settings</button>
       <button data-sec="datamanager">🗑 Data Manager</button>
     </div>
@@ -1014,9 +1029,10 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
     <section class="admin-section" id="sec-customers">
       <div class="admin-h1">Customers</div>
       <div class="admin-sub">All registered customers</div>
+      <div class="admin-toolbar"><div></div><button class="btn" onclick="exportCustomersExcel()">⬇ Export All Customer Data</button></div>
       <div style="overflow-x:auto;">
       <table>
-        <thead><tr><th>Name</th><th>Phone</th><th>Orders</th><th>Total Spent</th><th>Returns</th><th>Last Login</th><th>Type</th><th>Notes</th><th></th></tr></thead>
+        <thead><tr><th>Name</th><th>Phone</th><th>Orders</th><th>Total Spent</th><th>Points</th><th>Returns</th><th>Last Login</th><th>Type</th><th>Notes</th><th></th></tr></thead>
         <tbody id="customersTable"></tbody>
       </table>
       </div>
@@ -1090,6 +1106,15 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
         <div><h4 style="font-size:13px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:10px;">Unsold Products</h4><div id="unsoldList"></div></div>
       </div>
       <div style="margin-top:24px;">
+        <h4 style="font-size:13px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:10px;">Top 3 Governorates by Orders</h4>
+        <div style="overflow-x:auto;">
+        <table>
+          <thead><tr><th>Governorate</th><th>Orders</th><th>Revenue</th></tr></thead>
+          <tbody id="topGovernoratesTable"></tbody>
+        </table>
+        </div>
+      </div>
+      <div style="margin-top:24px;">
         <h4 style="font-size:13px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:10px;">Orders per Product</h4>
         <div style="overflow-x:auto;">
         <table>
@@ -1137,6 +1162,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
           <div><label>Instagram URL</label><input id="stInstagram" placeholder="https://instagram.com/..."></div>
           <div><label>Facebook URL</label><input id="stFacebook" placeholder="https://facebook.com/..."></div>
           <div><label>TikTok URL</label><input id="stTiktok" placeholder="https://tiktok.com/..."></div>
+          <div><label>Snapchat URL</label><input id="stSnapchat" placeholder="https://snapchat.com/add/..."></div>
           <div class="full"><label>Announcement Ribbon Text (moving strip below banner — leave empty to hide)</label><input id="stRibbon" placeholder="FREE SHIPPING FOR LIMITED TIME · BUY 2 GET 10% OFF"></div>
           <div>
             <label>Store Logo</label>
@@ -1151,6 +1177,21 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
         </div>
         <div class="form-actions">
           <button class="btn" onclick="saveSettings()">Save Settings</button>
+        </div>
+
+        <div class="danger-zone" style="border-color:var(--line); background:transparent; margin-top:26px;">
+          <h4 style="color:var(--gold);">Loyalty Points Program</h4>
+          <div class="form-grid">
+            <div><label>Points earned per order</label><input id="loyRate" type="number" step="1" min="0" placeholder="10"></div>
+          </div>
+          <div style="font-size:12px; color:var(--muted); margin:6px 0 14px;">Every completed order earns the customer this many points, no matter the order total. Rewards below are the point thresholds customers can redeem for a discount at checkout.</div>
+          <div style="overflow-x:auto;">
+          <table>
+            <thead><tr><th>Points Required</th><th>Discount %</th><th></th></tr></thead>
+            <tbody id="loyTiersTable"></tbody>
+          </table>
+          </div>
+          <div class="form-actions"><button class="btn secondary" type="button" onclick="addLoyaltyTierRow()">+ Add Reward Tier</button></div>
         </div>
 
         <div class="danger-zone" style="border-color:var(--line); background:transparent; margin-top:26px;">
@@ -1179,6 +1220,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
         <div class="dm-row"><span>Banners</span><button class="btn small danger" onclick="removeDataSection('banner')">Delete</button></div>
         <div class="dm-row"><span>Governorates / Shipping</span><button class="btn small danger" onclick="removeDataSection('shipping')">Delete</button></div>
         <div class="dm-row"><span>Coupons</span><button class="btn small danger" onclick="removeDataSection('coupons')">Delete</button></div>
+        <div class="dm-row"><span>Category Images</span><button class="btn small danger" onclick="removeDataSection('categoryimages')">Delete</button></div>
         <div class="dm-row"><span>Cart (this device)</span><button class="btn small danger" onclick="removeDataSection('cart')">Delete</button></div>
       </div>
       <div class="danger-zone">
@@ -1202,6 +1244,32 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
       <div id="sizeGuidesList"></div>
       <input type="file" id="sizeGuideFile" accept="image/*" class="hidden">
     </section>
+
+    <section class="admin-section" id="sec-categoryimages">
+      <div class="admin-h1">Category Images</div>
+      <div class="admin-sub">Upload a cover image per category — it's used on the "Shop by Category" tiles on the homepage instead of a random product photo</div>
+      <div id="categoryImagesList"></div>
+      <input type="file" id="categoryImageFile" accept="image/*" class="hidden">
+    </section>
+
+    <section class="admin-section" id="sec-wablast">
+      <div class="admin-h1">WhatsApp Blast</div>
+      <div class="admin-sub">Write one message and send it to your saved customers on WhatsApp. Each send opens a WhatsApp chat pre-filled with your message — WhatsApp doesn't allow a website to auto-send in bulk, so you tap "Send" once per customer (or use "Send Next" to move through the list quickly).</div>
+      <div class="form-panel open">
+        <div class="form-grid">
+          <div class="full"><label>Message</label><textarea id="waMessage" rows="4" placeholder="e.g. 20% off everything this weekend only 🎉" style="width:100%;"></textarea></div>
+        </div>
+        <div class="form-actions" style="flex-wrap:wrap;">
+          <button class="btn secondary" onclick="waSelectAll(true)">Select All</button>
+          <button class="btn secondary" onclick="waSelectAll(false)">Select None</button>
+          <button class="btn secondary" onclick="copyAllCustomerNumbers()">📋 Copy All Numbers</button>
+          <button class="btn" id="waNextBtn" onclick="waSendNext()">💬 Send Next →</button>
+        </div>
+        <div id="waProgress" class="msg-note"></div>
+      </div>
+      <div id="waCustomerList" style="margin-top:10px;"></div>
+    </section>
+
   </div>
 
   <div class="order-modal-backdrop hidden" id="orderModalBackdrop" onclick="if(event.target===this) closeOrderModal()">
@@ -1589,11 +1657,17 @@ if(fbMessaging){
 let PRODUCTS=[], ORDERS=[], CUSTOMERS=[], COUPONS=[], STATS=null, NOTIFS=[], BANNER=null, CART=[], SHIPPING={}, WISHLIST=[], RETURNS=[], RETURN_REQUESTS=[], BANNER_SLIDES=[];
 let SETTINGS=null, ADMIN_LOGGED_IN=false;
 let SIZEGUIDES={}; // { [categoryName]: imageDataUrl } — set per-category from the admin panel
+let CATEGORY_IMAGES={}; // { [categoryName]: imageDataUrl } — set per-category from the admin panel, shown on the "Shop by Category" tiles
+let MY_PROFILE=null; // {name, phone} — this device/browser's identified customer, so returning visitors see their own account page
+let MY_LAST_VIEWED=null; // productId of the last product this device looked at
+let appliedPointsRedeem=null; // {points, percent} — the loyalty-points tier currently applied at checkout (mutually exclusive with a coupon)
 function defaultSettings(){
   return { name:'AURA', currency:'EGP', whatsapp:'', address:'Alexandria, Egypt', logo:null,
-    social:{instagram:'',facebook:'',tiktok:''}, active:true, password:'123', lastLogin:null,
-    ribbon:'FREE SHIPPING FOR LIMITED TIME · BUY 2 GET 10% OFF' };
+    social:{instagram:'',facebook:'',tiktok:'',snapchat:''}, active:true, password:'123', lastLogin:null,
+    ribbon:'FREE SHIPPING FOR LIMITED TIME · BUY 2 GET 10% OFF',
+    loyalty:{ pointsPerOrder:10, tiers:[{points:100,percent:5},{points:250,percent:10},{points:500,percent:20}] } };
 }
+function defaultLoyalty(){ return { pointsPerOrder:10, tiers:[{points:100,percent:5},{points:250,percent:10},{points:500,percent:20}] }; }
 let CHECKOUT_ITEMS=[]; // items actually being purchased in the open checkout — separate from CART so "Buy It Now" never mixes into the saved bag
 let LAST_ORDER=null; // the most recently placed order — powers the "Order Confirmed" page and its Track/WhatsApp actions
 let currentProduct=null, editingProductId=null, appliedCoupon=null, charts={}, currentCategoryPage=null;
@@ -1831,6 +1905,9 @@ async function init(){
   RETURNS = cacheGet('aura:returns', []);
   RETURN_REQUESTS = cacheGet('aura:returnrequests', []);
   BANNER_SLIDES = cacheGet('aura:bannerslides', []);
+  CATEGORY_IMAGES = cacheGet('aura:categoryimages', {});
+  MY_PROFILE = cacheGet('aura:myprofile', null);
+  MY_LAST_VIEWED = cacheGet('aura:lastviewed', null);
 
   renderMenu();
   renderBanner();
@@ -1849,6 +1926,7 @@ async function init(){
   document.getElementById('slidesFile').addEventListener('change', onSlidesFileChange);
   document.getElementById('pfImageFile').addEventListener('change', onProductFileChange);
   document.getElementById('sizeGuideFile').addEventListener('change', onSizeGuideFileChange);
+  document.getElementById('categoryImageFile').addEventListener('change', onCategoryImageFileChange);
   document.getElementById('stLogoFile').addEventListener('change', onStLogoFileChange);
   document.querySelectorAll('#adminNav button').forEach(btn=>{
     btn.addEventListener('click', ()=> switchAdminSection(btn.dataset.sec));
@@ -1862,7 +1940,7 @@ async function init(){
 
 async function syncFromFirestore(){
   if(!fbReady){ return; }
-  const [products, orders, customers, coupons, notifs, banner, bannerslides, stats, cart, wishlist, shipping, settings, sizeguides, returns, returnrequests] = await Promise.all([
+  const [products, orders, customers, coupons, notifs, banner, bannerslides, stats, cart, wishlist, shipping, settings, sizeguides, returns, returnrequests, categoryimages, myprofile, lastviewed] = await Promise.all([
     getData('aura:products', null, true),
     getData('aura:orders', [], true),
     getData('aura:customers', [], true),
@@ -1878,6 +1956,9 @@ async function syncFromFirestore(){
     getData('aura:sizeguides', {}, true),
     getData('aura:returns', [], true),
     getData('aura:returnrequests', [], true),
+    getData('aura:categoryimages', {}, true),
+    getData('aura:myprofile', null, false),
+    getData('aura:lastviewed', null, false),
   ]);
 
   const prevProductsJSON = JSON.stringify(PRODUCTS);
@@ -1894,10 +1975,16 @@ async function syncFromFirestore(){
   SIZEGUIDES = sizeguides;
   RETURNS = returns;
   RETURN_REQUESTS = returnrequests;
+  CATEGORY_IMAGES = categoryimages || {};
+  MY_PROFILE = myprofile || MY_PROFILE;
+  MY_LAST_VIEWED = lastviewed || MY_LAST_VIEWED;
 
   const t = todayStr();
   STATS.visitorsByDay[t] = (STATS.visitorsByDay[t]||0) + 1;
   setData('aura:stats', STATS, true); // fire-and-forget — nothing on screen needs to wait for this
+
+  if(typeof renderCategoryTiles==='function') renderCategoryTiles();
+  if(typeof renderAccountPage==='function' && !document.getElementById('accountOverlay').classList.contains('hidden')) renderAccountPage();
 
   if(JSON.stringify(PRODUCTS) !== prevProductsJSON){
     renderMenu(); renderCategoryTiles(); renderProducts(); renderBestSellers();
@@ -1933,7 +2020,7 @@ function navigateTo(view, extra){
 }
 function goBack(){ history.back(); }
 function hideAllOverlays(){
-  ['menuOverlay','productOverlay','categoryOverlay','cartOverlay','wishlistOverlay','returnOverlay','checkoutOverlay','trackOrderOverlay','orderConfirmOverlay'].forEach(id=>{
+  ['menuOverlay','productOverlay','categoryOverlay','cartOverlay','wishlistOverlay','accountOverlay','returnOverlay','checkoutOverlay','trackOrderOverlay','orderConfirmOverlay'].forEach(id=>{
     const el = document.getElementById(id); if(el) el.classList.add('hidden');
   });
   const sd = document.getElementById('searchDrop'); if(sd) sd.classList.remove('open');
@@ -1963,6 +2050,7 @@ function applyRoute(state){
       if(p){
         currentProduct = p;
         p.views = (p.views||0) + 1; persistProducts();
+        MY_LAST_VIEWED = p.id; setData('aura:lastviewed', p.id, false); syncActivityToCustomer();
         currentGallery = galleryFor(p);
         currentGalleryIdx = 0;
         currentTab = 'desc';
@@ -1990,6 +2078,10 @@ function applyRoute(state){
     case 'wishlist':
       document.getElementById('wishlistOverlay').classList.remove('hidden');
       renderWishlist();
+      break;
+    case 'account':
+      document.getElementById('accountOverlay').classList.remove('hidden');
+      renderAccountPage();
       break;
     case 'returnrequest':
       document.getElementById('returnOverlay').classList.remove('hidden');
@@ -2087,6 +2179,7 @@ function renderMenu(){
   document.getElementById('menuLinks').innerHTML =
     `<a href="javascript:void(0)" onclick="closeMenu(); scrollToShop();">All Products</a>` +
     cats.map(c=>`<a href="javascript:void(0)" onclick="openCategoryPage('${c}');">${c}</a>`).join('') +
+    `<a href="javascript:void(0)" onclick="openAccount();">${tr('myAccount')||'My Account'}</a>` +
     `<a href="javascript:void(0)" onclick="openTrackOrder();">Track Order</a>` +
     `<a href="javascript:void(0)" onclick="showToast('Coming soon')">About Us</a>` +
     `<a href="javascript:void(0)" onclick="showToast('Coming soon')">Contact Us</a>`;
@@ -2140,8 +2233,9 @@ function renderCategoryTiles(){
   const cats = [...new Set(visibleProducts().map(p=>p.category))];
   document.getElementById('catGrid').innerHTML = cats.slice(0,8).map(c=>{
     const rep = visibleProducts().find(p=>p.category===c);
+    const img = CATEGORY_IMAGES[c] || rep.image;
     return `<div class="cat-tile" onclick="openCategoryPage('${c}')">
-      <img src="${rep.image}"><div class="cat-label">${c}</div>
+      <img src="${img}"><div class="cat-label">${c}</div>
     </div>`;
   }).join('');
 }
@@ -2369,6 +2463,170 @@ function selectColor(c){ window._selColor = c; renderProductPage(); }
 function setTab(t){ currentTab = t; renderProductPage(); }
 function stepModalQty(d){ window._modalQty = Math.max(1, (window._modalQty||1)+d); renderProductPage(); }
 function isWished(id){ return WISHLIST.includes(id); }
+
+/* ================= CUSTOMER IDENTITY & MY ACCOUNT =================
+   MY_PROFILE {name, phone} identifies which CUSTOMERS record belongs to this
+   device/browser. It's set either from the "My Account" form or automatically
+   after a successful checkout, and is stored privately (shared:false) so it
+   only ever lives on this device. */
+function myCustomerRecord(){ return (MY_PROFILE && MY_PROFILE.phone) ? CUSTOMERS.find(c=>c.phone===MY_PROFILE.phone) : null; }
+/* Mirrors this device's current wishlist/cart/last-viewed product onto the signed-in customer's
+   shared record, so the admin can see — per customer — what they favorited, what's in their bag,
+   and the last product they looked at (Admin > Customers > View). Silently does nothing if nobody
+   is signed in on this device yet. */
+async function syncActivityToCustomer(){
+  const cust = myCustomerRecord();
+  if(!cust) return;
+  cust.wishlist = WISHLIST.slice();
+  cust.cart = CART.map(i=>({...i}));
+  cust.lastViewedProductId = MY_LAST_VIEWED || null;
+  await setData('aura:customers', CUSTOMERS, true);
+}
+function loyaltySettings(){ return (SETTINGS && SETTINGS.loyalty) || defaultLoyalty(); }
+/* Finds-or-creates the shared CUSTOMERS record for this name/phone and refreshes lastLogin.
+   Does NOT touch ordersCount/totalSpent — those only change when an order is actually placed. */
+async function ensureCustomerRecord(name, phone){
+  let cust = CUSTOMERS.find(c=>c.phone===phone);
+  if(cust){ cust.name = name || cust.name; cust.lastLogin = todayStr(); }
+  else { cust = {id:uid('c'), name, phone, ordersCount:0, totalSpent:0, points:0, lastLogin:todayStr(), createdAt:todayStr()}; CUSTOMERS.push(cust); }
+  await setData('aura:customers', CUSTOMERS, true);
+  return cust;
+}
+function openAccount(){ navigateTo('account'); }
+function closeAccount(){ goBack(); }
+async function continueWithPhone(){
+  const phone = (document.getElementById('acPhone').value||'').trim();
+  const msg = document.getElementById('acMsg');
+  const nameWrap = document.getElementById('acNameWrap');
+  if(!phone){ if(msg){ msg.textContent='Please enter your phone number.'; msg.style.color='var(--danger)'; } return; }
+  const existing = CUSTOMERS.find(c=>c.phone===phone);
+  if(existing){
+    // Recognized by phone number alone — no name needed, sign straight in.
+    MY_PROFILE = {name:existing.name, phone};
+    await setData('aura:myprofile', MY_PROFILE, false);
+    await ensureCustomerRecord(existing.name, phone);
+    await syncActivityToCustomer();
+    showToast('Welcome back, ' + existing.name + '!');
+    renderAccountPage();
+    return;
+  }
+  // First time we've seen this number — only now ask for a name, to create the account.
+  if(nameWrap && nameWrap.classList.contains('hidden')){
+    nameWrap.classList.remove('hidden');
+    if(msg){ msg.textContent="We don't recognize this number yet — what's your name?"; msg.style.color='var(--muted)'; }
+    return;
+  }
+  const name = (document.getElementById('acName').value||'').trim();
+  if(!name){ if(msg){ msg.textContent='Please enter your name.'; msg.style.color='var(--danger)'; } return; }
+  MY_PROFILE = {name, phone};
+  await setData('aura:myprofile', MY_PROFILE, false);
+  await ensureCustomerRecord(name, phone);
+  await syncActivityToCustomer();
+  showToast('Welcome, ' + name + '!');
+  renderAccountPage();
+}
+async function logoutMyProfile(){
+  if(!confirm('Switch to a different account on this device?')) return;
+  MY_PROFILE = null;
+  await setData('aura:myprofile', null, false);
+  renderAccountPage();
+}
+function pointsProgressHTML(cust){
+  const loy = loyaltySettings();
+  const pts = (cust && cust.points) || 0;
+  const tiers = (loy.tiers||[]).slice().sort((a,b)=>a.points-b.points);
+  const next = tiers.find(t=>t.points > pts);
+  return `
+    <div style="border:1px solid var(--line); border-radius:8px; padding:16px; margin-bottom:16px;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div><div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Loyalty Points</div>
+        <div class="serif" style="font-size:26px; color:var(--maroon-light); margin-top:2px;">${pts} ⭐</div></div>
+      </div>
+      <div style="font-size:12px; color:var(--muted); margin-top:8px;">
+        ${next ? `${next.points-pts} more points unlocks ${next.percent}% off` : (tiers.length ? 'You can redeem points for a discount at checkout — see the bag.' : 'Ask the store to set up point rewards.')}
+      </div>
+      ${tiers.length ? `<div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;">${tiers.map(t=>`<span style="font-size:11px; padding:4px 10px; border-radius:20px; border:1px solid ${pts>=t.points?'var(--maroon-light)':'var(--line)'}; color:${pts>=t.points?'var(--cream)':'var(--muted)'};">${t.points} pts → ${t.percent}% off</span>`).join('')}</div>` : ''}
+    </div>`;
+}
+function renderAccountPage(){
+  const body = document.getElementById('accountBody');
+  if(!body) return;
+  if(!MY_PROFILE){
+    body.innerHTML = `
+      <h2 class="serif" style="font-size:22px; margin-bottom:6px;">Welcome</h2>
+      <p style="font-size:13px; color:var(--muted); margin-bottom:18px;">Enter your phone number to see your orders, points and wishlist here every time you visit.</p>
+      <label class="ck-label">Phone number</label>
+      <input type="tel" id="acPhone" placeholder="01xxxxxxxxx" style="width:100%; margin:6px 0 14px;">
+      <div id="acNameWrap" class="hidden">
+        <label class="ck-label">What's your name?</label>
+        <input type="text" id="acName" style="width:100%; margin:6px 0 14px;">
+      </div>
+      <button class="btn" style="width:100%;" onclick="continueWithPhone()">Continue</button>
+      <div class="msg-note" id="acMsg"></div>
+    `;
+    return;
+  }
+  const cust = myCustomerRecord() || {name:MY_PROFILE.name, phone:MY_PROFILE.phone, ordersCount:0, totalSpent:0, points:0, lastLogin:todayStr(), createdAt:todayStr()};
+  const wishItems = WISHLIST.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean);
+  const cartItems = CART;
+  const lastViewedProduct = MY_LAST_VIEWED ? PRODUCTS.find(p=>p.id===MY_LAST_VIEWED) : null;
+  body.innerHTML = `
+    <div style="border:1px solid var(--line); border-radius:8px; padding:16px; margin-bottom:16px;">
+      <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+        <div><div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Name</div><div style="margin-top:2px;">${cust.name}</div></div>
+        <div><div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Phone</div><div style="margin-top:2px;">${cust.phone}</div></div>
+        <div><div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Last Login</div><div style="margin-top:2px;">${cust.lastLogin||'—'}</div></div>
+      </div>
+      <div style="display:flex; gap:24px; margin-top:16px; padding-top:16px; border-top:1px solid var(--line);">
+        <div><div class="serif" style="font-size:22px; color:var(--maroon-light);">${cust.ordersCount||0}</div><div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Orders</div></div>
+        <div><div class="serif" style="font-size:22px; color:var(--maroon-light);">${fmtMoney(cust.totalSpent||0)}</div><div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Total Purchases</div></div>
+      </div>
+    </div>
+    ${pointsProgressHTML(cust)}
+    <div style="font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin:18px 0 10px;">Last Viewed</div>
+    ${lastViewedProduct ? `<div class="cart-item" onclick="openProductModal('${lastViewedProduct.id}')" style="cursor:pointer;">
+      <img src="${lastViewedProduct.image}">
+      <div class="ci-info"><div class="nm">${lastViewedProduct.name}</div><div class="meta">${fmtMoney(lastViewedProduct.discount>0?lastViewedProduct.discount:lastViewedProduct.price)}</div></div>
+    </div>` : '<div class="empty-note">No products viewed yet.</div>'}
+    <div style="font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin:20px 0 10px;">Wishlist (${wishItems.length})</div>
+    ${wishItems.length ? wishItems.map(p=>`<div class="cart-item" onclick="openProductModal('${p.id}')" style="cursor:pointer;"><img src="${p.image}"><div class="ci-info"><div class="nm">${p.name}</div><div class="meta">${fmtMoney(p.discount>0?p.discount:p.price)}</div></div></div>`).join('') : '<div class="empty-note">Your wishlist is empty.</div>'}
+    <div style="font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin:20px 0 10px;">Bag (${cartItems.reduce((s,i)=>s+i.qty,0)} item(s))</div>
+    ${cartItems.length ? cartItems.map(i=>`<div class="cart-item"><img src="${i.image}"><div class="ci-info"><div class="nm">${i.name}</div><div class="meta">${i.size} / ${i.color} × ${i.qty} — ${fmtMoney(i.price*i.qty)}</div></div></div>`).join('') : '<div class="empty-note">Your bag is empty.</div>'}
+    <button class="btn secondary" style="width:100%; margin-top:22px;" onclick="logoutMyProfile()">Switch Account</button>
+  `;
+}
+/* Renders the "redeem loyalty points" box under the coupon field in the cart drawer. */
+function renderPointsRedeemBox(){
+  const box = document.getElementById('pointsRedeemBox');
+  if(!box) return;
+  const cust = myCustomerRecord();
+  if(!cust){
+    box.innerHTML = `<div style="font-size:11px; color:var(--muted); margin-top:2px;">Sign in from <a href="javascript:void(0)" onclick="closeCart(); openAccount();" style="color:var(--maroon-light); text-decoration:underline;">My Account</a> to redeem loyalty points.</div>`;
+    return;
+  }
+  const loy = loyaltySettings();
+  const pts = cust.points||0;
+  const tiers = (loy.tiers||[]).filter(t=>t.points<=pts).sort((a,b)=>b.points-a.points);
+  if(appliedPointsRedeem){
+    box.innerHTML = `<div style="font-size:12px; color:var(--gold); display:flex; justify-content:space-between; align-items:center;"><span>Using ${appliedPointsRedeem.points} points for ${appliedPointsRedeem.percent}% off</span><button class="btn small secondary" onclick="cancelPointsRedeem()">Undo</button></div>`;
+    return;
+  }
+  if(!tiers.length){ box.innerHTML = `<div style="font-size:11px; color:var(--muted); margin-top:2px;">You have ${pts} points. Keep shopping to unlock a points discount.</div>`; return; }
+  const best = tiers[0];
+  box.innerHTML = `<button class="btn small secondary" style="width:100%;" onclick="redeemPoints(${best.points},${best.percent})">⭐ Redeem ${best.points} points for ${best.percent}% off</button>`;
+}
+function redeemPoints(points, percent){
+  if(appliedCoupon){ appliedCoupon = null; document.getElementById('couponInput').value=''; document.getElementById('couponMsg').textContent=''; }
+  appliedPointsRedeem = {points, percent};
+  appliedCoupon = {code:'POINTS', percent};
+  renderCart();
+  showToast('Points discount applied');
+}
+function cancelPointsRedeem(){
+  appliedPointsRedeem = null;
+  appliedCoupon = null;
+  renderCart();
+}
 async function shareProduct(id){
   const p = PRODUCTS.find(x=>x.id===id);
   if(!p) return;
@@ -2384,6 +2642,7 @@ function toggleWishlist(id){
   const idx = WISHLIST.indexOf(id);
   if(idx>-1){ WISHLIST.splice(idx,1); showToast('Removed from wishlist'); }
   else { WISHLIST.push(id); showToast('Added to wishlist'); }
+  syncActivityToCustomer();
   renderWishlistBadge();
   renderProducts();
   renderBestSellers();
@@ -2789,6 +3048,7 @@ function addToCart(p, size, color, qty){
   // Sync to the server in the background; a slow/offline connection no longer freezes the button.
   persistProducts();
   setData('aura:cart', CART, false);
+  syncActivityToCustomer();
 }
 
 /* ================= CART ================= */
@@ -2821,14 +3081,16 @@ function renderCart(){
       </div>`).join('');
   }
   document.getElementById('cartSubtotal').textContent = fmtMoney(cartSubtotal());
+  if(typeof renderPointsRedeemBox==='function') renderPointsRedeemBox();
 }
 function stepCartQty(idx, d){
   CART[idx].qty += d;
   if(CART[idx].qty<=0) CART.splice(idx,1);
   renderCart();
   setData('aura:cart', CART, false);
+  syncActivityToCustomer();
 }
-function removeCartItem(idx){ CART.splice(idx,1); renderCart(); setData('aura:cart', CART, false); }
+function removeCartItem(idx){ CART.splice(idx,1); renderCart(); setData('aura:cart', CART, false); syncActivityToCustomer(); }
 
 async function applyCoupon(){
   const code = document.getElementById('couponInput').value.trim().toUpperCase();
@@ -2903,7 +3165,9 @@ async function placeOrder(){
     const shipping = SHIPPING[gov]!=null ? SHIPPING[gov] : 0;
     const subtotal = checkoutSubtotal();
     const amount = subtotal + shipping;
-    const order = { id: 'AUR-' + Math.floor(10000+Math.random()*89999), customer:name, phone, phone2, governorate:gov, address, items: CHECKOUT_ITEMS.map(i=>({...i})), subtotal, shipping, amount, coupon: appliedCoupon?appliedCoupon.code:null, status:'Pending', tracking:'', date: todayStr() };
+    const pointsUsed = appliedPointsRedeem ? appliedPointsRedeem.points : 0;
+    const pointsEarned = Math.floor((loyaltySettings().pointsPerOrder!=null ? loyaltySettings().pointsPerOrder : 10));
+    const order = { id: 'AUR-' + Math.floor(10000+Math.random()*89999), customer:name, phone, phone2, governorate:gov, address, items: CHECKOUT_ITEMS.map(i=>({...i})), subtotal, shipping, amount, coupon: appliedCoupon?appliedCoupon.code:null, pointsUsed, pointsEarned, status:'Pending', tracking:'', date: todayStr() };
     ORDERS.unshift(order);
 
     // Fired here, before any `await`, so it still runs inside the original tap/click —
@@ -2911,8 +3175,12 @@ async function placeOrder(){
     confirmOrderViaWhatsApp(order);
 
     let cust = CUSTOMERS.find(c=>c.phone===phone);
-    if(cust){ cust.ordersCount += 1; cust.totalSpent += amount; cust.lastLogin = todayStr(); }
-    else { CUSTOMERS.push({id:uid('c'), name, phone, ordersCount:1, totalSpent:amount, lastLogin:todayStr(), createdAt:todayStr()}); }
+    if(cust){ cust.ordersCount += 1; cust.totalSpent += amount; cust.lastLogin = todayStr(); cust.points = Math.max(0,(cust.points||0) - pointsUsed) + pointsEarned; }
+    else { cust = {id:uid('c'), name, phone, ordersCount:1, totalSpent:amount, points:pointsEarned, lastLogin:todayStr(), createdAt:todayStr()}; CUSTOMERS.push(cust); }
+
+    // Remember this customer on this device so their "My Account" page shows this order, points and history next time they visit.
+    if(!MY_PROFILE || MY_PROFILE.phone !== phone){ MY_PROFILE = {name, phone}; setData('aura:myprofile', MY_PROFILE, false); }
+    appliedPointsRedeem = null;
 
     CHECKOUT_ITEMS.forEach(ci=>{ const p = PRODUCTS.find(x=>x.id===ci.productId); if(p){ p.purchases=(p.purchases||0)+ci.qty; p.qty=Math.max(0,p.qty-ci.qty); } });
 
@@ -2934,7 +3202,7 @@ async function placeOrder(){
       const couponCode = appliedCoupon.code;
       const c = COUPONS.find(x=>x.code===couponCode);
       if(c){ c.used=(c.used||0)+1; syncTasks.push(setData('aura:coupons', COUPONS, true)); }
-      syncTasks.push(addNotification('coupon', `Coupon "${couponCode}" was used on order ${order.id}`));
+      syncTasks.push(addNotification('coupon', pointsUsed ? `Customer ${name} redeemed ${pointsUsed} loyalty points on order ${order.id}` : `Coupon "${couponCode}" was used on order ${order.id}`));
       appliedCoupon = null;
     }
 
@@ -3030,9 +3298,11 @@ function switchAdminSection(sec){
   if(sec==='coupons') renderCouponsTable();
   if(sec==='shipping') renderShippingAdmin();
   if(sec==='sizeguides') renderSizeGuidesAdmin();
+  if(sec==='categoryimages') renderCategoryImagesAdmin();
   if(sec==='statistics') renderStatistics();
   if(sec==='notifications') renderNotifications();
   if(sec==='reviews') renderReviewsTable();
+  if(sec==='wablast') renderWaBlastAdmin();
   if(sec==='settings') renderSettingsForm();
   toggleAdminSidebar(false); // collapse the mobile drawer once a section is picked
 }
@@ -3568,11 +3838,42 @@ function renderCustomersTable(){
   document.getElementById('customersTable').innerHTML = CUSTOMERS.map(c=>{
     const t = customerType(c);
     const returns = customerReturnsCount(c.phone);
-    return `<tr><td>${c.name}</td><td>${c.phone}</td><td>${c.ordersCount}</td><td>${fmtMoney(c.totalSpent)}</td><td>${returns}</td><td>${c.lastLogin}</td>
+    return `<tr><td>${c.name}</td><td>${c.phone}</td><td>${c.ordersCount}</td><td>${fmtMoney(c.totalSpent)}</td><td>${c.points||0}</td><td>${returns}</td><td>${c.lastLogin}</td>
     <td><span style="color:${t.color};">${t.label}</span></td>
     <td class="row-actions"><span style="font-size:11px; color:var(--muted); display:block; max-width:160px; white-space:normal;">${c.notes||'—'}</span><button title="Edit note" onclick="editCustomerNote('${c.id}')">✎</button></td>
     <td class="row-actions"><button class="btn small secondary" onclick="openCustomerModal('${c.id}')">View</button></td></tr>`;
-  }).join('') || '<tr><td colspan="9" class="empty-note">No customers yet.</td></tr>';
+  }).join('') || '<tr><td colspan="10" class="empty-note">No customers yet.</td></tr>';
+}
+/* Downloads every saved customer's full record (name, phone, orders, spend, points, dates, notes) as an Excel file. */
+function exportCustomersExcel(){
+  if(!CUSTOMERS.length){ showToast('No customers to export'); return; }
+  const rows = CUSTOMERS.map(c=>({
+    Name: c.name, Phone: c.phone, Orders: c.ordersCount||0, 'Total Spent': c.totalSpent||0,
+    Points: c.points||0, Returns: customerReturnsCount(c.phone), 'Customer Since': c.createdAt||'',
+    'Last Login': c.lastLogin||'', 'Wishlist Items': (c.wishlist||[]).length, 'Cart Items': (c.cart||[]).length, Notes: c.notes||''
+  }));
+  const ws = XLSX.utils.json_to_sheet(rows);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Customers');
+  XLSX.writeFile(wb, `customers-${todayStr()}.xlsx`);
+  showToast('Customer data exported');
+}
+/* Builds the "Last Viewed / Wishlist / Cart" block for the admin's customer view — pulled from
+   the fields syncActivityToCustomer() mirrors onto the customer record whenever they browse. */
+function customerActivityHTML(c){
+  const lastP = c.lastViewedProductId ? PRODUCTS.find(p=>p.id===c.lastViewedProductId) : null;
+  const wishP = (c.wishlist||[]).map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean);
+  const cartItems = c.cart||[];
+  const miniRow = (img,name,meta)=>`<div style="display:flex; align-items:center; gap:10px; padding:6px 0;"><img src="${img}" style="width:34px; height:44px; object-fit:cover; border-radius:3px; flex-shrink:0;"><div style="min-width:0;"><div style="font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${name}</div><div style="font-size:11px; color:var(--muted);">${meta}</div></div></div>`;
+  return `
+    <div style="border:1px solid var(--line); border-radius:8px; padding:16px; margin-bottom:18px;">
+      <div style="font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:8px;">Last Viewed Product</div>
+      ${lastP ? miniRow(lastP.image, lastP.name, fmtMoney(lastP.discount>0?lastP.discount:lastP.price)) : '<div class="empty-note" style="padding:6px 0;">Nothing viewed yet.</div>'}
+      <div style="font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin:16px 0 8px; padding-top:16px; border-top:1px solid var(--line);">Wishlist (${wishP.length})</div>
+      ${wishP.length ? wishP.map(p=>miniRow(p.image, p.name, fmtMoney(p.discount>0?p.discount:p.price))).join('') : '<div class="empty-note" style="padding:6px 0;">Wishlist is empty.</div>'}
+      <div style="font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin:16px 0 8px; padding-top:16px; border-top:1px solid var(--line);">Cart (${cartItems.length})</div>
+      ${cartItems.length ? cartItems.map(i=>miniRow(i.image, i.name, `${i.size} / ${i.color} · ${fmtMoney(i.price)} × ${i.qty}`)).join('') : '<div class="empty-note" style="padding:6px 0;">Cart is empty.</div>'}
+    </div>`;
 }
 /* Full customer profile: every order they've placed (id, date, amount, status, items),
    how many times they've bought, how much they've spent in total, and their contact/notes. */
@@ -3594,9 +3895,11 @@ function openCustomerModal(id){
         <div><div class="serif" style="font-size:22px; color:var(--maroon-light);">${c.ordersCount||0}</div><div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Times Purchased</div></div>
         <div><div class="serif" style="font-size:22px; color:var(--maroon-light);">${fmtMoney(c.totalSpent||0)}</div><div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Total Spent</div></div>
         <div><div class="serif" style="font-size:22px; color:var(--maroon-light);">${customerReturnsCount(c.phone)}</div><div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Times Returned</div></div>
+        <div><div class="serif" style="font-size:22px; color:var(--maroon-light);">${c.points||0} ⭐</div><div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Loyalty Points</div></div>
       </div>
       ${c.notes ? `<div style="margin-top:14px; padding-top:14px; border-top:1px solid var(--line); font-size:12px; color:var(--muted);">Note: ${c.notes}</div>` : ''}
     </div>
+    ${customerActivityHTML(c)}
     <div style="font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:10px;">Order History (${custOrders.length})</div>
     <div style="display:flex; flex-direction:column; gap:8px;">
       ${custOrders.map(o=>`
@@ -3685,6 +3988,116 @@ async function removeSizeGuide(category){
   await setData('aura:sizeguides', SIZEGUIDES, true);
   renderSizeGuidesAdmin();
   showToast('Size guide removed for ' + category);
+}
+
+/* ================= CATEGORY IMAGES (per category, shown on the homepage tiles) ================= */
+function renderCategoryImagesAdmin(){
+  const list = document.getElementById('categoryImagesList');
+  if(!list) return;
+  const cats = productCategories();
+  list.innerHTML = cats.length ? cats.map(cat=>{
+    const img = CATEGORY_IMAGES[cat];
+    const safeCat = cat.replace(/'/g,"\\'");
+    return `<div class="sg-row">
+      ${img ? `<img class="sg-thumb" src="${img}">` : `<div class="sg-thumb-empty">No image</div>`}
+      <div class="sg-info">
+        <div class="sg-cat">${cat}</div>
+        <div class="sg-status">${img ? 'Custom cover set for this category' : 'Using a random product photo until you upload one'}</div>
+      </div>
+      <div class="sg-actions">
+        <button class="btn small secondary" onclick="triggerCategoryImageUpload('${safeCat}')">${img?'Replace':'Upload'}</button>
+        ${img ? `<button class="btn small danger" onclick="removeCategoryImage('${safeCat}')">Remove</button>` : ''}
+      </div>
+    </div>`;
+  }).join('') : '<div class="empty-note">Add products with a category first — an image slot appears here for each category.</div>';
+}
+function triggerCategoryImageUpload(category){
+  window._ciUploadCategory = category;
+  document.getElementById('categoryImageFile').click();
+}
+async function onCategoryImageFileChange(e){
+  const file = e.target.files[0]; if(!file) return;
+  const category = window._ciUploadCategory;
+  e.target.value = '';
+  if(!category) return;
+  const compressed = await compressImageFile(file, 900, 0.8);
+  if(!compressed) return;
+  CATEGORY_IMAGES[category] = compressed;
+  await setData('aura:categoryimages', CATEGORY_IMAGES, true);
+  renderCategoryImagesAdmin();
+  renderCategoryTiles();
+  showToast('Category image saved for ' + category);
+}
+async function removeCategoryImage(category){
+  delete CATEGORY_IMAGES[category];
+  await setData('aura:categoryimages', CATEGORY_IMAGES, true);
+  renderCategoryImagesAdmin();
+  renderCategoryTiles();
+  showToast('Category image removed for ' + category);
+}
+
+/* ================= WHATSAPP BLAST (admin bulk-messaging tool) =================
+   WhatsApp's own rules mean a website can never truly auto-send to many numbers at once —
+   each message has to be opened as its own chat by a real tap. This gives the admin a fast
+   queue: pick recipients, write one message, then tap "Send Next" to walk through them. */
+let WA_QUEUE = [];
+let WA_QUEUE_IDX = 0;
+function waAllCustomerPhones(){
+  const seen = new Set(); const out = [];
+  CUSTOMERS.forEach(c=>{ if(c.phone && !seen.has(c.phone)){ seen.add(c.phone); out.push(c); } });
+  return out;
+}
+function renderWaBlastAdmin(){
+  const list = document.getElementById('waCustomerList');
+  if(!list) return;
+  const custs = waAllCustomerPhones();
+  list.innerHTML = custs.length ? `<div style="overflow-x:auto;"><table>
+    <thead><tr><th style="width:36px;"></th><th>Name</th><th>Phone</th><th></th></tr></thead>
+    <tbody>${custs.map(c=>`<tr>
+      <td><input type="checkbox" class="wa-check" data-phone="${c.phone}" checked></td>
+      <td>${c.name}</td><td>${c.phone}</td>
+      <td class="row-actions"><button class="btn small secondary" onclick="waSendTo('${c.phone.replace(/'/g,"\\'")}')">Send</button></td>
+    </tr>`).join('')}</tbody>
+  </table></div>` : '<div class="empty-note">No customer phone numbers saved yet.</div>';
+  document.getElementById('waProgress').textContent = '';
+  WA_QUEUE = []; WA_QUEUE_IDX = 0;
+}
+function waSelectAll(state){
+  document.querySelectorAll('.wa-check').forEach(cb=>cb.checked = state);
+}
+function copyAllCustomerNumbers(){
+  const nums = waAllCustomerPhones().map(c=>c.phone).join(', ');
+  if(!nums){ showToast('No numbers to copy'); return; }
+  navigator.clipboard.writeText(nums).then(()=>showToast('Numbers copied')).catch(()=>showToast('Could not copy'));
+}
+function cleanPhoneForWa(phone){
+  let p = (phone||'').replace(/[^0-9]/g,'');
+  if(p.startsWith('0')) p = '20' + p.slice(1); // default to Egypt country code for local numbers
+  return p;
+}
+function waSendTo(phone){
+  const msg = document.getElementById('waMessage').value.trim();
+  if(!msg){ showToast('Write a message first'); return; }
+  const p = cleanPhoneForWa(phone);
+  window.open(`https://wa.me/${p}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+function waSendNext(){
+  const msg = document.getElementById('waMessage').value.trim();
+  if(!msg){ showToast('Write a message first'); return; }
+  if(WA_QUEUE.length===0){
+    WA_QUEUE = Array.from(document.querySelectorAll('.wa-check:checked')).map(cb=>cb.dataset.phone);
+    WA_QUEUE_IDX = 0;
+    if(WA_QUEUE.length===0){ showToast('Select at least one customer'); return; }
+  }
+  if(WA_QUEUE_IDX >= WA_QUEUE.length){
+    document.getElementById('waProgress').textContent = `Done — sent to ${WA_QUEUE.length} customer(s).`;
+    WA_QUEUE = []; WA_QUEUE_IDX = 0;
+    return;
+  }
+  const phone = WA_QUEUE[WA_QUEUE_IDX];
+  waSendTo(phone);
+  WA_QUEUE_IDX++;
+  document.getElementById('waProgress').textContent = `Sent ${WA_QUEUE_IDX} of ${WA_QUEUE.length} — tap "Send Next" again to continue.`;
 }
 
 function toggleCouponForm(){ document.getElementById('couponFormPanel').classList.toggle('open'); }
@@ -3826,6 +4239,18 @@ function renderStatistics(){
   document.getElementById('ordersPerProductTable').innerHTML = fullList.map(x=>`
     <tr><td>${x.product.name}</td><td>${x.product.category}</td><td>${x.qty}</td><td>${fmtMoney(x.revenue||0)}</td></tr>
   `).join('') || '<tr><td colspan="4" class="empty-note">No products yet.</td></tr>';
+  // Which governorates order the most — counted from active (non-cancelled) orders in the selected range
+  const govStats = {};
+  activeInRange.forEach(o=>{
+    if(!o.governorate) return;
+    if(!govStats[o.governorate]) govStats[o.governorate] = {orders:0, revenue:0};
+    govStats[o.governorate].orders += 1;
+    govStats[o.governorate].revenue += o.amount;
+  });
+  const govTop3 = Object.entries(govStats).sort((a,b)=>b[1].orders-a[1].orders).slice(0,3);
+  document.getElementById('topGovernoratesTable').innerHTML = govTop3.map(([g,s])=>`
+    <tr><td>${g}</td><td>${s.orders}</td><td>${fmtMoney(s.revenue)}</td></tr>
+  `).join('') || '<tr><td colspan="3" class="empty-note">No orders yet.</td></tr>';
 }
 
 /* ================= MONTHLY SALES REPORT ================= */
@@ -3891,11 +4316,42 @@ function renderSettingsForm(){
   document.getElementById('stInstagram').value = (s.social&&s.social.instagram) || '';
   document.getElementById('stFacebook').value = (s.social&&s.social.facebook) || '';
   document.getElementById('stTiktok').value = (s.social&&s.social.tiktok) || '';
+  document.getElementById('stSnapchat').value = (s.social&&s.social.snapchat) || '';
   document.getElementById('stRibbon').value = s.ribbon != null ? s.ribbon : 'FREE SHIPPING FOR LIMITED TIME · BUY 2 GET 10% OFF';
   document.getElementById('admLastLogin').textContent = s.lastLogin || '—';
   document.getElementById('stActiveSwitch').classList.toggle('on', s.active!==false);
   const prev = document.getElementById('stLogoPreview');
   if(s.logo){ prev.src = s.logo; prev.classList.remove('hidden'); } else { prev.classList.add('hidden'); }
+  const loy = s.loyalty || defaultLoyalty();
+  document.getElementById('loyRate').value = loy.pointsPerOrder != null ? loy.pointsPerOrder : 10;
+  renderLoyaltyTiersTable(loy.tiers || []);
+}
+function renderLoyaltyTiersTable(tiers){
+  document.getElementById('loyTiersTable').innerHTML = (tiers.length ? tiers : []).map((t,idx)=>`
+    <tr>
+      <td><input type="number" min="0" class="loy-tier-points" value="${t.points}" style="width:110px;"></td>
+      <td><input type="number" min="0" max="100" class="loy-tier-percent" value="${t.percent}" style="width:90px;"></td>
+      <td><button class="btn small danger" onclick="removeLoyaltyTierRow(${idx})">Remove</button></td>
+    </tr>`).join('') || '<tr><td colspan="3" class="empty-note">No reward tiers yet — add one below.</td></tr>';
+}
+function currentLoyaltyTiersFromForm(){
+  const rows = document.querySelectorAll('#loyTiersTable tr');
+  const tiers = [];
+  rows.forEach(r=>{
+    const p = r.querySelector('.loy-tier-points'); const pc = r.querySelector('.loy-tier-percent');
+    if(p && pc) tiers.push({points: parseFloat(p.value)||0, percent: parseFloat(pc.value)||0});
+  });
+  return tiers;
+}
+function addLoyaltyTierRow(){
+  const tiers = currentLoyaltyTiersFromForm();
+  tiers.push({points:0, percent:0});
+  renderLoyaltyTiersTable(tiers);
+}
+function removeLoyaltyTierRow(idx){
+  const tiers = currentLoyaltyTiersFromForm();
+  tiers.splice(idx,1);
+  renderLoyaltyTiersTable(tiers);
 }
 function toggleStoreActive(){
   document.getElementById('stActiveSwitch').classList.toggle('on');
@@ -3918,7 +4374,12 @@ async function saveSettings(){
   SETTINGS.social = {
     instagram: document.getElementById('stInstagram').value.trim(),
     facebook: document.getElementById('stFacebook').value.trim(),
-    tiktok: document.getElementById('stTiktok').value.trim()
+    tiktok: document.getElementById('stTiktok').value.trim(),
+    snapchat: document.getElementById('stSnapchat').value.trim()
+  };
+  SETTINGS.loyalty = {
+    pointsPerOrder: parseFloat(document.getElementById('loyRate').value) || 0,
+    tiers: currentLoyaltyTiersFromForm().filter(t=>t.points>0 && t.percent>0).sort((a,b)=>a.points-b.points)
   };
   SETTINGS.active = document.getElementById('stActiveSwitch').classList.contains('on');
   SETTINGS.ribbon = document.getElementById('stRibbon').value.trim();
@@ -3952,10 +4413,12 @@ function applySettingsToStorefront(){
     const fbIcon = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V8c0-.9.2-1.5 1.5-1.5h1.7V3.7C15.9 3.6 15 3.5 14 3.5c-2.5 0-4.2 1.5-4.2 4.3v2.1H7v3.1h2.8V21h3.7Z"></path></svg>';
     const igIcon = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"></circle></svg>';
     const ttIcon = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M16.5 3c.4 2.2 1.9 3.8 4 4.1v2.7c-1.5-.1-2.9-.6-4-1.5v6.4c0 3.1-2.5 5.6-5.6 5.6S5.3 17.8 5.3 14.7c0-3 2.4-5.5 5.4-5.6v2.8c-1.5.1-2.7 1.3-2.7 2.8 0 1.6 1.3 2.9 2.9 2.9s2.9-1.3 2.9-2.9V3h2.7Z"></path></svg>';
+    const scIcon = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2.7c-2.9 0-4.9 2.2-4.9 5.1 0 .7 0 1.6-.05 2.2-.06.1-.2.2-.5.3-.5.2-1.2.3-1.6.4-.3.05-.5.3-.4.6.1.5.7.9 1.5 1.2-.1.3-.2.6-.15.9.1.4.5.6.9.7-.05.3-.05.6.1.9.25.5 1 .6 1.5.6.2.6.9 1.6 3.55 1.6s3.35-1 3.55-1.6c.5 0 1.25-.1 1.5-.6.15-.3.15-.6.1-.9.4-.1.8-.3.9-.7.05-.3-.05-.6-.15-.9.8-.3 1.4-.7 1.5-1.2.1-.3-.1-.55-.4-.6-.4-.1-1.1-.2-1.6-.4-.3-.1-.44-.2-.5-.3-.05-.6-.05-1.5-.05-2.2 0-2.9-2-5.1-4.9-5.1Z"></path></svg>';
     icons.innerHTML = `
       ${s.social.facebook?`<a href="${s.social.facebook}" target="_blank" aria-label="Facebook">${fbIcon}</a>`:`<span aria-label="Facebook">${fbIcon}</span>`}
       ${s.social.instagram?`<a href="${s.social.instagram}" target="_blank" aria-label="Instagram">${igIcon}</a>`:`<span aria-label="Instagram">${igIcon}</span>`}
       ${s.social.tiktok?`<a href="${s.social.tiktok}" target="_blank" aria-label="TikTok">${ttIcon}</a>`:`<span aria-label="TikTok">${ttIcon}</span>`}
+      ${s.social.snapchat?`<a href="${s.social.snapchat}" target="_blank" aria-label="Snapchat">${scIcon}</a>`:`<span aria-label="Snapchat">${scIcon}</span>`}
     `;
   }
   const banner = document.getElementById('storeOfflineBanner');
@@ -3992,6 +4455,7 @@ async function removeDataSection(section){
     banner: async()=>{ BANNER={image:null,sub:''}; BANNER_SLIDES=[]; await Promise.all([setData('aura:banner', BANNER, true), setData('aura:bannerslides', BANNER_SLIDES, true)]); renderBannerAdmin(); renderSlidesAdmin(); renderBanner(); renderSlidesBanner(); },
     shipping: async()=>{ SHIPPING=defaultShippingRates(); await setData('aura:shipping', SHIPPING, true); renderShippingAdmin(); },
     coupons: async()=>{ COUPONS=[]; await setData('aura:coupons', COUPONS, true); renderCouponsTable(); },
+    categoryimages: async()=>{ CATEGORY_IMAGES={}; await setData('aura:categoryimages', CATEGORY_IMAGES, true); renderCategoryImagesAdmin(); renderCategoryTiles(); },
     cart: async()=>{ CART=[]; await setData('aura:cart', CART, false); renderCart(); }
   };
   if(map[section]) await map[section]();
@@ -4000,7 +4464,7 @@ async function removeDataSection(section){
 async function removeAllData(){
   if(!confirmAdminPassword('Type your admin password to remove ALL data:')){ showToast('Incorrect password — cancelled'); return; }
   if(!confirm('This will permanently delete ALL store data — products, orders, returns, return requests, customers, statistics, banners, coupons and shipping. This cannot be undone. Continue?')) return;
-  for(const s of ['products','orders','returns','returnrequests','customers','stats','banner','shipping','coupons','cart']){
+  for(const s of ['products','orders','returns','returnrequests','customers','stats','banner','shipping','coupons','cart','categoryimages']){
     await removeDataSectionSilent(s);
   }
   showToast('All data removed');
@@ -4017,6 +4481,7 @@ async function removeDataSectionSilent(section){
     banner: async()=>{ BANNER={image:null,sub:''}; BANNER_SLIDES=[]; await Promise.all([setData('aura:banner', BANNER, true), setData('aura:bannerslides', BANNER_SLIDES, true)]); },
     shipping: async()=>{ SHIPPING=defaultShippingRates(); await setData('aura:shipping', SHIPPING, true); },
     coupons: async()=>{ COUPONS=[]; await setData('aura:coupons', COUPONS, true); },
+    categoryimages: async()=>{ CATEGORY_IMAGES={}; await setData('aura:categoryimages', CATEGORY_IMAGES, true); },
     cart: async()=>{ CART=[]; await setData('aura:cart', CART, false); }
   };
   if(map[section]) await map[section]();
@@ -4025,7 +4490,7 @@ async function removeDataSectionSilent(section){
 /* ================= BACKUP ================= */
 function exportBackup(){
   const backup = { exportedAt: new Date().toISOString(), products:PRODUCTS, orders:ORDERS, customers:CUSTOMERS,
-    coupons:COUPONS, notifications:NOTIFS, banner:BANNER, bannerslides:BANNER_SLIDES, stats:STATS, shipping:SHIPPING, settings:SETTINGS, sizeguides:SIZEGUIDES, returns:RETURNS };
+    coupons:COUPONS, notifications:NOTIFS, banner:BANNER, bannerslides:BANNER_SLIDES, stats:STATS, shipping:SHIPPING, settings:SETTINGS, sizeguides:SIZEGUIDES, categoryimages:CATEGORY_IMAGES, returns:RETURNS };
   const blob = new Blob([JSON.stringify(backup, null, 2)], {type:'application/json'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
@@ -4051,6 +4516,7 @@ function importBackup(e){
       if(data.shipping) { SHIPPING = data.shipping; await setData('aura:shipping', SHIPPING, true); }
       if(data.settings) { SETTINGS = data.settings; await setData('aura:settings', SETTINGS, true); }
       if(data.sizeguides) { SIZEGUIDES = data.sizeguides; await setData('aura:sizeguides', SIZEGUIDES, true); }
+      if(data.categoryimages) { CATEGORY_IMAGES = data.categoryimages; await setData('aura:categoryimages', CATEGORY_IMAGES, true); }
       if(data.returns) { RETURNS = data.returns; await setData('aura:returns', RETURNS, true); }
       showToast('Backup restored — reloading...');
       setTimeout(()=>location.reload(), 1200);
