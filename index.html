@@ -1029,7 +1029,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
     <section class="admin-section" id="sec-customers">
       <div class="admin-h1">Customers</div>
       <div class="admin-sub">All registered customers</div>
-      <div class="admin-toolbar"><div></div><button class="btn" onclick="exportCustomersExcel()">⬇ Export All Customer Data</button></div>
+      <div class="admin-toolbar"><div></div><button class="btn" onclick="exportCustomersPDF()">⬇ Export All Customer Data (PDF)</button></div>
       <div style="overflow-x:auto;">
       <table>
         <thead><tr><th>Name</th><th>Phone</th><th>Orders</th><th>Total Spent</th><th>Points</th><th>Returns</th><th>Last Login</th><th>Type</th><th>Notes</th><th></th></tr></thead>
@@ -2861,7 +2861,6 @@ function confirmOrderViaWhatsApp(order){
 function renderOrderConfirm(order){
   const box = document.getElementById('orderConfirmBody');
   const count = order.items.reduce((s,i)=>s+i.qty,0);
-  const waAvailable = !!(SETTINGS && SETTINGS.whatsapp);
   box.innerHTML = `
     <div style="width:64px; height:64px; border-radius:50%; background:var(--maroon-light); display:flex; align-items:center; justify-content:center; margin:0 auto 18px; font-size:28px; color:#fff;">✓</div>
     <h2 class="serif" style="font-size:24px; margin-bottom:8px;">${tr('thankYouComma')}, ${order.customer.split(' ')[0]}!</h2>
@@ -2873,7 +2872,6 @@ function renderOrderConfirm(order){
       <div style="font-size:12px; color:var(--muted); margin-top:4px;">${tr('deliveryTo')} ${order.governorate}</div>
     </div>
     <div style="font-size:12px; color:var(--muted); margin-bottom:18px;">${tr('saveOrderNote')}</div>
-    ${waAvailable ? `<button class="btn" style="width:100%; margin-bottom:10px;" onclick='confirmOrderViaWhatsApp(${JSON.stringify(order).replace(/'/g,"&#39;")})'>${tr('confirmViaWhatsapp')}</button>` : ''}
     <button class="btn secondary" style="width:100%; margin-bottom:10px;" onclick="trackOrderFromConfirm('${order.id}','${order.phone}')">${tr('trackThisOrder')}</button>
     <button class="btn secondary" style="width:100%;" onclick="navigateTo('home')">${tr('continueShopping')}</button>
   `;
@@ -3170,9 +3168,8 @@ async function placeOrder(){
     const order = { id: 'AUR-' + Math.floor(10000+Math.random()*89999), customer:name, phone, phone2, governorate:gov, address, items: CHECKOUT_ITEMS.map(i=>({...i})), subtotal, shipping, amount, coupon: appliedCoupon?appliedCoupon.code:null, pointsUsed, pointsEarned, status:'Pending', tracking:'', date: todayStr() };
     ORDERS.unshift(order);
 
-    // Fired here, before any `await`, so it still runs inside the original tap/click —
-    // most browsers block window.open() once control has been yielded back to the event loop.
-    confirmOrderViaWhatsApp(order);
+    // Note: WhatsApp is no longer opened automatically here — the customer can tap
+    // "Confirm via WhatsApp" themselves on the order confirmation page if they want to.
 
     let cust = CUSTOMERS.find(c=>c.phone===phone);
     if(cust){ cust.ordersCount += 1; cust.totalSpent += amount; cust.lastLogin = todayStr(); cust.points = Math.max(0,(cust.points||0) - pointsUsed) + pointsEarned; }
@@ -3856,6 +3853,21 @@ function exportCustomersExcel(){
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'Customers');
   XLSX.writeFile(wb, `customers-${todayStr()}.xlsx`);
+  showToast('Customer data exported');
+}
+/* Downloads every saved customer's full record (name, phone, orders, spend, points, dates) as a PDF file. */
+function exportCustomersPDF(){
+  if(!CUSTOMERS.length){ showToast('No customers to export'); return; }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  doc.setFontSize(14);
+  doc.text(`${(SETTINGS&&SETTINGS.name)||'AURA'} — Customers — ${todayStr()}`, 14, 16);
+  const body = CUSTOMERS.map(c=>[
+    c.name, c.phone, c.ordersCount||0, fmtMoney(c.totalSpent||0), c.points||0,
+    customerReturnsCount(c.phone), c.createdAt||'', c.lastLogin||''
+  ]);
+  doc.autoTable({ head:[['Name','Phone','Orders','Total Spent','Points','Returns','Customer Since','Last Login']], body, startY:22, styles:{fontSize:8} });
+  doc.save(`customers-${todayStr()}.pdf`);
   showToast('Customer data exported');
 }
 /* Builds the "Last Viewed / Wishlist / Cart" block for the admin's customer view — pulled from
