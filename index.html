@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ATLAS</title>
+<title>AURA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@500;600;700&family=Jost:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
@@ -17,18 +17,18 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js"></script>
 <style>
 :root{
-  --bg:#0A0A0A;
-  --bg-alt:#141210;
-  --panel:#181614;
-  --line: rgba(245,245,243,0.10);
-  --maroon:#8C6B2E;
-  --maroon-light:#C89B4A;
-  --maroon-glow: rgba(200,155,74,0.35);
-  --cream:#F5F5F3;
-  --muted:#8F8F8F;
-  --gold:var(--maroon-light); /* accent color unified to the ATLAS gold identity */
-  --danger:#c94f4f;
-  --ok:#6fae7c;
+  --bg:#0a0909;
+  --bg-alt:#141012;
+  --panel:#181315;
+  --line: rgba(236,231,222,0.10);
+  --maroon:#6e1423;
+  --maroon-light:#a13148;
+  --maroon-glow: rgba(161,49,72,0.35);
+  --cream:#ece7de;
+  --muted:#9b8b87;
+  --gold:var(--maroon-light); /* accent color unified to the logo's burgundy identity — no separate pink tone */
+  --danger:#b23a4f;
+  --ok:#cf6f86;
   --phone-w:480px;
 }
 *{box-sizing:border-box; margin:0; padding:0;}
@@ -140,37 +140,32 @@ header.site-header{position:absolute; top:14px; left:0; right:0; z-index:40; pad
 .section-sub{text-align:center; color:var(--muted); font-size:11px; letter-spacing:2px; text-transform:uppercase; margin-bottom:26px;}
 
 /* Category tiles like reference */
-.cat-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:30px;}
-.cat-tile{position:relative; aspect-ratio:1/1; overflow:hidden; background:#1c1518; border-radius:14px; border:1px solid var(--line);}
-.cat-tile img{width:100%; height:100%; object-fit:cover; filter:grayscale(.5) contrast(1.05) brightness(.85);}
-.cat-tile::after{content:''; position:absolute; inset:0; background:linear-gradient(180deg, transparent 40%, rgba(8,7,7,.92) 100%);}
-.cat-tile .cat-label{position:absolute; left:0; right:0; bottom:0; z-index:1; padding:16px 14px 14px; font-family:'Cormorant SC',serif; font-weight:600; font-size:16px; letter-spacing:2px; color:var(--cream); text-transform:uppercase; text-shadow:0 2px 10px rgba(0,0,0,.6);}
-.cat-tile .cat-label::after{content:''; display:block; width:22px; height:2px; background:var(--maroon-light); margin-top:6px; transition:width .3s ease;}
-.cat-tile:hover .cat-label::after{width:38px;}
+.cat-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px;}
+.cat-tile{position:relative; aspect-ratio:1/1; overflow:hidden; background:#1c1518;}
+.cat-tile img{width:100%; height:100%; object-fit:cover; filter:grayscale(.5) contrast(1.05) brightness(.9);}
+.cat-tile .cat-label{position:absolute; bottom:10px; left:10px; background:rgba(10,9,9,0.8); border:1px solid var(--maroon-light); color:var(--cream); padding:8px 14px; font-size:11px; letter-spacing:1.5px; text-transform:uppercase;}
 
 .cat-strip{display:flex; gap:10px; overflow-x:auto; padding-bottom:6px; margin-bottom:24px;}
 .cat-chip{flex:0 0 auto; padding:8px 16px; border:1px solid var(--line); border-radius:20px; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); white-space:nowrap;}
 .cat-chip.active,.cat-chip:hover{border-color:var(--maroon-light); color:var(--cream);}
 
 .grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
-.card{background:var(--panel); border:1px solid var(--line); border-radius:14px; position:relative; overflow:hidden; transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;}
-.card:hover{transform:translateY(-4px); border-color:var(--maroon-light); box-shadow:0 14px 30px rgba(0,0,0,.45), 0 0 0 1px var(--maroon-glow);}
+.card{background:var(--panel); border:1px solid var(--line); position:relative; overflow:hidden;}
 .card .imgwrap{position:relative; aspect-ratio:3/4; overflow:hidden; background:#1c1518;}
-.card .imgwrap img{width:100%; height:100%; object-fit:cover; filter:grayscale(.55) contrast(1.08) brightness(.92); transition:transform .5s ease;}
-.card:hover .imgwrap img{transform:scale(1.06);}
+.card .imgwrap img{width:100%; height:100%; object-fit:cover; filter:grayscale(.55) contrast(1.08) brightness(.92);}
 .card .imgwrap::after{content:''; position:absolute; inset:0; background:linear-gradient(160deg, var(--maroon-glow), transparent 55%); mix-blend-mode:screen; opacity:.5;}
-.tag{position:absolute; top:8px; left:8px; background:var(--maroon); color:#fff; font-size:10px; font-weight:600; padding:3px 7px; letter-spacing:.5px; z-index:2; border-radius:4px;}
+.tag{position:absolute; top:8px; left:8px; background:var(--maroon); color:#fff; font-size:10px; font-weight:600; padding:3px 7px; letter-spacing:.5px; z-index:2;}
 .soldout-badge{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(10,9,9,0.55); z-index:2;}
-.soldout-badge span{border:1px solid var(--cream); padding:6px 14px; font-size:10px; letter-spacing:1.5px; text-transform:uppercase; border-radius:20px;}
-.card-body{padding:14px;}
-.card-body .cat{font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold); margin-bottom:4px;}
-.card-body h3{font-family:'Cormorant SC',serif; font-weight:600; font-size:15px; margin-bottom:8px; line-height:1.3; color:var(--cream);}
-.price-row{display:flex; align-items:baseline; gap:7px; margin-bottom:12px; flex-wrap:wrap;}
+.soldout-badge span{border:1px solid var(--cream); padding:6px 14px; font-size:10px; letter-spacing:1.5px; text-transform:uppercase;}
+.card-body{padding:12px;}
+.card-body .cat{font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:3px;}
+.card-body h3{font-size:13px; font-weight:400; margin-bottom:7px; line-height:1.3;}
+.price-row{display:flex; align-items:baseline; gap:7px; margin-bottom:10px; flex-wrap:wrap;}
 .price{font-size:14px; color:var(--cream);}
 .price.discount{color:var(--maroon-light); font-weight:500;}
 .price.strike{color:var(--muted); text-decoration:line-through; font-size:12px;}
-.quick-add{width:100%; padding:10px; background:transparent; border:1px solid var(--line); border-radius:20px; color:var(--cream); font-size:10px; letter-spacing:1.5px; text-transform:uppercase; transition:.2s;}
-.quick-add:hover{background:var(--maroon-light); border-color:var(--maroon-light); color:#0A0A0A;}
+.quick-add{width:100%; padding:9px; background:transparent; border:1px solid var(--line); color:var(--cream); font-size:10px; letter-spacing:1.5px; text-transform:uppercase;}
+.quick-add:hover{background:var(--maroon-light); border-color:var(--maroon-light);}
 .quick-add:disabled{opacity:.4; cursor:not-allowed;}
 
 footer.site-footer{border-top:1px solid var(--line); margin-top:20px; padding:40px 20px 24px; text-align:center; color:var(--muted); font-size:11px;}
@@ -615,140 +610,12 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
 
 /* ---------- SHOP / GRID POLISH ---------- */
 .section-title{position:relative;}
-.quick-add{transition:background .25s ease, border-color .25s ease, transform .2s ease;}
+.quick-add{border-radius:2px; transition:background .25s ease, border-color .25s ease, transform .2s ease;}
 .card-body h3{transition:color .2s ease;}
 .card:hover .card-body h3{color:var(--maroon-light);}
-
-/* ---------- INTRO / WELCOME (first-run onboarding) ---------- */
-#introOverlay{position:fixed; inset:0; z-index:310; background:radial-gradient(circle at 50% 15%, var(--maroon-glow), transparent 55%), var(--bg); display:flex; align-items:flex-start; justify-content:center; overflow-y:auto;}
-#introOverlay.hidden{display:none;}
-.intro-stage{max-width:var(--phone-w); width:100%; margin:0 auto; padding:32px 28px; display:flex; flex-direction:column; align-items:center; text-align:center; min-height:100%;}
-.intro-slide-img{width:100%; max-width:260px; aspect-ratio:1/1; object-fit:contain; border-radius:18px; border:1px solid var(--line); background:var(--panel); margin-bottom:30px; box-shadow:0 0 40px rgba(0,0,0,.5);}
-.intro-title{font-family:'Cormorant SC',serif; font-weight:600; font-size:26px; letter-spacing:2px; color:var(--cream); margin-bottom:12px;}
-.intro-text{font-size:14px; line-height:1.75; color:var(--muted); max-width:340px; margin-bottom:30px;}
-.intro-dots{display:flex; gap:6px; margin-bottom:26px;}
-.intro-dots span{width:6px; height:6px; border-radius:50%; background:var(--line); transition:.2s;}
-.intro-dots span.active{background:var(--maroon-light); width:20px; border-radius:4px;}
-.intro-actions{display:flex; flex-direction:column; gap:12px; width:100%;}
-.intro-next-btn{width:100%; padding:15px; background:var(--maroon-light); color:#0a0909; font-weight:700; border-radius:8px; font-size:12px; letter-spacing:2px; text-transform:uppercase;}
-.intro-skip-btn{background:none; color:var(--muted); font-size:11px; letter-spacing:1.5px; text-transform:uppercase; padding:6px;}
-.intro-skip-btn:hover{color:var(--cream);}
-
-/* ---------- PROGRAM CHOOSE (Store / Academy / Camp / Private gate) ---------- */
-#programChooseOverlay{position:fixed; inset:0; z-index:300; background:radial-gradient(circle at 50% 20%, var(--maroon-glow), transparent 55%), var(--bg); display:flex; align-items:center; justify-content:center; overflow-y:auto;}
-#programChooseOverlay .pc-stage{max-width:var(--phone-w); width:100%; margin:0 auto; padding:32px 20px; text-align:center;}
-.pc-logo{font-family:'Cormorant SC',serif; font-weight:700; font-size:40px; letter-spacing:9px; color:var(--cream); margin-bottom:6px;}
-.pc-eyebrow{letter-spacing:5px; font-size:10px; color:var(--gold); text-transform:uppercase; margin-bottom:34px;}
-.pc-grid{display:flex; flex-direction:column; gap:14px;}
-.pc-tile{display:flex; align-items:center; gap:16px; border:1px solid var(--line); background:var(--panel); border-radius:14px; padding:14px; text-align:left; cursor:pointer; transition:.2s;}
-.pc-tile:hover{border-color:var(--maroon-light); background:rgba(200,155,74,0.08);}
-.pc-tile-img{width:84px; height:84px; border-radius:10px; object-fit:cover; flex-shrink:0; background:var(--bg-alt); border:1px solid var(--line);}
-.pc-tile-body{flex:1; min-width:0;}
-.pc-tile .pc-tile-title{font-family:'Cormorant SC',serif; font-size:21px; letter-spacing:3px; color:var(--cream); text-transform:uppercase;}
-.pc-tile .pc-tile-sub{font-size:11px; color:var(--muted); margin-top:3px; letter-spacing:.3px;}
-.pc-tile-icons{display:flex; gap:8px; margin-top:9px; font-size:14px;}
-.pc-tile-arrow{flex-shrink:0; width:28px; height:28px; border-radius:50%; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--gold); font-size:14px;}
-
-/* ---------- ACADEMY / PRIVATE (customer-facing) ---------- */
-.prog-topbar{position:sticky; top:0; z-index:5; display:flex; align-items:center; gap:12px; padding:14px 16px; background:rgba(20,15,17,0.9); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
-.prog-topbar button{background:none; color:var(--cream); font-size:18px;}
-.prog-topbar .prog-title{font-family:'Cormorant SC',serif; letter-spacing:3px; font-size:16px; text-transform:uppercase;}
-.prog-type-tabs{display:flex; gap:10px; padding:14px 16px;}
-.prog-type-tabs button{flex:1; padding:12px; border:1px solid var(--line); border-radius:8px; background:var(--panel); color:var(--muted); font-size:13px; letter-spacing:1.5px; text-transform:uppercase;}
-.prog-type-tabs button.active{border-color:var(--maroon-light); color:var(--cream); background:rgba(200,155,74,0.1);}
-.trainer-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; padding:0 16px 24px;}
-.trainer-card{background:var(--panel); border:1px solid var(--line); border-radius:10px; overflow:hidden; cursor:pointer;}
-.trainer-card img{width:100%; aspect-ratio:1/1; object-fit:cover; filter:grayscale(.15);}
-.trainer-card .tc-body{padding:10px;}
-.trainer-card .tc-name{font-size:13px; color:var(--cream); font-weight:500;}
-.trainer-card .tc-type{font-size:10px; color:var(--gold); letter-spacing:1px; text-transform:uppercase; margin-top:2px;}
-.trainer-card .tc-meta{display:flex; flex-wrap:wrap; gap:5px 10px; margin-top:8px; font-size:10px; color:var(--muted);}
-.trainer-card .tc-meta span{display:flex; align-items:center; gap:3px;}
-.trainer-card .tc-more{display:block; width:100%; margin-top:10px; padding:7px; text-align:center; font-size:10px; letter-spacing:1px; text-transform:uppercase; color:var(--cream); background:none; border:1px solid var(--line); border-radius:6px;}
-.trainer-card .tc-more:hover{border-color:var(--maroon-light); color:var(--maroon-light);}
-.trainer-detail-meta{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:14px;}
-.trainer-detail-meta .tdm-item{border:1px solid var(--line); border-radius:8px; padding:8px 12px; font-size:11px; color:var(--muted); text-align:center;}
-.trainer-detail-meta .tdm-item b{display:block; font-size:14px; color:var(--cream); font-weight:500; margin-top:2px;}
-.prog-empty{padding:40px 20px; text-align:center; color:var(--muted); font-size:13px;}
-.trainer-detail-hero{width:100%; aspect-ratio:4/3; object-fit:cover; filter:grayscale(.1);}
-.trainer-detail-body{padding:20px;}
-.trainer-detail-body h2{font-family:'Cormorant SC',serif; font-size:26px; letter-spacing:2px; color:var(--cream);}
-.trainer-detail-body .tc-type{display:inline-block; margin:6px 0 16px; font-size:11px; color:var(--gold); letter-spacing:1.5px; text-transform:uppercase; border:1px solid var(--maroon-light); padding:3px 10px; border-radius:20px;}
-.trainer-detail-section{margin-top:18px;}
-.trainer-detail-section h4{font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:6px;}
-.trainer-detail-section p{font-size:14px; line-height:1.7; color:var(--cream); white-space:pre-line;}
-.location-btn{display:inline-flex; align-items:center; gap:8px; margin-top:22px; width:100%; justify-content:center; padding:14px; background:var(--maroon-light); color:#0a0909; font-weight:700; border-radius:8px; font-size:13px; letter-spacing:1px; text-transform:uppercase;}
-
-/* ---------- ADMIN: trainer / private cards ---------- */
-.trainer-admin-thumb{width:52px; height:52px; border-radius:6px; object-fit:cover; flex-shrink:0;}
-.trainer-admin-thumb-empty{width:52px; height:52px; border-radius:6px; background:var(--bg-alt); border:1px dashed var(--line); flex-shrink:0;}
-.type-pill{display:inline-block; font-size:10px; letter-spacing:1px; text-transform:uppercase; padding:2px 9px; border-radius:20px; border:1px solid var(--maroon-light); color:var(--gold);}
-.private-admin-card{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px; margin-bottom:16px;}
-.private-admin-card h3{font-family:'Cormorant SC',serif; letter-spacing:2px; font-size:19px; margin-bottom:12px; color:var(--cream);}
-.private-photo-row{display:flex; align-items:center; gap:14px; margin-bottom:14px;}
 </style>
 </head>
 <body>
-
-<!-- ================= INTRO / WELCOME (first-run onboarding, admin-editable) ================= -->
-<div id="introOverlay">
-  <div class="intro-stage">
-    <img class="intro-slide-img" id="introImg" src="" alt="">
-    <h2 class="intro-title" id="introTitle"></h2>
-    <p class="intro-text" id="introText"></p>
-    <div class="intro-dots" id="introDots"></div>
-    <div class="intro-actions">
-      <button class="intro-next-btn" id="introNextBtn" onclick="introNext()">Next</button>
-      <button class="intro-skip-btn" onclick="introSkip()">Skip</button>
-    </div>
-  </div>
-</div>
-
-<!-- ================= PROGRAM CHOOSE (Store / Academy / Camp / Private gate) ================= -->
-<div id="programChooseOverlay">
-  <div class="pc-stage">
-    <div class="pc-logo">ATLAS</div>
-    <div class="pc-eyebrow">Rise Above . Be Atlas</div>
-    <div class="pc-grid">
-      <div class="pc-tile" onclick="chooseProgram('store')">
-        <img class="pc-tile-img" id="pcImgStore" src="" alt="Store">
-        <div class="pc-tile-body">
-          <div class="pc-tile-title" id="pcTitleStore">Store</div>
-          <div class="pc-tile-sub" id="pcSubStore">Shop the ATLAS collection</div>
-          <div class="pc-tile-icons">👕 👟 ⚽ 🥤</div>
-        </div>
-        <div class="pc-tile-arrow">→</div>
-      </div>
-      <div class="pc-tile" onclick="chooseProgram('academy')">
-        <img class="pc-tile-img" id="pcImgAcademy" src="" alt="Academy">
-        <div class="pc-tile-body">
-          <div class="pc-tile-title" id="pcTitleAcademy">Academy</div>
-          <div class="pc-tile-sub" id="pcSubAcademy">Handball academy training for all levels</div>
-          <div class="pc-tile-icons">👥 🏃 🥅</div>
-        </div>
-        <div class="pc-tile-arrow">→</div>
-      </div>
-      <div class="pc-tile" onclick="chooseProgram('camp')">
-        <img class="pc-tile-img" id="pcImgCamp" src="" alt="Camp">
-        <div class="pc-tile-body">
-          <div class="pc-tile-title" id="pcTitleCamp">Camp</div>
-          <div class="pc-tile-sub" id="pcSubCamp">Summer &amp; Winter camps and schedules</div>
-          <div class="pc-tile-icons">📅 ☀️ ❄️</div>
-        </div>
-        <div class="pc-tile-arrow">→</div>
-      </div>
-      <div class="pc-tile" onclick="chooseProgram('private')">
-        <img class="pc-tile-img" id="pcImgPrivate" src="" alt="Private">
-        <div class="pc-tile-body">
-          <div class="pc-tile-title" id="pcTitlePrivate">Private</div>
-          <div class="pc-tile-sub" id="pcSubPrivate">Personal training with expert coaches</div>
-          <div class="pc-tile-icons">👤 ⏱ 🏋</div>
-        </div>
-        <div class="pc-tile-arrow">→</div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- ================= STOREFRONT (phone-sized) ================= -->
 <div id="storeStage">
@@ -756,7 +623,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
   <header class="site-header">
     <div class="header-pill">
       <button class="icon-btn" onclick="openMenu()">☰</button>
-      <div class="logo" id="headerLogo">ATLAS</div>
+      <div class="logo" id="headerLogo">AURA</div>
       <div class="header-side">
         <button class="icon-btn" onclick="toggleSearch()"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
         <button class="icon-btn" onclick="openAccount()" aria-label="My Account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="3.6"></circle><path d="M4.5 20c1.4-4 4.2-6 7.5-6s6.1 2 7.5 6"></path></svg></button>
@@ -806,7 +673,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
   </div>
 
   <footer class="site-footer">
-    <div class="flogo" id="footerLogo">ATLAS</div>
+    <div class="flogo" id="footerLogo">AURA</div>
     <p data-i18n="footerBlurb">We design for those who value simplicity and individuality. Minimal silhouettes, considered fabrics, made to move with you.</p>
     <div class="foot-icons" id="footIcons">
       <span aria-label="Facebook"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V8c0-.9.2-1.5 1.5-1.5h1.7V3.7C15.9 3.6 15 3.5 14 3.5c-2.5 0-4.2 1.5-4.2 4.3v2.1H7v3.1h2.8V21h3.7Z"></path></svg></span>
@@ -814,7 +681,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
       <span aria-label="TikTok"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M16.5 3c.4 2.2 1.9 3.8 4 4.1v2.7c-1.5-.1-2.9-.6-4-1.5v6.4c0 3.1-2.5 5.6-5.6 5.6S5.3 17.8 5.3 14.7c0-3 2.4-5.5 5.4-5.6v2.8c-1.5.1-2.7 1.3-2.7 2.8 0 1.6 1.3 2.9 2.9 2.9s2.9-1.3 2.9-2.9V3h2.7Z"></path></svg></span>
       <span aria-label="Snapchat"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2.7c-2.9 0-4.9 2.2-4.9 5.1 0 .7 0 1.6-.05 2.2-.06.1-.2.2-.5.3-.5.2-1.2.3-1.6.4-.3.05-.5.3-.4.6.1.5.7.9 1.5 1.2-.1.3-.2.6-.15.9.1.4.5.6.9.7-.05.3-.05.6.1.9.25.5 1 .6 1.5.6.2.6.9 1.6 3.55 1.6s3.35-1 3.55-1.6c.5 0 1.25-.1 1.5-.6.15-.3.15-.6.1-.9.4-.1.8-.3.9-.7.05-.3-.05-.6-.15-.9.8-.3 1.4-.7 1.5-1.2.1-.3-.1-.55-.4-.6-.4-.1-1.1-.2-1.6-.4-.3-.1-.44-.2-.5-.3-.05-.6-.05-1.5-.05-2.2 0-2.9-2-5.1-4.9-5.1Z"></path></svg></span>
     </div>
-    <div>© <span id="year"></span> <span id="footerYearName">ATLAS</span>. <span data-i18n="rightsReserved">All rights reserved.</span></div>
+    <div>© <span id="year"></span> <span id="footerYearName">AURA</span>. <span data-i18n="rightsReserved">All rights reserved.</span></div>
     <div class="lang-switch" id="langSwitch">
       <button data-lang="en" onclick="setLang('en')">English</button>
       <button data-lang="ar" onclick="setLang('ar')">العربية</button>
@@ -835,7 +702,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
 <div class="overlay hidden" id="menuOverlay">
   <div class="stage">
     <div class="menu-panel">
-      <div class="menu-top"><div class="logo" id="menuLogo">ATLAS</div><button class="icon-btn" onclick="closeMenu()">✕</button></div>
+      <div class="menu-top"><div class="logo" id="menuLogo">AURA</div><button class="icon-btn" onclick="closeMenu()">✕</button></div>
       <div class="menu-links" id="menuLinks"></div>
     </div>
   </div>
@@ -847,74 +714,6 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
     <div class="product-panel">
       <div class="pp-topbar"><button onclick="closeProductModal()">←</button><span style="font-size:11px; letter-spacing:2px; color:var(--muted); text-transform:uppercase;" data-i18n="product">Product</span><span></span></div>
       <div id="ppContent"></div>
-    </div>
-  </div>
-</div>
-
-<!-- Academy: type choice + trainer grid -->
-<div class="overlay hidden" id="academyOverlay">
-  <div class="stage">
-    <div class="product-panel">
-      <div class="prog-topbar"><button onclick="closeAcademy()">←</button><span class="prog-title">Academy</span></div>
-      <div class="prog-type-tabs">
-        <button id="academyTabAcademy" onclick="setAcademyType('academy')">Academy</button>
-        <button id="academyTabCamp" onclick="setAcademyType('camp')">Camp</button>
-      </div>
-      <div class="trainer-grid" id="trainerGrid"></div>
-    </div>
-  </div>
-</div>
-
-<!-- Academy: trainer / coach detail -->
-<div class="overlay hidden" id="academyDetailOverlay">
-  <div class="stage">
-    <div class="product-panel">
-      <div class="pp-topbar"><button onclick="closeAcademyDetail()">←</button><span style="font-size:11px; letter-spacing:2px; color:var(--muted); text-transform:uppercase;">Trainer</span><span></span></div>
-      <div id="trainerDetailContent"></div>
-    </div>
-  </div>
-</div>
-
-<!-- Private: type choice + trainer grid -->
-<div class="overlay hidden" id="privateOverlay">
-  <div class="stage">
-    <div class="product-panel">
-      <div class="prog-topbar"><button onclick="closePrivate()">←</button><span class="prog-title">Private</span></div>
-      <div class="prog-type-tabs">
-        <button id="privateTabCoach" onclick="setPrivateType('coach')">Coaches</button>
-        <button id="privateTabGoalkeeper" onclick="setPrivateType('goalkeeper')">Goalkeepers</button>
-        <button id="privateTabFitness" onclick="setPrivateType('fitness')">Fitness</button>
-      </div>
-      <div class="trainer-grid" id="privateTrainerGrid"></div>
-    </div>
-  </div>
-</div>
-
-<!-- Private: trainer / coach detail -->
-<div class="overlay hidden" id="privateDetailOverlay">
-  <div class="stage">
-    <div class="product-panel">
-      <div class="pp-topbar"><button onclick="closePrivateDetail()">←</button><span style="font-size:11px; letter-spacing:2px; color:var(--muted); text-transform:uppercase;">Trainer</span><span></span></div>
-      <div id="privateDetailContent"></div>
-    </div>
-  </div>
-</div>
-
-<!-- Book a Session with a trainer (Academy/Camp/Private/Fitness) -->
-<div class="overlay hidden" id="trainerBookingOverlay">
-  <div class="stage">
-    <div class="product-panel">
-      <div class="pp-topbar"><button onclick="closeTrainerBooking()">←</button><span style="font-size:11px; letter-spacing:2px; color:var(--muted); text-transform:uppercase;">Book a Session</span><span></span></div>
-      <div class="section-wrap" style="padding-top:10px;">
-        <div id="tbTrainerName" style="font-size:15px; color:var(--cream); margin-bottom:16px;"></div>
-        <label class="ck-label">Your Name</label>
-        <input type="text" id="tbName" style="width:100%; margin:6px 0 14px;">
-        <label class="ck-label">Phone Number</label>
-        <input type="tel" id="tbPhone" placeholder="01xxxxxxxxx" style="width:100%; margin:6px 0 14px;">
-        <label class="ck-label">Note (optional)</label>
-        <textarea id="tbNote" style="width:100%; min-height:60px; margin:6px 0 14px;" placeholder="Preferred days/times, anything the trainer should know..."></textarea>
-        <button class="btn" style="width:100%;" onclick="submitTrainerBooking()">Send Booking Request</button>
-      </div>
     </div>
   </div>
 </div>
@@ -1058,11 +857,11 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
 <div id="admin" class="hidden">
   <div class="admin-mobile-bar">
     <button class="admin-hamburger" onclick="toggleAdminSidebar()" aria-label="Menu">☰</button>
-    <span class="serif">ATLAS<span style="font-size:10px; letter-spacing:2px; color:var(--muted); margin-left:8px;">Admin Panel</span></span>
+    <span class="serif">AURA<span style="font-size:10px; letter-spacing:2px; color:var(--muted); margin-left:8px;">Admin Panel</span></span>
   </div>
   <div class="admin-sidebar-backdrop" id="adminSidebarBackdrop" onclick="toggleAdminSidebar(false)"></div>
   <div class="admin-sidebar" id="adminSidebar">
-    <div class="admin-logo">ATLAS<span>Admin Panel</span></div>
+    <div class="admin-logo">AURA<span>Admin Panel</span></div>
     <div class="admin-nav" id="adminNav">
       <button data-sec="products" class="active">📦 Products</button>
       <button data-sec="banner">🖼 Banner</button>
@@ -1074,10 +873,6 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
       <button data-sec="shipping">🚚 Shipping</button>
       <button data-sec="sizeguides">📏 Size Guides</button>
       <button data-sec="categoryimages">🖼 Category Images</button>
-      <button data-sec="intro">🎬 Intro / Home Screen</button>
-      <button data-sec="academy">🏋 Academy &amp; Camp</button>
-      <button data-sec="private">📍 Private (Coaches &amp; Goalkeepers)</button>
-      <button data-sec="bookings">📅 Bookings</button>
       <button data-sec="statistics">📈 Statistics</button>
       <button data-sec="notifications">🔔 Notifications <span class="nbadge hidden" id="notifBadge">0</span></button>
       <button data-sec="reviews">⭐ Reviews <span class="nbadge hidden" id="reviewBadge">0</span></button>
@@ -1249,7 +1044,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
       <div class="admin-toolbar"><div></div><button class="btn" onclick="toggleCouponForm()">+ Create Coupon</button></div>
       <div class="form-panel" id="couponFormPanel">
         <div class="form-grid">
-          <div><label>Code</label><input id="cpCode" placeholder="e.g. ATLAS10"></div>
+          <div><label>Code</label><input id="cpCode" placeholder="e.g. AURA10"></div>
           <div><label>Discount %</label><input id="cpPercent" type="number"></div>
           <div><label>Expiry Date</label><input id="cpExpiry" type="date"></div>
           <div><label>Usage Limit</label><input id="cpLimit" type="number"></div>
@@ -1328,16 +1123,6 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
         </table>
         </div>
       </div>
-      <div style="margin-top:24px;">
-        <h4 style="font-size:13px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:10px;">Trainers</h4>
-        <div class="stat-grid" id="trainerStatsGrid"></div>
-        <div style="overflow-x:auto; margin-top:10px;">
-        <table>
-          <thead><tr><th>Trainer</th><th>Type</th><th>Bookings</th><th>Revenue</th></tr></thead>
-          <tbody id="trainerBookingsTable"></tbody>
-        </table>
-        </div>
-      </div>
     </section>
 
     <section class="admin-section" id="sec-notifications">
@@ -1370,7 +1155,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
       <div class="admin-sub">Store identity, contact info and preferences</div>
       <div class="form-panel" style="display:flex;">
         <div class="form-grid">
-          <div><label>Store Name</label><input id="stName" placeholder="ATLAS"></div>
+          <div><label>Store Name</label><input id="stName" placeholder="AURA"></div>
           <div><label>Currency Code</label><input id="stCurrency" placeholder="EGP"></div>
           <div><label>WhatsApp Number</label><input id="stWhatsapp" placeholder="e.g. 201000000000"><div style="font-size:11px; color:var(--muted); margin-top:4px;">Include country code, no + or leading 0 (e.g. 20 for Egypt). Used to receive the customer's order confirmation on WhatsApp right after checkout.</div></div>
           <div><label>Store Address</label><input id="stAddress" placeholder="Alexandria, Egypt"></div>
@@ -1467,185 +1252,6 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
       <input type="file" id="categoryImageFile" accept="image/*" class="hidden">
     </section>
 
-    <section class="admin-section" id="sec-intro">
-      <div class="admin-h1">Intro / Home Screen</div>
-      <div class="admin-sub">Control the very first screens a visitor sees: the welcome intro (image + text, "Next" through as many screens as you like) and the image + title + subtitle shown on each of the 4 Store / Academy / Camp / Private tiles. Leave a title/subtitle blank to keep the default text.</div>
-
-      <h3 style="font-family:'Cormorant SC',serif; letter-spacing:2px; font-size:18px; margin:18px 0 10px; color:var(--cream);">Tile Images &amp; Text</h3>
-      <div style="display:flex; flex-wrap:wrap; gap:20px;">
-        <div style="min-width:200px; max-width:240px;"><label style="display:block; margin-bottom:8px;">Store</label>
-          <div class="private-photo-row">
-            <img id="htPreview_store" class="trainer-admin-thumb hidden" src=""><div id="htEmpty_store" class="trainer-admin-thumb-empty"></div>
-            <button type="button" class="btn small secondary" onclick="document.getElementById('homeTileFile_store').click()">Upload</button>
-          </div>
-          <input type="file" id="homeTileFile_store" accept="image/*" class="hidden">
-          <input id="htTitle_store" placeholder="Title" style="width:100%; margin-top:8px;" onchange="saveHomeTileText('store')">
-          <input id="htSub_store" placeholder="Subtitle" style="width:100%; margin-top:6px;" onchange="saveHomeTileText('store')">
-        </div>
-        <div style="min-width:200px; max-width:240px;"><label style="display:block; margin-bottom:8px;">Academy</label>
-          <div class="private-photo-row">
-            <img id="htPreview_academy" class="trainer-admin-thumb hidden" src=""><div id="htEmpty_academy" class="trainer-admin-thumb-empty"></div>
-            <button type="button" class="btn small secondary" onclick="document.getElementById('homeTileFile_academy').click()">Upload</button>
-          </div>
-          <input type="file" id="homeTileFile_academy" accept="image/*" class="hidden">
-          <input id="htTitle_academy" placeholder="Title" style="width:100%; margin-top:8px;" onchange="saveHomeTileText('academy')">
-          <input id="htSub_academy" placeholder="Subtitle" style="width:100%; margin-top:6px;" onchange="saveHomeTileText('academy')">
-        </div>
-        <div style="min-width:200px; max-width:240px;"><label style="display:block; margin-bottom:8px;">Camp</label>
-          <div class="private-photo-row">
-            <img id="htPreview_camp" class="trainer-admin-thumb hidden" src=""><div id="htEmpty_camp" class="trainer-admin-thumb-empty"></div>
-            <button type="button" class="btn small secondary" onclick="document.getElementById('homeTileFile_camp').click()">Upload</button>
-          </div>
-          <input type="file" id="homeTileFile_camp" accept="image/*" class="hidden">
-          <input id="htTitle_camp" placeholder="Title" style="width:100%; margin-top:8px;" onchange="saveHomeTileText('camp')">
-          <input id="htSub_camp" placeholder="Subtitle" style="width:100%; margin-top:6px;" onchange="saveHomeTileText('camp')">
-        </div>
-        <div style="min-width:200px; max-width:240px;"><label style="display:block; margin-bottom:8px;">Private</label>
-          <div class="private-photo-row">
-            <img id="htPreview_private" class="trainer-admin-thumb hidden" src=""><div id="htEmpty_private" class="trainer-admin-thumb-empty"></div>
-            <button type="button" class="btn small secondary" onclick="document.getElementById('homeTileFile_private').click()">Upload</button>
-          </div>
-          <input type="file" id="homeTileFile_private" accept="image/*" class="hidden">
-          <input id="htTitle_private" placeholder="Title" style="width:100%; margin-top:8px;" onchange="saveHomeTileText('private')">
-          <input id="htSub_private" placeholder="Subtitle" style="width:100%; margin-top:6px;" onchange="saveHomeTileText('private')">
-        </div>
-      </div>
-
-      <h3 style="font-family:'Cormorant SC',serif; letter-spacing:2px; font-size:18px; margin:26px 0 10px; color:var(--cream);">Welcome / Intro Screens</h3>
-      <div class="admin-sub" style="margin-bottom:10px;">This screen shows to every visitor, every time they open the site. Use "Preview" below to see it without leaving Admin.</div>
-      <div class="admin-toolbar" style="justify-content:flex-end;">
-        <button class="btn secondary" onclick="previewIntro()">👁 Preview Intro</button>
-        <button class="btn" onclick="openIntroSlideForm()">+ Add Screen</button>
-      </div>
-      <div class="form-panel" id="introSlideFormPanel">
-        <div class="form-grid">
-          <div class="full">
-            <label>Image</label>
-            <div class="private-photo-row">
-              <img id="isfPhotoPreview" class="trainer-admin-thumb hidden" src="">
-              <div id="isfPhotoEmpty" class="trainer-admin-thumb-empty"></div>
-              <button type="button" class="btn small secondary" onclick="document.getElementById('introSlidePhotoFile').click()">Upload Photo</button>
-            </div>
-            <input type="file" id="introSlidePhotoFile" accept="image/*" class="hidden">
-          </div>
-          <div class="full"><label>Title</label><input id="isfTitle" placeholder="e.g. Welcome to ATLAS"></div>
-          <div class="full"><label>Text</label><textarea id="isfText" style="width:100%; min-height:70px;" placeholder="What you want visitors to read on this screen..."></textarea></div>
-        </div>
-        <div class="form-actions">
-          <button class="btn" onclick="saveIntroSlide()">Save Screen</button>
-          <button class="btn secondary" onclick="closeIntroSlideForm()">Cancel</button>
-        </div>
-      </div>
-      <div style="overflow-x:auto;">
-      <table>
-        <thead><tr><th>Image</th><th>Title</th><th>Text</th><th></th></tr></thead>
-        <tbody id="introSlidesTable"></tbody>
-      </table>
-      </div>
-    </section>
-
-    <section class="admin-section" id="sec-academy">
-      <div class="admin-h1">Academy &amp; Camp</div>
-      <div class="admin-sub">Add a trainer/coach — mark each one Academy or Camp so the app shows them under the right tab, with their own photo, bio, session details, and a location link</div>
-      <div class="admin-toolbar" style="justify-content:flex-end;">
-        <button class="btn" onclick="openTrainerForm()">+ Add Trainer</button>
-      </div>
-      <div class="form-panel" id="trainerFormPanel">
-        <div class="form-grid">
-          <div><label>Name</label><input id="tfName"></div>
-          <div><label>Type</label>
-            <select id="tfType"><option value="academy">Academy</option><option value="camp">Camp</option></select>
-          </div>
-          <div class="full">
-            <label>Photo</label>
-            <div class="private-photo-row">
-              <img id="tfPhotoPreview" class="trainer-admin-thumb hidden" src="">
-              <div id="tfPhotoEmpty" class="trainer-admin-thumb-empty"></div>
-              <button type="button" class="btn small secondary" onclick="document.getElementById('trainerPhotoFile').click()">Upload Photo</button>
-            </div>
-            <input type="file" id="trainerPhotoFile" accept="image/*" class="hidden">
-          </div>
-          <div><label>Price</label><input id="tfPrice" placeholder="e.g. 500 EGP"></div>
-          <div><label>Sessions</label><input id="tfSessions" placeholder="e.g. 8 sessions / month"></div>
-          <div><label>Years of Experience</label><input id="tfYears" placeholder="e.g. 5"></div>
-          <div class="full"><label>Bio / Details</label><textarea id="tfBio" style="width:100%; min-height:60px;" placeholder="Coaching background, specialty, achievements..."></textarea></div>
-          <div class="full"><label>Session Details</label><textarea id="tfSession" style="width:100%; min-height:60px;" placeholder="Days, times, duration, age group..."></textarea></div>
-          <div class="full"><label>Location Link (optional)</label><input id="tfLocation" placeholder="https://maps.google.com/..."></div>
-          <div><label>Trainer's WhatsApp Number</label><input id="tfWhatsapp" placeholder="e.g. 201000000000"></div>
-        </div>
-        <div class="form-actions">
-          <button class="btn" onclick="saveTrainer()">Save Trainer</button>
-          <button class="btn secondary" onclick="closeTrainerForm()">Cancel</button>
-        </div>
-      </div>
-      <div style="overflow-x:auto;">
-      <table>
-        <thead><tr><th>Photo</th><th>Name</th><th>Type</th><th>Bookings</th><th></th></tr></thead>
-        <tbody id="trainersTable"></tbody>
-      </table>
-      </div>
-    </section>
-
-    <section class="admin-section" id="sec-private">
-      <div class="admin-h1">Private (Coaches, Goalkeepers &amp; Fitness)</div>
-      <div class="admin-sub">Add a coach, goalkeeper, or fitness trainer with their photo and package details. There's no price field — pricing is handled by the trainer directly on WhatsApp. "Book Now" sends their booking straight to the trainer's WhatsApp number.</div>
-      <div class="admin-toolbar" style="justify-content:flex-end;">
-        <button class="btn" onclick="openPrivateTrainerForm()">+ Add Trainer</button>
-      </div>
-      <div class="form-panel" id="privateTrainerFormPanel">
-        <div class="form-grid">
-          <div><label>Name</label><input id="ptfName"></div>
-          <div><label>Type</label>
-            <select id="ptfType"><option value="coach">Coach</option><option value="goalkeeper">Goalkeeper</option><option value="fitness">Fitness</option></select>
-          </div>
-          <div class="full">
-            <label>Photo</label>
-            <div class="private-photo-row">
-              <img id="ptfPhotoPreview" class="trainer-admin-thumb hidden" src="">
-              <div id="ptfPhotoEmpty" class="trainer-admin-thumb-empty"></div>
-              <button type="button" class="btn small secondary" onclick="document.getElementById('privateTrainerPhotoFile').click()">Upload Photo</button>
-            </div>
-            <input type="file" id="privateTrainerPhotoFile" accept="image/*" class="hidden">
-          </div>
-          <div><label>Sessions</label><input id="ptfSessions" placeholder="e.g. 8 sessions / month"></div>
-          <div><label>Years of Experience</label><input id="ptfYears" placeholder="e.g. 5"></div>
-          <div class="full"><label>Bio / Details</label><textarea id="ptfBio" style="width:100%; min-height:60px;" placeholder="Coaching background, specialty, achievements..."></textarea></div>
-          <div class="full"><label>Session Details / Package</label><textarea id="ptfSession" style="width:100%; min-height:60px;" placeholder="Everything the customer should know except price — days, times, duration, what's included..."></textarea></div>
-          <div class="full"><label>Location Link (optional)</label><input id="ptfLocation" placeholder="https://maps.google.com/..."></div>
-          <div><label>Trainer's WhatsApp Number</label><input id="ptfWhatsapp" placeholder="e.g. 201000000000"><div style="font-size:11px; color:var(--muted); margin-top:4px;">Include country code, no + or leading 0. "Book Now" opens a WhatsApp chat directly to this number.</div></div>
-        </div>
-        <div class="form-actions">
-          <button class="btn" onclick="savePrivateTrainer()">Save Trainer</button>
-          <button class="btn secondary" onclick="closePrivateTrainerForm()">Cancel</button>
-        </div>
-      </div>
-      <div style="overflow-x:auto;">
-      <table>
-        <thead><tr><th>Photo</th><th>Name</th><th>Type</th><th>WhatsApp</th><th></th></tr></thead>
-        <tbody id="privateTrainersTable"></tbody>
-      </table>
-      </div>
-    </section>
-
-    <section class="admin-section" id="sec-bookings">
-      <div class="admin-h1">Bookings</div>
-      <div class="admin-sub">Every session request sent from a trainer's page — Academy &amp; Camp bookings. Message a customer directly on WhatsApp with one tap.</div>
-      <div class="admin-toolbar">
-        <select id="bkFilterType" onchange="renderBookingsAdminTable()">
-          <option value="all">All Types</option>
-          <option value="academy">Academy</option>
-          <option value="camp">Camp</option>
-        </select>
-        <div></div>
-      </div>
-      <div style="overflow-x:auto;">
-      <table>
-        <thead><tr><th>Date</th><th>Trainer</th><th>Type</th><th>Customer</th><th>Phone</th><th>Note</th><th>Price</th><th></th></tr></thead>
-        <tbody id="bookingsAdminTable"></tbody>
-      </table>
-      </div>
-    </section>
-
     <section class="admin-section" id="sec-wablast">
       <div class="admin-h1">WhatsApp Blast</div>
       <div class="admin-sub">Write one message and send it to your saved customers on WhatsApp. Each send opens a WhatsApp chat pre-filled with your message — WhatsApp doesn't allow a website to auto-send in bulk, so you tap "Send" once per customer (or use "Send Next" to move through the list quickly).</div>
@@ -1721,14 +1327,14 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
       through getData()/setData(), so no other code needs to change.
 ================================================================ */
 const firebaseConfig = {
-  apiKey: "AIzaSyA0_5ZhPA2E_RlVkcv0hvEJ3LbuqcndsoM",
-  authDomain: "hawk-store-7aef0.firebaseapp.com",
-  databaseURL: "https://hawk-store-7aef0-default-rtdb.firebaseio.com",
-  projectId: "hawk-store-7aef0",
-  storageBucket: "hawk-store-7aef0.firebasestorage.app",
-  messagingSenderId: "978737443507",
-  appId: "1:978737443507:web:00278b6e8104358e1376c6",
-  measurementId: "G-9JW03GVNLZ"
+  apiKey: "AIzaSyDngwRMSubkkdsCU20dQy0VnSY8k9EZKeU",
+  authDomain: "aaaa-9cf0b.firebaseapp.com",
+  databaseURL: "https://aaaa-9cf0b-default-rtdb.firebaseio.com",
+  projectId: "aaaa-9cf0b",
+  storageBucket: "aaaa-9cf0b.firebasestorage.app",
+  messagingSenderId: "575026085821",
+  appId: "1:575026085821:web:59325024ed8e97bbbadcd4",
+  measurementId: "G-24Y9N0EYHJ"
 };
 
 /* ================= PUSH NOTIFICATIONS (FCM) =================
@@ -1779,10 +1385,10 @@ function withTimeout(promise, ms, fallback){
    fallback case each device still gets its own private bucket. */
 function getDeviceFallbackId(){
   try{
-    let id = localStorage.getItem('atlascache:deviceId');
+    let id = localStorage.getItem('auracache:deviceId');
     if(!id){
       id = 'device-' + Math.random().toString(36).slice(2) + Date.now().toString(36);
-      localStorage.setItem('atlascache:deviceId', id);
+      localStorage.setItem('auracache:deviceId', id);
     }
     return id;
   }catch(e){
@@ -1804,18 +1410,18 @@ function ensureAuth(){
 }
 
 /* ================= LOCAL CACHE MIRROR =================
-   Every Firestore read/write also mirrors to localStorage under an "atlascache:" prefix.
+   Every Firestore read/write also mirrors to localStorage under an "auracache:" prefix.
    This is what lets init() paint the store instantly from last-known data instead of
    sitting on a blank screen while it waits for the network — see syncFromFirestore(). */
 function cacheGet(key, def){
   try{
-    const raw = localStorage.getItem('atlascache:'+key);
+    const raw = localStorage.getItem('auracache:'+key);
     if(raw==null) return def;
     return JSON.parse(raw);
   }catch(e){ return def; }
 }
 function cacheSet(key, val){
-  try{ localStorage.setItem('atlascache:'+key, JSON.stringify(val)); }
+  try{ localStorage.setItem('auracache:'+key, JSON.stringify(val)); }
   catch(e){ /* storage full/unavailable — Firestore stays the source of truth either way */ }
 }
 
@@ -1862,7 +1468,7 @@ async function setData(key, val, shared){
 function attachRealtimeListeners(){
   if(!fbReady) return;
 
-  fbDb.collection('store').doc('atlas:products').onSnapshot(snap=>{
+  fbDb.collection('store').doc('aura:products').onSnapshot(snap=>{
     if(!snap.exists) return;
     PRODUCTS = snap.data().value || [];
     renderMenu(); renderCategoryTiles(); renderProducts(); renderBestSellers();
@@ -1896,7 +1502,7 @@ function attachRealtimeListeners(){
     if(typeof renderProductsTable === 'function') renderProductsTable();
   });
 
-  fbDb.collection('store').doc('atlas:orders').onSnapshot(snap=>{
+  fbDb.collection('store').doc('aura:orders').onSnapshot(snap=>{
     if(!snap.exists) return;
     const incoming = snap.data().value || [];
     const isNewOrder = ORDERS.length && incoming.length > ORDERS.length && incoming[0].id !== ORDERS[0]?.id;
@@ -1906,11 +1512,11 @@ function attachRealtimeListeners(){
     if(isNewOrder){ notifyNewOrder(incoming[0]); }
   });
 
-  fbDb.collection('store').doc('atlas:customers').onSnapshot(snap=>{ if(snap.exists){ CUSTOMERS = snap.data().value || []; if(typeof renderCustomersTable==='function') renderCustomersTable(); } });
-  fbDb.collection('store').doc('atlas:coupons').onSnapshot(snap=>{ if(snap.exists){ COUPONS = snap.data().value || []; if(typeof renderCouponsTable==='function') renderCouponsTable(); } });
-  fbDb.collection('store').doc('atlas:shipping').onSnapshot(snap=>{ if(snap.exists){ SHIPPING = snap.data().value || SHIPPING; } });
-  fbDb.collection('store').doc('atlas:returns').onSnapshot(snap=>{ if(snap.exists){ RETURNS = snap.data().value || []; if(typeof renderReturnsAdmin==='function' && document.getElementById('sec-returns')) renderReturnsAdmin(); if(typeof renderStatistics==='function' && document.getElementById('sec-statistics')) renderStatistics(); } });
-  fbDb.collection('store').doc('atlas:returnrequests').onSnapshot(snap=>{
+  fbDb.collection('store').doc('aura:customers').onSnapshot(snap=>{ if(snap.exists){ CUSTOMERS = snap.data().value || []; if(typeof renderCustomersTable==='function') renderCustomersTable(); } });
+  fbDb.collection('store').doc('aura:coupons').onSnapshot(snap=>{ if(snap.exists){ COUPONS = snap.data().value || []; if(typeof renderCouponsTable==='function') renderCouponsTable(); } });
+  fbDb.collection('store').doc('aura:shipping').onSnapshot(snap=>{ if(snap.exists){ SHIPPING = snap.data().value || SHIPPING; } });
+  fbDb.collection('store').doc('aura:returns').onSnapshot(snap=>{ if(snap.exists){ RETURNS = snap.data().value || []; if(typeof renderReturnsAdmin==='function' && document.getElementById('sec-returns')) renderReturnsAdmin(); if(typeof renderStatistics==='function' && document.getElementById('sec-statistics')) renderStatistics(); } });
+  fbDb.collection('store').doc('aura:returnrequests').onSnapshot(snap=>{
     if(!snap.exists) return;
     const incoming = snap.data().value || [];
     const isNewRequest = RETURN_REQUESTS.length && incoming.length > RETURN_REQUESTS.length && incoming[0].id !== RETURN_REQUESTS[0]?.id;
@@ -1918,18 +1524,18 @@ function attachRealtimeListeners(){
     if(typeof renderReturnRequestsAdmin==='function' && document.getElementById('sec-returnrequests')) renderReturnRequestsAdmin();
     if(isNewRequest && ADMIN_LOGGED_IN){ notifyNewActivity(`New return request for order ${incoming[0].orderId}`); }
   });
-  fbDb.collection('store').doc('atlas:banner').onSnapshot(snap=>{ if(snap.exists){ BANNER = snap.data().value; renderBanner(); } });
-  fbDb.collection('store').doc('atlas:bannerslides').onSnapshot(snap=>{ if(snap.exists){ BANNER_SLIDES = snap.data().value || []; renderSlidesBanner(); if(typeof renderSlidesAdmin==='function' && document.getElementById('sec-banner')) renderSlidesAdmin(); } });
-  fbDb.collection('store').doc('atlas:stats').onSnapshot(snap=>{ if(snap.exists){ STATS = snap.data().value || STATS; } });
-  fbDb.collection('store').doc('atlas:settings').onSnapshot(snap=>{ if(snap.exists){ SETTINGS = snap.data().value; applySettingsToStorefront(); } });
-  fbDb.collection('store').doc('atlas:sizeguides').onSnapshot(snap=>{
+  fbDb.collection('store').doc('aura:banner').onSnapshot(snap=>{ if(snap.exists){ BANNER = snap.data().value; renderBanner(); } });
+  fbDb.collection('store').doc('aura:bannerslides').onSnapshot(snap=>{ if(snap.exists){ BANNER_SLIDES = snap.data().value || []; renderSlidesBanner(); if(typeof renderSlidesAdmin==='function' && document.getElementById('sec-banner')) renderSlidesAdmin(); } });
+  fbDb.collection('store').doc('aura:stats').onSnapshot(snap=>{ if(snap.exists){ STATS = snap.data().value || STATS; } });
+  fbDb.collection('store').doc('aura:settings').onSnapshot(snap=>{ if(snap.exists){ SETTINGS = snap.data().value; applySettingsToStorefront(); } });
+  fbDb.collection('store').doc('aura:sizeguides').onSnapshot(snap=>{
     if(!snap.exists) return;
     SIZEGUIDES = snap.data().value || {};
     if(typeof renderSizeGuidesAdmin==='function' && document.getElementById('sec-sizeguides')) renderSizeGuidesAdmin();
     if(currentProduct) renderProductPage();
   });
 
-  fbDb.collection('store').doc('atlas:notifications').onSnapshot(snap=>{
+  fbDb.collection('store').doc('aura:notifications').onSnapshot(snap=>{
     if(!snap.exists) return;
     const incoming = snap.data().value || [];
     const isNew = NOTIFS.length && incoming.length > NOTIFS.length && incoming[0].id !== NOTIFS[0]?.id;
@@ -1944,7 +1550,7 @@ function notifyNewActivity(message){
   showToast(message);
   playPingSound();
   if(typeof Notification !== 'undefined' && Notification.permission === 'granted'){
-    try{ new Notification('ATLAS Store', { body: message }); }catch(e){}
+    try{ new Notification('AURA Store', { body: message }); }catch(e){}
   }
 }
 /* Persistent top-of-screen card for new orders, like a Shopify order notification */
@@ -1953,7 +1559,7 @@ function notifyNewOrder(order){
   showOrderAlert(`${order.id} — ${order.customer||'Customer'} — ${fmtMoney(order.amount||0)}`, order);
   playPingSound();
   if(typeof Notification !== 'undefined' && Notification.permission === 'granted'){
-    try{ new Notification('ATLAS Store — New Order', { body: `${order.id} · ${fmtMoney(order.amount||0)}` }); }catch(e){}
+    try{ new Notification('AURA Store — New Order', { body: `${order.id} · ${fmtMoney(order.amount||0)}` }); }catch(e){}
   }
 }
 function showOrderAlert(msg, order){
@@ -2030,10 +1636,10 @@ async function registerPushToken(){
     const reg = await navigator.serviceWorker.register('firebase-messaging-sw.js');
     const token = await fbMessaging.getToken({ vapidKey: FCM_VAPID_KEY, serviceWorkerRegistration: reg });
     if(!token) return;
-    const existing = await getData('atlas:pushtokens', [], true);
+    const existing = await getData('aura:pushtokens', [], true);
     if(!existing.includes(token)){
       existing.push(token);
-      await setData('atlas:pushtokens', existing, true);
+      await setData('aura:pushtokens', existing, true);
     }
   }catch(e){ console.error('Push token registration failed', e); }
 }
@@ -2049,13 +1655,6 @@ if(fbMessaging){
 
 /* ================= STATE ================= */
 let PRODUCTS=[], ORDERS=[], CUSTOMERS=[], COUPONS=[], STATS=null, NOTIFS=[], BANNER=null, CART=[], SHIPPING={}, WISHLIST=[], RETURNS=[], RETURN_REQUESTS=[], BANNER_SLIDES=[];
-let ACADEMY=[]; // [{id, name, type:'academy'|'camp', photo, bio, session, location, whatsapp}] — trainers/coaches managed from the admin Academy section
-let PRIVATE_TRAINERS=[]; // [{id, name, type:'coach'|'goalkeeper', photo, sessions, years, bio, session, location, whatsapp}] — trainers managed from the admin Private section. No price/portal — contact goes straight to WhatsApp.
-let INTRO_SLIDES=[]; // [{id, image, title, text}] — the first-run onboarding screens shown before the Store/Academy/Camp/Private menu, editable from Admin > Intro / Home Screen
-let HOME_TILES={}; // {store, academy, camp, private: image; storeTitle/storeSub, academyTitle/academySub, campTitle/campSub, privateTitle/privateSub: optional custom text} — the image + text shown on each of the 4 tiles on the Store/Academy/Camp/Private gate page
-let introIdx=0;
-let TRAINER_BOOKINGS=[]; // [{id, trainerId, trainerKind:'academy'|'camp'|'private'|'fitness', trainerName, name, phone, note, price, createdAt}] — session requests visitors send to a trainer
-let editingTrainerId=null, editingPrivateTrainerId=null, editingIntroSlideId=null, currentAcademyType='academy', currentPrivateType='coach';
 let SETTINGS=null, ADMIN_LOGGED_IN=false;
 let SIZEGUIDES={}; // { [categoryName]: imageDataUrl } — set per-category from the admin panel
 let CATEGORY_IMAGES={}; // { [categoryName]: imageDataUrl } — set per-category from the admin panel, shown on the "Shop by Category" tiles
@@ -2063,7 +1662,7 @@ let MY_PROFILE=null; // {name, phone} — this device/browser's identified custo
 let MY_LAST_VIEWED=null; // productId of the last product this device looked at
 let appliedPointsRedeem=null; // {points, percent} — the loyalty-points tier currently applied at checkout (mutually exclusive with a coupon)
 function defaultSettings(){
-  return { name:'ATLAS', currency:'EGP', whatsapp:'', address:'Alexandria, Egypt', logo:null,
+  return { name:'AURA', currency:'EGP', whatsapp:'', address:'Alexandria, Egypt', logo:null,
     social:{instagram:'',facebook:'',tiktok:'',snapchat:''}, active:true, password:'123', lastLogin:null,
     ribbon:'FREE SHIPPING FOR LIMITED TIME · BUY 2 GET 10% OFF',
     loyalty:{ pointsPerOrder:10, tiers:[{points:100,percent:5},{points:250,percent:10},{points:500,percent:20}] } };
@@ -2180,7 +1779,7 @@ function seedProducts(){
    before drawing anything at all. Now the store can render the moment local data is
    painted, and Firestore quietly catches the screen up a moment later if anything's different. */
 /* ================= I18N ================= */
-let LANG = cacheGet('atlas:lang', 'en');
+let LANG = cacheGet('aura:lang', 'en');
 const I18N = {
   en:{
     searchPlaceholder:'Search products...', shopNow:'Shopping Now',
@@ -2281,43 +1880,34 @@ function applyI18n(){
   if(typeof renderWishlist==='function' && !document.getElementById('wishlistOverlay').classList.contains('hidden')) renderWishlist();
   if(typeof renderProductPage==='function' && currentProduct) renderProductPage();
   if(typeof renderReturnExchangedStat==='function' && !document.getElementById('returnOverlay').classList.contains('hidden')) renderReturnExchangedStat();
-  if(typeof renderAcademyList==='function' && document.getElementById('academyOverlay') && !document.getElementById('academyOverlay').classList.contains('hidden')) renderAcademyList();
-  if(typeof renderTrainerDetail==='function' && document.getElementById('academyDetailOverlay') && !document.getElementById('academyDetailOverlay').classList.contains('hidden') && window._currentTrainerDetail) renderTrainerDetail(window._currentTrainerDetail);
-  if(typeof renderPrivateList==='function' && document.getElementById('privateOverlay') && !document.getElementById('privateOverlay').classList.contains('hidden')) renderPrivateList();
-  if(typeof renderTrainerDetail==='function' && document.getElementById('privateDetailOverlay') && !document.getElementById('privateDetailOverlay').classList.contains('hidden') && window._currentPrivateTrainerDetail) renderTrainerDetail(window._currentPrivateTrainerDetail, 'privateDetailContent');
 }
 function setLang(lang){
   LANG = lang;
-  cacheSet('atlas:lang', lang);
+  cacheSet('aura:lang', lang);
   applyI18n();
 }
 
 async function init(){
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  PRODUCTS = cacheGet('atlas:products', null) || seedProducts();
-  ORDERS = cacheGet('atlas:orders', []);
-  CUSTOMERS = cacheGet('atlas:customers', []);
-  COUPONS = cacheGet('atlas:coupons', []);
-  NOTIFS = cacheGet('atlas:notifications', []);
-  BANNER = cacheGet('atlas:banner', {image:null, sub:'Minimal streetwear for those who move differently.'});
-  STATS = cacheGet('atlas:stats', {visitorsByDay:{}, salesByDay:{}, ordersByDay:{}});
-  CART = cacheGet('atlas:cart', []);
-  WISHLIST = cacheGet('atlas:wishlist', []);
-  SHIPPING = cacheGet('atlas:shipping', defaultShippingRates());
-  SETTINGS = cacheGet('atlas:settings', null) || defaultSettings();
-  SIZEGUIDES = cacheGet('atlas:sizeguides', {});
-  RETURNS = cacheGet('atlas:returns', []);
-  RETURN_REQUESTS = cacheGet('atlas:returnrequests', []);
-  BANNER_SLIDES = cacheGet('atlas:bannerslides', []);
-  CATEGORY_IMAGES = cacheGet('atlas:categoryimages', {});
-  MY_PROFILE = cacheGet('atlas:myprofile', null);
-  MY_LAST_VIEWED = cacheGet('atlas:lastviewed', null);
-  ACADEMY = cacheGet('atlas:academy', []);
-  PRIVATE_TRAINERS = cacheGet('atlas:privatetrainers', []);
-  TRAINER_BOOKINGS = cacheGet('atlas:trainerbookings', []);
-  INTRO_SLIDES = cacheGet('atlas:introslides', []);
-  HOME_TILES = cacheGet('atlas:hometiles', {});
+  PRODUCTS = cacheGet('aura:products', null) || seedProducts();
+  ORDERS = cacheGet('aura:orders', []);
+  CUSTOMERS = cacheGet('aura:customers', []);
+  COUPONS = cacheGet('aura:coupons', []);
+  NOTIFS = cacheGet('aura:notifications', []);
+  BANNER = cacheGet('aura:banner', {image:null, sub:'Minimal streetwear for those who move differently.'});
+  STATS = cacheGet('aura:stats', {visitorsByDay:{}, salesByDay:{}, ordersByDay:{}});
+  CART = cacheGet('aura:cart', []);
+  WISHLIST = cacheGet('aura:wishlist', []);
+  SHIPPING = cacheGet('aura:shipping', defaultShippingRates());
+  SETTINGS = cacheGet('aura:settings', null) || defaultSettings();
+  SIZEGUIDES = cacheGet('aura:sizeguides', {});
+  RETURNS = cacheGet('aura:returns', []);
+  RETURN_REQUESTS = cacheGet('aura:returnrequests', []);
+  BANNER_SLIDES = cacheGet('aura:bannerslides', []);
+  CATEGORY_IMAGES = cacheGet('aura:categoryimages', {});
+  MY_PROFILE = cacheGet('aura:myprofile', null);
+  MY_LAST_VIEWED = cacheGet('aura:lastviewed', null);
 
   renderMenu();
   renderBanner();
@@ -2329,8 +1919,6 @@ async function init(){
   renderWishlistBadge();
   applySettingsToStorefront();
   applyI18n();
-  renderHomeTiles();
-  initIntro();
 
   document.getElementById('searchInput').addEventListener('input', onSearchInput);
   document.getElementById('cartBtn').addEventListener('click', openCart);
@@ -2340,13 +1928,6 @@ async function init(){
   document.getElementById('sizeGuideFile').addEventListener('change', onSizeGuideFileChange);
   document.getElementById('categoryImageFile').addEventListener('change', onCategoryImageFileChange);
   document.getElementById('stLogoFile').addEventListener('change', onStLogoFileChange);
-  document.getElementById('trainerPhotoFile').addEventListener('change', onTrainerFileChange);
-  document.getElementById('privateTrainerPhotoFile').addEventListener('change', onPrivateTrainerFileChange);
-  document.getElementById('introSlidePhotoFile').addEventListener('change', onIntroSlideFileChange);
-  ['store','academy','camp','private'].forEach(k=>{
-    const el = document.getElementById('homeTileFile_'+k);
-    if(el) el.addEventListener('change', (e)=> onHomeTileFileChange(e, k));
-  });
   document.querySelectorAll('#adminNav button').forEach(btn=>{
     btn.addEventListener('click', ()=> switchAdminSection(btn.dataset.sec));
   });
@@ -2359,30 +1940,25 @@ async function init(){
 
 async function syncFromFirestore(){
   if(!fbReady){ return; }
-  const [products, orders, customers, coupons, notifs, banner, bannerslides, stats, cart, wishlist, shipping, settings, sizeguides, returns, returnrequests, categoryimages, myprofile, lastviewed, academy, privatetrainers, trainerbookings, introslides, hometiles] = await Promise.all([
-    getData('atlas:products', null, true),
-    getData('atlas:orders', [], true),
-    getData('atlas:customers', [], true),
-    getData('atlas:coupons', [], true),
-    getData('atlas:notifications', [], true),
-    getData('atlas:banner', {image:null, sub:'Minimal streetwear for those who move differently.'}, true),
-    getData('atlas:bannerslides', [], true),
-    getData('atlas:stats', {visitorsByDay:{}, salesByDay:{}, ordersByDay:{}}, true),
-    getData('atlas:cart', [], false),
-    getData('atlas:wishlist', [], false),
-    getData('atlas:shipping', defaultShippingRates(), true),
-    getData('atlas:settings', null, true),
-    getData('atlas:sizeguides', {}, true),
-    getData('atlas:returns', [], true),
-    getData('atlas:returnrequests', [], true),
-    getData('atlas:categoryimages', {}, true),
-    getData('atlas:myprofile', null, false),
-    getData('atlas:lastviewed', null, false),
-    getData('atlas:academy', [], true),
-    getData('atlas:privatetrainers', [], true),
-    getData('atlas:trainerbookings', [], true),
-    getData('atlas:introslides', [], true),
-    getData('atlas:hometiles', {}, true),
+  const [products, orders, customers, coupons, notifs, banner, bannerslides, stats, cart, wishlist, shipping, settings, sizeguides, returns, returnrequests, categoryimages, myprofile, lastviewed] = await Promise.all([
+    getData('aura:products', null, true),
+    getData('aura:orders', [], true),
+    getData('aura:customers', [], true),
+    getData('aura:coupons', [], true),
+    getData('aura:notifications', [], true),
+    getData('aura:banner', {image:null, sub:'Minimal streetwear for those who move differently.'}, true),
+    getData('aura:bannerslides', [], true),
+    getData('aura:stats', {visitorsByDay:{}, salesByDay:{}, ordersByDay:{}}, true),
+    getData('aura:cart', [], false),
+    getData('aura:wishlist', [], false),
+    getData('aura:shipping', defaultShippingRates(), true),
+    getData('aura:settings', null, true),
+    getData('aura:sizeguides', {}, true),
+    getData('aura:returns', [], true),
+    getData('aura:returnrequests', [], true),
+    getData('aura:categoryimages', {}, true),
+    getData('aura:myprofile', null, false),
+    getData('aura:lastviewed', null, false),
   ]);
 
   const prevProductsJSON = JSON.stringify(PRODUCTS);
@@ -2391,53 +1967,21 @@ async function syncFromFirestore(){
   const prevSettingsJSON = JSON.stringify(SETTINGS);
 
   PRODUCTS = products || seedProducts();
-  if(!products){ await setData('atlas:products', PRODUCTS, true); }
+  if(!products){ await setData('aura:products', PRODUCTS, true); }
   ORDERS = orders; CUSTOMERS = customers; COUPONS = coupons; NOTIFS = notifs;
   BANNER = banner; BANNER_SLIDES = bannerslides; STATS = stats; CART = cart; WISHLIST = wishlist; SHIPPING = shipping;
   SETTINGS = settings || defaultSettings();
-  if(!settings){ await setData('atlas:settings', SETTINGS, true); }
+  if(!settings){ await setData('aura:settings', SETTINGS, true); }
   SIZEGUIDES = sizeguides;
   RETURNS = returns;
   RETURN_REQUESTS = returnrequests;
   CATEGORY_IMAGES = categoryimages || {};
   MY_PROFILE = myprofile || MY_PROFILE;
   MY_LAST_VIEWED = lastviewed || MY_LAST_VIEWED;
-  const prevAcademyJSON = JSON.stringify(ACADEMY);
-  const prevPrivateJSON = JSON.stringify(PRIVATE_TRAINERS);
-  ACADEMY = academy || [];
-  PRIVATE_TRAINERS = privatetrainers || [];
-  const prevBookingsJSON = JSON.stringify(TRAINER_BOOKINGS);
-  TRAINER_BOOKINGS = trainerbookings || [];
-  const prevIntroJSON = JSON.stringify(INTRO_SLIDES);
-  INTRO_SLIDES = introslides || [];
-  if(JSON.stringify(INTRO_SLIDES) !== prevIntroJSON){
-    if(document.getElementById('introOverlay') && !document.getElementById('introOverlay').classList.contains('hidden')) renderIntro();
-    if(document.getElementById('sec-intro')) renderIntroSlidesAdmin();
-  }
-  const prevTilesJSON = JSON.stringify(HOME_TILES);
-  HOME_TILES = hometiles || {};
-  if(JSON.stringify(HOME_TILES) !== prevTilesJSON){
-    renderHomeTiles();
-    if(document.getElementById('sec-intro')) renderHomeTilesAdmin();
-  }
-  if(JSON.stringify(ACADEMY) !== prevAcademyJSON){
-    if(document.getElementById('academyOverlay') && !document.getElementById('academyOverlay').classList.contains('hidden')) renderAcademyList();
-    if(document.getElementById('sec-academy')) renderAcademyAdminTable();
-  }
-  if(JSON.stringify(PRIVATE_TRAINERS) !== prevPrivateJSON){
-    if(document.getElementById('privateOverlay') && !document.getElementById('privateOverlay').classList.contains('hidden')) renderPrivateList();
-    if(document.getElementById('sec-private')) renderPrivateAdminTable();
-  }
-  if(JSON.stringify(TRAINER_BOOKINGS) !== prevBookingsJSON){
-    if(document.getElementById('sec-academy')) renderAcademyAdminTable();
-    if(document.getElementById('sec-private')) renderPrivateAdminTable();
-    if(document.getElementById('sec-bookings')) renderBookingsAdminTable();
-    if(document.getElementById('sec-statistics') && document.getElementById('sec-statistics').classList.contains('active')) renderStatistics();
-  }
 
   const t = todayStr();
   STATS.visitorsByDay[t] = (STATS.visitorsByDay[t]||0) + 1;
-  setData('atlas:stats', STATS, true); // fire-and-forget — nothing on screen needs to wait for this
+  setData('aura:stats', STATS, true); // fire-and-forget — nothing on screen needs to wait for this
 
   if(typeof renderCategoryTiles==='function') renderCategoryTiles();
   if(typeof renderAccountPage==='function' && !document.getElementById('accountOverlay').classList.contains('hidden')) renderAccountPage();
@@ -2467,7 +2011,7 @@ async function syncFromFirestore(){
    only a second back press shortly after is allowed through.
 ================================================================================================ */
 function navigateTo(view, extra){
-  const state = Object.assign({__atlas:true, view}, extra||{});
+  const state = Object.assign({__aura:true, view}, extra||{});
   let hash = '#!' + view;
   if(extra && extra.id) hash += '/' + encodeURIComponent(extra.id);
   else if(extra && extra.cat) hash += '/' + encodeURIComponent(extra.cat);
@@ -2476,7 +2020,7 @@ function navigateTo(view, extra){
 }
 function goBack(){ history.back(); }
 function hideAllOverlays(){
-  ['menuOverlay','productOverlay','categoryOverlay','cartOverlay','wishlistOverlay','accountOverlay','returnOverlay','checkoutOverlay','trackOrderOverlay','orderConfirmOverlay','programChooseOverlay','academyOverlay','academyDetailOverlay','privateOverlay','privateDetailOverlay','trainerBookingOverlay'].forEach(id=>{
+  ['menuOverlay','productOverlay','categoryOverlay','cartOverlay','wishlistOverlay','accountOverlay','returnOverlay','checkoutOverlay','trackOrderOverlay','orderConfirmOverlay'].forEach(id=>{
     const el = document.getElementById(id); if(el) el.classList.add('hidden');
   });
   const sd = document.getElementById('searchDrop'); if(sd) sd.classList.remove('open');
@@ -2506,7 +2050,7 @@ function applyRoute(state){
       if(p){
         currentProduct = p;
         p.views = (p.views||0) + 1; persistProducts();
-        MY_LAST_VIEWED = p.id; setData('atlas:lastviewed', p.id, false); syncActivityToCustomer();
+        MY_LAST_VIEWED = p.id; setData('aura:lastviewed', p.id, false); syncActivityToCustomer();
         currentGallery = galleryFor(p);
         currentGalleryIdx = 0;
         currentTab = 'desc';
@@ -2571,36 +2115,6 @@ function applyRoute(state){
         history.back();
       }
       break;
-    case 'programchoose':
-      document.getElementById('programChooseOverlay').classList.remove('hidden');
-      break;
-    case 'academy':
-      setAcademyType(currentAcademyType || 'academy');
-      document.getElementById('academyOverlay').classList.remove('hidden');
-      break;
-    case 'academydetail': {
-      const t = ACADEMY.find(x=>x.id===state.id);
-      if(t){ renderTrainerDetail(t); document.getElementById('academyDetailOverlay').classList.remove('hidden'); }
-      else { history.back(); }
-      break;
-    }
-    case 'private':
-      setPrivateType(currentPrivateType || 'coach');
-      document.getElementById('privateOverlay').classList.remove('hidden');
-      break;
-    case 'privatedetail': {
-      const pt = PRIVATE_TRAINERS.find(x=>x.id===state.id);
-      if(pt){ renderTrainerDetail(pt, 'privateDetailContent'); document.getElementById('privateDetailOverlay').classList.remove('hidden'); }
-      else { history.back(); }
-      break;
-    }
-    case 'trainerbooking': {
-      const list = (state.kind==='coach' || state.kind==='goalkeeper' || state.kind==='fitness') ? PRIVATE_TRAINERS : ACADEMY;
-      const t = list.find(x=>x.id===state.id);
-      if(t){ openTrainerBookingForm(t); document.getElementById('trainerBookingOverlay').classList.remove('hidden'); }
-      else { history.back(); }
-      break;
-    }
     case 'home':
     default:
       break; // all overlays already hidden above — nothing else to do
@@ -2610,12 +2124,12 @@ function applyRoute(state){
    link) into a router state, so a shared link actually opens that product instead of
    always landing on the home screen. Falls back to home for anything unrecognized. */
 function parseHashToState(hash){
-  const fallback = {__atlas:true, view:'home'};
+  const fallback = {__aura:true, view:'home'};
   if(!hash || hash.length < 3) return fallback;
   const parts = hash.replace(/^#!/, '').split('/');
   const view = parts[0];
   if(!['product','category'].includes(view)) return fallback; // only these carry a shareable id
-  const state = {__atlas:true, view};
+  const state = {__aura:true, view};
   if(parts[1]){
     const val = decodeURIComponent(parts[1]);
     if(view === 'product') state.id = val;
@@ -2626,7 +2140,7 @@ function parseHashToState(hash){
 function setupRouter(){
   window.addEventListener('popstate', (e)=>{
     const state = e.state;
-    if(state && state.__atlas){
+    if(state && state.__aura){
       applyRoute(state);
     } else {
       /* Popped past our own base entry — this is a real attempt to leave the store. */
@@ -2637,14 +2151,13 @@ function setupRouter(){
       }
       window._exitArmed = now;
       showToast('اضغط رجوع مرة أخرى للخروج · Press back again to exit');
-      history.pushState({__atlas:true, view:'programchoose'}, '', '#!programchoose');
+      history.pushState({__aura:true, view:'home'}, '', '#!home');
     }
   });
   const deepLink = parseHashToState(location.hash);
-  history.pushState({__atlas:true, view:'programchoose'}, '', '#!programchoose'); // base entry = the Store/Academy/Private picker
+  history.pushState({__aura:true, view:'home'}, '', '#!home'); // base entry, so back-button behavior is unchanged
   if(deepLink.view !== 'home'){
-    navigateTo('home'); // shared product/category links land on the Store first, then open on top of it
-    navigateTo(deepLink.view, deepLink);
+    navigateTo(deepLink.view, deepLink); // open the shared product/category on top of the home entry
   }
 }
 function setupScrollReveal(){
@@ -2664,7 +2177,6 @@ function closeMenu(){ goBack(); }
 function renderMenu(){
   const cats = [...new Set(visibleProducts().map(p=>p.category))];
   document.getElementById('menuLinks').innerHTML =
-    `<a href="javascript:void(0)" onclick="navigateTo('programchoose')">Switch Program</a>` +
     `<a href="javascript:void(0)" onclick="closeMenu(); scrollToShop();">All Products</a>` +
     cats.map(c=>`<a href="javascript:void(0)" onclick="openCategoryPage('${c}');">${c}</a>`).join('') +
     `<a href="javascript:void(0)" onclick="openAccount();">${tr('myAccount')||'My Account'}</a>` +
@@ -2968,7 +2480,7 @@ async function syncActivityToCustomer(){
   cust.wishlist = WISHLIST.slice();
   cust.cart = CART.map(i=>({...i}));
   cust.lastViewedProductId = MY_LAST_VIEWED || null;
-  await setData('atlas:customers', CUSTOMERS, true);
+  await setData('aura:customers', CUSTOMERS, true);
 }
 function loyaltySettings(){ return (SETTINGS && SETTINGS.loyalty) || defaultLoyalty(); }
 /* Finds-or-creates the shared CUSTOMERS record for this name/phone and refreshes lastLogin.
@@ -2977,7 +2489,7 @@ async function ensureCustomerRecord(name, phone){
   let cust = CUSTOMERS.find(c=>c.phone===phone);
   if(cust){ cust.name = name || cust.name; cust.lastLogin = todayStr(); }
   else { cust = {id:uid('c'), name, phone, ordersCount:0, totalSpent:0, points:0, lastLogin:todayStr(), createdAt:todayStr()}; CUSTOMERS.push(cust); }
-  await setData('atlas:customers', CUSTOMERS, true);
+  await setData('aura:customers', CUSTOMERS, true);
   return cust;
 }
 function openAccount(){ navigateTo('account'); }
@@ -2991,7 +2503,7 @@ async function continueWithPhone(){
   if(existing){
     // Recognized by phone number alone — no name needed, sign straight in.
     MY_PROFILE = {name:existing.name, phone};
-    await setData('atlas:myprofile', MY_PROFILE, false);
+    await setData('aura:myprofile', MY_PROFILE, false);
     await ensureCustomerRecord(existing.name, phone);
     await syncActivityToCustomer();
     showToast('Welcome back, ' + existing.name + '!');
@@ -3007,7 +2519,7 @@ async function continueWithPhone(){
   const name = (document.getElementById('acName').value||'').trim();
   if(!name){ if(msg){ msg.textContent='Please enter your name.'; msg.style.color='var(--danger)'; } return; }
   MY_PROFILE = {name, phone};
-  await setData('atlas:myprofile', MY_PROFILE, false);
+  await setData('aura:myprofile', MY_PROFILE, false);
   await ensureCustomerRecord(name, phone);
   await syncActivityToCustomer();
   showToast('Welcome, ' + name + '!');
@@ -3016,7 +2528,7 @@ async function continueWithPhone(){
 async function logoutMyProfile(){
   if(!confirm('Switch to a different account on this device?')) return;
   MY_PROFILE = null;
-  await setData('atlas:myprofile', null, false);
+  await setData('aura:myprofile', null, false);
   renderAccountPage();
 }
 function pointsProgressHTML(cust){
@@ -3089,7 +2601,7 @@ function renderPointsRedeemBox(){
   if(!box) return;
   const cust = myCustomerRecord();
   if(!cust){
-    box.innerHTML = `<div style="font-size:11px; color:var(--muted); margin-top:2px;">Sign in from <a href="javascript:void(0)" onclick="navigateTo('account')" style="color:var(--maroon-light); text-decoration:underline;">My Account</a> to redeem loyalty points.</div>`;
+    box.innerHTML = `<div style="font-size:11px; color:var(--muted); margin-top:2px;">Sign in from <a href="javascript:void(0)" onclick="closeCart(); openAccount();" style="color:var(--maroon-light); text-decoration:underline;">My Account</a> to redeem loyalty points.</div>`;
     return;
   }
   const loy = loyaltySettings();
@@ -3119,7 +2631,7 @@ async function shareProduct(id){
   const p = PRODUCTS.find(x=>x.id===id);
   if(!p) return;
   const url = location.origin + location.pathname + '#!product/' + id;
-  const shareData = { title: (SETTINGS&&SETTINGS.name||'ATLAS') + ' — ' + p.name, text: p.name + ' — ' + fmtMoney(p.discount>0?p.discount:p.price), url };
+  const shareData = { title: (SETTINGS&&SETTINGS.name||'AURA') + ' — ' + p.name, text: p.name + ' — ' + fmtMoney(p.discount>0?p.discount:p.price), url };
   try{
     if(navigator.share){ await navigator.share(shareData); return; }
   }catch(e){ /* user cancelled or unsupported — fall through to copy */ }
@@ -3136,7 +2648,7 @@ function toggleWishlist(id){
   renderBestSellers();
   if(currentProduct) renderProductPage();
   if(!document.getElementById('wishlistOverlay').classList.contains('hidden')) renderWishlist();
-  setData('atlas:wishlist', WISHLIST, false);
+  setData('aura:wishlist', WISHLIST, false);
 }
 function renderWishlistBadge(){
   const b = document.getElementById('wishBadge2');
@@ -3244,7 +2756,7 @@ async function submitReturnRequest(orderId){
   const request = { id: uid('retreq'), orderId: order.id, type, phone: order.phone, customer: order.customer, amount: order.amount, qty, reason, status:'pending', date: todayStr() };
   RETURN_REQUESTS.unshift(request);
   await Promise.allSettled([
-    setData('atlas:returnrequests', RETURN_REQUESTS, true),
+    setData('aura:returnrequests', RETURN_REQUESTS, true),
     addNotification('return', `New return request for order ${order.id} from ${order.customer}`)
   ]);
   const box = document.getElementById('retFormBox');
@@ -3288,12 +2800,12 @@ async function acceptReturnRequest(id){
   if(!confirm(`Accept the return for order ${req.orderId}? This will mark the order as Returned and remove ${fmtMoney(req.amount)} from Total Sales.`)) return;
   const order = ORDERS.find(o=>o.id===req.orderId);
   req.status = 'approved';
-  const tasks = [setData('atlas:returnrequests', RETURN_REQUESTS, true)];
+  const tasks = [setData('aura:returnrequests', RETURN_REQUESTS, true)];
   if(order){
     order.status = 'Returned';
-    tasks.push(setData('atlas:orders', ORDERS, true));
+    tasks.push(setData('aura:orders', ORDERS, true));
     const cust = CUSTOMERS.find(c=>c.phone===order.phone);
-    if(cust){ cust.totalSpent = Math.max(0, (cust.totalSpent||0) - order.amount); tasks.push(setData('atlas:customers', CUSTOMERS, true)); }
+    if(cust){ cust.totalSpent = Math.max(0, (cust.totalSpent||0) - order.amount); tasks.push(setData('aura:customers', CUSTOMERS, true)); }
   }
   await Promise.allSettled(tasks);
   renderReturnRequestsAdmin();
@@ -3307,7 +2819,7 @@ async function rejectReturnRequest(id){
   if(!req || req.status!=='pending') return;
   if(!confirm(`Reject the return request for order ${req.orderId}?`)) return;
   req.status = 'rejected';
-  await setData('atlas:returnrequests', RETURN_REQUESTS, true);
+  await setData('aura:returnrequests', RETURN_REQUESTS, true);
   renderReturnRequestsAdmin();
   showToast('Return request rejected');
 }
@@ -3329,7 +2841,7 @@ function waNumber(phone){
 }
 function orderConfirmationMessage(order){
   const itemsLine = order.items.map(i=>`${i.name} (${i.size}/${i.color}) x${i.qty}`).join(', ');
-  return `Hello! I'd like to confirm my order ${order.id} from ${(SETTINGS&&SETTINGS.name)||'ATLAS'}.\n`
+  return `Hello! I'd like to confirm my order ${order.id} from ${(SETTINGS&&SETTINGS.name)||'AURA'}.\n`
     + `Items: ${itemsLine}\n`
     + `Total: ${fmtMoney(order.amount)}\n`
     + `Name: ${order.customer}\n`
@@ -3533,7 +3045,7 @@ function addToCart(p, size, color, qty){
   showToast('Added to bag');
   // Sync to the server in the background; a slow/offline connection no longer freezes the button.
   persistProducts();
-  setData('atlas:cart', CART, false);
+  setData('aura:cart', CART, false);
   syncActivityToCustomer();
 }
 
@@ -3573,10 +3085,10 @@ function stepCartQty(idx, d){
   CART[idx].qty += d;
   if(CART[idx].qty<=0) CART.splice(idx,1);
   renderCart();
-  setData('atlas:cart', CART, false);
+  setData('aura:cart', CART, false);
   syncActivityToCustomer();
 }
-function removeCartItem(idx){ CART.splice(idx,1); renderCart(); setData('atlas:cart', CART, false); syncActivityToCustomer(); }
+function removeCartItem(idx){ CART.splice(idx,1); renderCart(); setData('aura:cart', CART, false); syncActivityToCustomer(); }
 
 async function applyCoupon(){
   const code = document.getElementById('couponInput').value.trim().toUpperCase();
@@ -3664,7 +3176,7 @@ async function placeOrder(){
     else { cust = {id:uid('c'), name, phone, ordersCount:1, totalSpent:amount, points:pointsEarned, lastLogin:todayStr(), createdAt:todayStr()}; CUSTOMERS.push(cust); }
 
     // Remember this customer on this device so their "My Account" page shows this order, points and history next time they visit.
-    if(!MY_PROFILE || MY_PROFILE.phone !== phone){ MY_PROFILE = {name, phone}; setData('atlas:myprofile', MY_PROFILE, false); }
+    if(!MY_PROFILE || MY_PROFILE.phone !== phone){ MY_PROFILE = {name, phone}; setData('aura:myprofile', MY_PROFILE, false); }
     appliedPointsRedeem = null;
 
     CHECKOUT_ITEMS.forEach(ci=>{ const p = PRODUCTS.find(x=>x.id===ci.productId); if(p){ p.purchases=(p.purchases||0)+ci.qty; p.qty=Math.max(0,p.qty-ci.qty); } });
@@ -3676,17 +3188,17 @@ async function placeOrder(){
     // All these are saved to the server in parallel (each individually time-bounded — see setData),
     // so the confirmation below can never be held up longer than a single save would take.
     const syncTasks = [
-      setData('atlas:orders', ORDERS, true),
-      setData('atlas:customers', CUSTOMERS, true),
+      setData('aura:orders', ORDERS, true),
+      setData('aura:customers', CUSTOMERS, true),
       persistProducts(),
-      setData('atlas:stats', STATS, true),
+      setData('aura:stats', STATS, true),
       addNotification('order', `New order ${order.id} from ${name} — ${fmtMoney(amount)}`)
     ];
 
     if(appliedCoupon){
       const couponCode = appliedCoupon.code;
       const c = COUPONS.find(x=>x.code===couponCode);
-      if(c){ c.used=(c.used||0)+1; syncTasks.push(setData('atlas:coupons', COUPONS, true)); }
+      if(c){ c.used=(c.used||0)+1; syncTasks.push(setData('aura:coupons', COUPONS, true)); }
       syncTasks.push(addNotification('coupon', pointsUsed ? `Customer ${name} redeemed ${pointsUsed} loyalty points on order ${order.id}` : `Coupon "${couponCode}" was used on order ${order.id}`));
       appliedCoupon = null;
     }
@@ -3696,7 +3208,7 @@ async function placeOrder(){
     await Promise.allSettled(syncTasks);
 
     // Only the items that were actually in the bag get removed from it — items bought via "Buy It Now" never touched the bag.
-    if(wasFromCart){ CART = []; setData('atlas:cart', CART, false); }
+    if(wasFromCart){ CART = []; setData('aura:cart', CART, false); }
     CHECKOUT_ITEMS = [];
     renderCart();
     renderBestSellers();
@@ -3715,15 +3227,15 @@ async function placeOrder(){
   }
 }
 
-async function persistProducts(){ return await setData('atlas:products', PRODUCTS, true); }
+async function persistProducts(){ return await setData('aura:products', PRODUCTS, true); }
 async function addNotification(type, message){
   NOTIFS.unshift({id:uid('n'), type, message, date:new Date().toISOString(), read:false});
-  await setData('atlas:notifications', NOTIFS, true);
+  await setData('aura:notifications', NOTIFS, true);
 }
 
 /* ================= ADMIN ================= */
 async function openAdmin(){
-  SETTINGS = await getData('atlas:settings', SETTINGS || defaultSettings(), true);
+  SETTINGS = await getData('aura:settings', SETTINGS || defaultSettings(), true);
   if(!ADMIN_LOGGED_IN){
     document.getElementById('admLoginErr').textContent='';
     document.getElementById('admLoginPass').value='';
@@ -3736,14 +3248,14 @@ async function openAdmin(){
 }
 async function submitAdminLogin(){
   const pass = document.getElementById('admLoginPass').value;
-  SETTINGS = SETTINGS || await getData('atlas:settings', defaultSettings(), true);
+  SETTINGS = SETTINGS || await getData('aura:settings', defaultSettings(), true);
   if(pass !== (SETTINGS.password || '123')){
     document.getElementById('admLoginErr').textContent = 'Incorrect password';
     return;
   }
   ADMIN_LOGGED_IN = true;
   SETTINGS.lastLogin = new Date().toLocaleString();
-  await setData('atlas:settings', SETTINGS, true);
+  await setData('aura:settings', SETTINGS, true);
   document.getElementById('adminLoginBackdrop').classList.add('hidden');
   navigateTo('admin');
   await loadAdminAndShow();
@@ -3752,16 +3264,16 @@ function cancelAdminLogin(){
   document.getElementById('adminLoginBackdrop').classList.add('hidden');
 }
 async function loadAdminAndShow(){
-  PRODUCTS = await getData('atlas:products', PRODUCTS, true);
-  ORDERS = await getData('atlas:orders', ORDERS, true);
-  CUSTOMERS = await getData('atlas:customers', CUSTOMERS, true);
-  COUPONS = await getData('atlas:coupons', COUPONS, true);
-  NOTIFS = await getData('atlas:notifications', NOTIFS, true);
-  BANNER = await getData('atlas:banner', BANNER, true);
-  STATS = await getData('atlas:stats', STATS, true);
-  SHIPPING = await getData('atlas:shipping', SHIPPING, true);
-  SETTINGS = await getData('atlas:settings', SETTINGS || defaultSettings(), true);
-  SIZEGUIDES = await getData('atlas:sizeguides', SIZEGUIDES, true);
+  PRODUCTS = await getData('aura:products', PRODUCTS, true);
+  ORDERS = await getData('aura:orders', ORDERS, true);
+  CUSTOMERS = await getData('aura:customers', CUSTOMERS, true);
+  COUPONS = await getData('aura:coupons', COUPONS, true);
+  NOTIFS = await getData('aura:notifications', NOTIFS, true);
+  BANNER = await getData('aura:banner', BANNER, true);
+  STATS = await getData('aura:stats', STATS, true);
+  SHIPPING = await getData('aura:shipping', SHIPPING, true);
+  SETTINGS = await getData('aura:settings', SETTINGS || defaultSettings(), true);
+  SIZEGUIDES = await getData('aura:sizeguides', SIZEGUIDES, true);
   document.getElementById('admin').classList.remove('hidden');
   switchAdminSection('products');
 }
@@ -3784,10 +3296,6 @@ function switchAdminSection(sec){
   if(sec==='shipping') renderShippingAdmin();
   if(sec==='sizeguides') renderSizeGuidesAdmin();
   if(sec==='categoryimages') renderCategoryImagesAdmin();
-  if(sec==='academy') renderAcademyAdminTable();
-  if(sec==='private') renderPrivateAdminTable();
-  if(sec==='intro'){ renderHomeTilesAdmin(); renderIntroSlidesAdmin(); }
-  if(sec==='bookings') renderBookingsAdminTable();
   if(sec==='statistics') renderStatistics();
   if(sec==='notifications') renderNotifications();
   if(sec==='reviews') renderReviewsTable();
@@ -3937,7 +3445,7 @@ function removePfImage(i){
   renderPfImagesGrid();
 }
 /* All product/banner/logo images are stored as base64 inside a single Firestore document
-   (the whole PRODUCTS array lives in one "atlas:products" doc), and Firestore caps a single
+   (the whole PRODUCTS array lives in one "aura:products" doc), and Firestore caps a single
    document at 1MB. Uncompressed phone photos are often 2-5MB each, so a product with more
    than one or two full-size photos could silently fail to save in full — which is why only
    the first couple of images ever showed up. Compressing every upload down to a sane max
@@ -4055,14 +3563,14 @@ async function onBannerFileChange(e){
   const compressed = await compressImageFile(file, 1600, 0.75);
   if(!compressed) return;
   BANNER.image = compressed;
-  await setData('atlas:banner', BANNER, true);
+  await setData('aura:banner', BANNER, true);
   renderBannerAdmin(); renderBanner();
   showToast('Banner image updated');
 }
-async function removeBannerImage(){ BANNER.image = null; await setData('atlas:banner', BANNER, true); renderBannerAdmin(); renderBanner(); showToast('Banner image removed'); }
+async function removeBannerImage(){ BANNER.image = null; await setData('aura:banner', BANNER, true); renderBannerAdmin(); renderBanner(); showToast('Banner image removed'); }
 async function saveBannerText(){
   BANNER.sub = document.getElementById('bnSub').value.trim();
-  await setData('atlas:banner', BANNER, true);
+  await setData('aura:banner', BANNER, true);
   renderBanner();
   showToast('Banner text updated');
 }
@@ -4086,14 +3594,14 @@ async function onSlidesFileChange(e){
     if(compressed) BANNER_SLIDES.push(compressed);
   }
   e.target.value = '';
-  await setData('atlas:bannerslides', BANNER_SLIDES, true);
+  await setData('aura:bannerslides', BANNER_SLIDES, true);
   renderSlidesAdmin();
   renderSlidesBanner();
   showToast('Slide(s) added');
 }
 async function removeSlide(i){
   BANNER_SLIDES.splice(i,1);
-  await setData('atlas:bannerslides', BANNER_SLIDES, true);
+  await setData('aura:bannerslides', BANNER_SLIDES, true);
   renderSlidesAdmin();
   renderSlidesBanner();
   showToast('Slide removed');
@@ -4146,7 +3654,7 @@ async function updateOrderStatus(id, status, selectEl){
     o.cancelReason = reason.trim();
   }
   o.status = status;
-  await setData('atlas:orders', ORDERS, true);
+  await setData('aura:orders', ORDERS, true);
   renderOrdersTable();
   updateOrderStatus_refreshDependents();
   showToast('Order '+id+' set to '+status);
@@ -4156,7 +3664,7 @@ async function saveOrderTracking(id){
   if(!o) return;
   const input = document.getElementById('omTrackingInput');
   o.tracking = input ? input.value.trim() : o.tracking;
-  await setData('atlas:orders', ORDERS, true);
+  await setData('aura:orders', ORDERS, true);
   renderOrdersTable();
   showToast('Tracking number saved for '+id);
 }
@@ -4164,7 +3672,7 @@ function whatsappCustomer(phone, orderId){
   if(!phone){ showToast('No phone number on this order'); return; }
   const o = ORDERS.find(x=>x.id===orderId);
   const text = encodeURIComponent(o
-    ? `Hello ${o.customer}, this is ${(SETTINGS&&SETTINGS.name)||'ATLAS'} confirming your order ${o.id} (${fmtMoney(o.amount)}). Thank you for shopping with us!`
+    ? `Hello ${o.customer}, this is ${(SETTINGS&&SETTINGS.name)||'AURA'} confirming your order ${o.id} (${fmtMoney(o.amount)}). Thank you for shopping with us!`
     : `Hello, this is regarding your order ${orderId||''}.`);
   window.open(`https://wa.me/${waNumber(phone)}?text=${text}`, '_blank');
 }
@@ -4173,7 +3681,7 @@ function printOrderInvoice(id){
   if(!o) return;
   const rawSub = (o.items||[]).reduce((s,i)=>s+i.price*i.qty,0);
   const discountAmt = Math.max(0, rawSub - (o.subtotal!=null?o.subtotal:rawSub));
-  const storeName = (SETTINGS&&SETTINGS.name)||'ATLAS';
+  const storeName = (SETTINGS&&SETTINGS.name)||'AURA';
   const storeLogo = SETTINGS&&SETTINGS.logo;
   const win = window.open('', '_blank');
   win.document.write(`
@@ -4353,7 +3861,7 @@ function exportCustomersPDF(){
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
   doc.setFontSize(14);
-  doc.text(`${(SETTINGS&&SETTINGS.name)||'ATLAS'} — Customers — ${todayStr()}`, 14, 16);
+  doc.text(`${(SETTINGS&&SETTINGS.name)||'AURA'} — Customers — ${todayStr()}`, 14, 16);
   const body = CUSTOMERS.map(c=>[
     c.name, c.phone, c.ordersCount||0, fmtMoney(c.totalSpent||0), c.points||0,
     customerReturnsCount(c.phone), c.createdAt||'', c.lastLogin||''
@@ -4429,7 +3937,7 @@ async function editCustomerNote(id){
   const note = prompt('Internal note for this customer (visible to admins only):', c.notes||'');
   if(note === null) return;
   c.notes = note.trim();
-  await setData('atlas:customers', CUSTOMERS, true);
+  await setData('aura:customers', CUSTOMERS, true);
   renderCustomersTable();
   showToast('Note saved');
 }
@@ -4443,7 +3951,7 @@ async function saveShipping(){
   document.querySelectorAll('.ship-price-input').forEach(inp=>{
     SHIPPING[inp.dataset.gov] = parseFloat(inp.value)||0;
   });
-  await setData('atlas:shipping', SHIPPING, true);
+  await setData('aura:shipping', SHIPPING, true);
   showToast('Shipping prices updated');
 }
 
@@ -4483,13 +3991,13 @@ async function onSizeGuideFileChange(e){
   const compressed = await compressImageFile(file, 1200, 0.78);
   if(!compressed) return;
   SIZEGUIDES[category] = compressed;
-  await setData('atlas:sizeguides', SIZEGUIDES, true);
+  await setData('aura:sizeguides', SIZEGUIDES, true);
   renderSizeGuidesAdmin();
   showToast('Size guide saved for ' + category);
 }
 async function removeSizeGuide(category){
   delete SIZEGUIDES[category];
-  await setData('atlas:sizeguides', SIZEGUIDES, true);
+  await setData('aura:sizeguides', SIZEGUIDES, true);
   renderSizeGuidesAdmin();
   showToast('Size guide removed for ' + category);
 }
@@ -4527,564 +4035,17 @@ async function onCategoryImageFileChange(e){
   const compressed = await compressImageFile(file, 900, 0.8);
   if(!compressed) return;
   CATEGORY_IMAGES[category] = compressed;
-  await setData('atlas:categoryimages', CATEGORY_IMAGES, true);
+  await setData('aura:categoryimages', CATEGORY_IMAGES, true);
   renderCategoryImagesAdmin();
   renderCategoryTiles();
   showToast('Category image saved for ' + category);
 }
 async function removeCategoryImage(category){
   delete CATEGORY_IMAGES[category];
-  await setData('atlas:categoryimages', CATEGORY_IMAGES, true);
+  await setData('aura:categoryimages', CATEGORY_IMAGES, true);
   renderCategoryImagesAdmin();
   renderCategoryTiles();
   showToast('Category image removed for ' + category);
-}
-
-/* ================= PROGRAM CHOOSE (Store / Academy / Private gate) ================= */
-function chooseProgram(type){
-  if(type==='store'){ navigateTo('home'); return; }
-  if(type==='camp'){ currentAcademyType='camp'; navigateTo('academy'); return; }
-  navigateTo(type); // 'academy' or 'private'
-}
-function openProgramChoose(){ navigateTo('programchoose'); }
-
-/* ================= INTRO / WELCOME (shown every visit, admin-editable) =================
-   A short sequence of image+text screens shown on top of the Store/Academy/Camp/Private
-   menu, before a visitor can reach it — every time the site is opened. Content comes from
-   INTRO_SLIDES (Admin > Intro / Home Screen); if the admin hasn't added any yet, a single
-   default ATLAS welcome screen is shown. */
-function defaultIntroSlides(){
-  return [{ id:'default', image:null, title:'Welcome to ATLAS', text:'Rise Above. Be Atlas. Explore our Store, Academy, Camps and Private training — all in one place.' }];
-}
-function introSlideList(){ return (INTRO_SLIDES && INTRO_SLIDES.length) ? INTRO_SLIDES : defaultIntroSlides(); }
-function initIntro(){
-  const overlay = document.getElementById('introOverlay');
-  if(!overlay) return;
-  introIdx = 0;
-  renderIntro();
-}
-function renderIntro(){
-  const overlay = document.getElementById('introOverlay');
-  if(!overlay || overlay.classList.contains('hidden')) return;
-  const slides = introSlideList();
-  if(introIdx >= slides.length) introIdx = slides.length - 1;
-  const s = slides[introIdx];
-  document.getElementById('introImg').src = s.image || 'https://placehold.co/400x400/181614/8f8f8f?text=ATLAS';
-  document.getElementById('introTitle').textContent = s.title || '';
-  document.getElementById('introText').textContent = s.text || '';
-  document.getElementById('introDots').innerHTML = slides.map((x,i)=>`<span class="${i===introIdx?'active':''}"></span>`).join('');
-  document.getElementById('introNextBtn').textContent = introIdx === slides.length-1 ? 'Get Started' : 'Next';
-}
-function introNext(){
-  const slides = introSlideList();
-  if(introIdx < slides.length - 1){ introIdx++; renderIntro(); }
-  else { finishIntro(); }
-}
-function introSkip(){ finishIntro(); }
-function finishIntro(){
-  const overlay = document.getElementById('introOverlay');
-  if(overlay) overlay.classList.add('hidden');
-}
-/* Lets the admin re-watch the intro at any time (e.g. right after editing it) without having
-   to clear the browser's localStorage. Does NOT reset the "seen" flag for real visitors. */
-function previewIntro(){
-  const overlay = document.getElementById('introOverlay');
-  if(!overlay) return;
-  const adminEl = document.getElementById('admin');
-  if(adminEl) adminEl.classList.add('hidden');
-  overlay.classList.remove('hidden');
-  introIdx = 0;
-  renderIntro();
-}
-
-/* ================= HOME TILES (Store/Academy/Camp/Private thumbnail images + text) ================= */
-const HOME_TILE_DEFAULTS = {
-  store:{title:'Store', sub:'Shop the ATLAS collection'},
-  academy:{title:'Academy', sub:'Handball academy training for all levels'},
-  camp:{title:'Camp', sub:'Summer & Winter camps and schedules'},
-  private:{title:'Private', sub:'Personal training with expert coaches'}
-};
-function renderHomeTiles(){
-  const map = { store:'pcImgStore', academy:'pcImgAcademy', camp:'pcImgCamp', private:'pcImgPrivate' };
-  const titleMap = { store:'pcTitleStore', academy:'pcTitleAcademy', camp:'pcTitleCamp', private:'pcTitlePrivate' };
-  const subMap = { store:'pcSubStore', academy:'pcSubAcademy', camp:'pcSubCamp', private:'pcSubPrivate' };
-  Object.keys(map).forEach(k=>{
-    const el = document.getElementById(map[k]);
-    if(el) el.src = (HOME_TILES && HOME_TILES[k]) || 'https://placehold.co/200x200/181614/8f8f8f?text=ATLAS';
-    const titleEl = document.getElementById(titleMap[k]);
-    if(titleEl) titleEl.textContent = (HOME_TILES && HOME_TILES[k+'Title']) || HOME_TILE_DEFAULTS[k].title;
-    const subEl = document.getElementById(subMap[k]);
-    if(subEl) subEl.textContent = (HOME_TILES && HOME_TILES[k+'Sub']) || HOME_TILE_DEFAULTS[k].sub;
-  });
-}
-
-/* ================= ACADEMY / CAMP (customer-facing) ================= */
-function closeAcademy(){ goBack(); }
-function closeAcademyDetail(){ goBack(); }
-function setAcademyType(type){
-  currentAcademyType = type;
-  const a = document.getElementById('academyTabAcademy'), c = document.getElementById('academyTabCamp');
-  if(a) a.classList.toggle('active', type==='academy');
-  if(c) c.classList.toggle('active', type==='camp');
-  renderAcademyList();
-}
-function renderAcademyList(){
-  const grid = document.getElementById('trainerGrid');
-  if(!grid) return;
-  const list = ACADEMY.filter(t=>t.type===currentAcademyType);
-  grid.innerHTML = list.length ? list.map(t=>`
-    <div class="trainer-card" onclick="navigateTo('academydetail', {id:'${t.id}'})">
-      <img src="${t.photo || 'https://placehold.co/300x300/181614/8f8f8f?text=ATLAS'}">
-      <div class="tc-body">
-        <div class="tc-name">${t.name}</div>
-        <div class="tc-type">${trainerTypeLabel(t.type)}</div>
-        <div class="tc-meta">
-          ${t.price ? `<span>${t.price}</span>` : ''}
-          ${t.sessions ? `<span>${t.sessions}</span>` : ''}
-          ${t.years ? `<span>${t.years} ${LANG==='ar'?'سنين خبرة':'yrs exp'}</span>` : ''}
-        </div>
-        <button class="tc-more" onclick="event.stopPropagation(); navigateTo('academydetail', {id:'${t.id}'})">${LANG==='ar'?'اعرف التفاصيل':'Know More'}</button>
-      </div>
-    </div>`).join('') : `<div class="prog-empty">No ${currentAcademyType==='camp'?'camp':'academy'} trainers added yet.</div>`;
-}
-function trainerTypeLabel(type){
-  return {academy:'Academy', camp:'Camp', coach:'Coach', goalkeeper:'Goalkeeper', fitness:'Fitness'}[type] || type;
-}
-function renderTrainerDetail(t, containerId){
-  containerId = containerId || 'trainerDetailContent';
-  const isPrivate = containerId==='privateDetailContent';
-  if(isPrivate) window._currentPrivateTrainerDetail = t;
-  else window._currentTrainerDetail = t;
-  const bookBtn = isPrivate
-    ? `<button class="btn" style="width:100%; margin-top:16px;" onclick="bookPrivateTrainerWhatsApp('${t.id}')">💬 Book Now</button>`
-    : `<button class="btn" style="width:100%; margin-top:16px;" onclick="navigateTo('trainerbooking', {id:'${t.id}', kind:'${t.type}'})">Book a Session</button>`;
-  document.getElementById(containerId).innerHTML = `
-    <img class="trainer-detail-hero" src="${t.photo || 'https://placehold.co/600x450/181614/8f8f8f?text=ATLAS'}">
-    <div class="trainer-detail-body">
-      <h2>${t.name}</h2>
-      <div class="tc-type">${trainerTypeLabel(t.type)}</div>
-      <div class="trainer-detail-meta">
-        ${(!isPrivate && t.price) ? `<div class="tdm-item">Price<b>${t.price}</b></div>` : ''}
-        ${t.sessions ? `<div class="tdm-item">Sessions<b>${t.sessions}</b></div>` : ''}
-        ${t.years ? `<div class="tdm-item">Experience<b>${t.years}</b></div>` : ''}
-      </div>
-      ${t.bio ? `<div class="trainer-detail-section"><h4>About</h4><p>${t.bio}</p></div>` : ''}
-      ${t.session ? `<div class="trainer-detail-section"><h4>${isPrivate?'Package Details':'Session Details'}</h4><p>${t.session}</p></div>` : ''}
-      ${bookBtn}
-      ${t.location ? `<button class="location-btn" onclick="window.open('${t.location}','_blank')">📍 View Location</button>` : ''}
-    </div>`;
-}
-/* Private trainers (Coaches & Goalkeepers) skip the in-app booking form entirely —
-   "Book Now" opens a WhatsApp chat straight to that trainer's own number, pre-filled
-   with a short intro message, so pricing/scheduling happens directly with them. */
-function bookPrivateTrainerWhatsApp(trainerId){
-  const t = PRIVATE_TRAINERS.find(x=>x.id===trainerId);
-  if(!t){ return; }
-  if(!t.whatsapp){ showToast('This trainer has no WhatsApp number set up yet'); return; }
-  const msg = `Hi ${t.name}, I'd like to book a session with you through the ATLAS app.`;
-  window.open(`https://wa.me/${waNumber(t.whatsapp)}?text=${encodeURIComponent(msg)}`, '_blank');
-}
-
-/* ================= PRIVATE / FITNESS (customer-facing) ================= */
-function closePrivate(){ goBack(); }
-function closePrivateDetail(){ goBack(); }
-function setPrivateType(type){
-  currentPrivateType = type;
-  const p = document.getElementById('privateTabCoach'), f = document.getElementById('privateTabGoalkeeper'), fit = document.getElementById('privateTabFitness');
-  if(p) p.classList.toggle('active', type==='coach');
-  if(f) f.classList.toggle('active', type==='goalkeeper');
-  if(fit) fit.classList.toggle('active', type==='fitness');
-  renderPrivateList();
-}
-function renderPrivateList(){
-  const grid = document.getElementById('privateTrainerGrid');
-  if(!grid) return;
-  const list = PRIVATE_TRAINERS.filter(t=>t.type===currentPrivateType);
-  grid.innerHTML = list.length ? list.map(t=>`
-    <div class="trainer-card" onclick="navigateTo('privatedetail', {id:'${t.id}'})">
-      <img src="${t.photo || 'https://placehold.co/300x300/181614/8f8f8f?text=ATLAS'}">
-      <div class="tc-body">
-        <div class="tc-name">${t.name}</div>
-        <div class="tc-type">${trainerTypeLabel(t.type)}</div>
-        <div class="tc-meta">
-          ${t.sessions ? `<span>${t.sessions}</span>` : ''}
-          ${t.years ? `<span>${t.years} yrs exp</span>` : ''}
-        </div>
-        <button class="tc-more" onclick="event.stopPropagation(); navigateTo('privatedetail', {id:'${t.id}'})">Know More</button>
-      </div>
-    </div>`).join('') : `<div class="prog-empty">No ${trainerTypeLabel(currentPrivateType).toLowerCase()} trainers added yet.</div>`;
-}
-
-/* ================= TRAINER BOOKING (customer-facing) ================= */
-window._bookingTrainer = null;
-function openTrainerBookingForm(t){
-  window._bookingTrainer = t;
-  document.getElementById('tbTrainerName').textContent = `${t.name} · ${trainerTypeLabel(t.type)}`;
-  document.getElementById('tbName').value = (MY_PROFILE && MY_PROFILE.name) || '';
-  document.getElementById('tbPhone').value = (MY_PROFILE && MY_PROFILE.phone) || '';
-  document.getElementById('tbNote').value = '';
-}
-function closeTrainerBooking(){ goBack(); }
-async function submitTrainerBooking(){
-  const t = window._bookingTrainer;
-  if(!t) return;
-  const name = document.getElementById('tbName').value.trim();
-  const phone = document.getElementById('tbPhone').value.trim();
-  const note = document.getElementById('tbNote').value.trim();
-  if(!name){ showToast('Please enter your name'); return; }
-  if(!phone){ showToast('Please enter your phone number'); return; }
-  const booking = {
-    id: uid('booking'),
-    trainerId: t.id,
-    trainerKind: t.type,
-    trainerName: t.name,
-    name, phone, note,
-    price: trainerPriceNumber(t),
-    createdAt: new Date().toISOString(),
-  };
-  TRAINER_BOOKINGS.push(booking);
-  await setData('atlas:trainerbookings', TRAINER_BOOKINGS, true);
-  await ensureCustomerRecord(name, phone);
-  if(document.getElementById('sec-academy')) renderAcademyAdminTable();
-  if(document.getElementById('sec-private')) renderPrivateAdminTable();
-  if(document.getElementById('sec-bookings')) renderBookingsAdminTable();
-  if(typeof renderCustomersTable==='function' && document.getElementById('sec-customers')) renderCustomersTable();
-  // The booking is saved (so it still shows up in the admin Bookings table), and the
-  // customer is sent straight to WhatsApp with the trainer, with their booking details
-  // pre-filled in the message, so the trainer gets it immediately.
-  if(t.whatsapp){
-    const msg = LANG==='ar'
-      ? `مرحباً ${t.name}، عايز أحجز حصة معاك عن طريق تطبيق ATLAS.\nالاسم: ${name}\nرقم الهاتف: ${phone}${note ? `\nملاحظة: ${note}` : ''}`
-      : `Hi ${t.name}, I'd like to book a session with you through the ATLAS app.\nName: ${name}\nPhone: ${phone}${note ? `\nNote: ${note}` : ''}`;
-    window.open(`https://wa.me/${waNumber(t.whatsapp)}?text=${encodeURIComponent(msg)}`, '_blank');
-    showToast(LANG==='ar' ? 'شكراً لك! جاري تحويلك للواتساب لإتمام الحجز.' : 'Thank you! Opening WhatsApp to complete your booking.');
-  } else {
-    showToast(LANG==='ar' ? 'شكراً لك! تم إرسال حجزك بنجاح.' : 'Thank you! Your booking has been sent.');
-  }
-  goBack();
-}
-
-
-
-/* ================= ADMIN: BOOKINGS (Academy & Camp) =================
-   Lists every session request sent to an Academy or Camp trainer, newest first,
-   with a one-tap WhatsApp button to message that customer back. */
-function renderBookingsAdminTable(){
-  const tbody = document.getElementById('bookingsAdminTable');
-  if(!tbody) return;
-  const filterEl = document.getElementById('bkFilterType');
-  const filter = filterEl ? filterEl.value : 'all';
-  const rows = TRAINER_BOOKINGS
-    .filter(b=> b.trainerKind==='academy' || b.trainerKind==='camp')
-    .filter(b=> filter==='all' || b.trainerKind===filter)
-    .sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||''));
-  tbody.innerHTML = rows.length ? rows.map(b=>`
-    <tr>
-      <td>${b.createdAt ? new Date(b.createdAt).toLocaleString() : '—'}</td>
-      <td>${b.trainerName||'—'}</td>
-      <td><span class="type-pill">${trainerTypeLabel(b.trainerKind)}</span></td>
-      <td>${b.name||'—'}</td>
-      <td>${b.phone||'—'}</td>
-      <td>${b.note||'<span class="empty-note">—</span>'}</td>
-      <td>${b.price ? fmtMoney(b.price) : '—'}</td>
-      <td class="row-actions"><button title="Message on WhatsApp" onclick="whatsappBooking('${b.id}')">💬</button></td>
-    </tr>`).join('') : `<tr><td colspan="8" class="empty-note">No bookings yet.</td></tr>`;
-}
-function whatsappBooking(bookingId){
-  const b = TRAINER_BOOKINGS.find(x=>x.id===bookingId);
-  if(!b || !b.phone){ showToast('No phone number on this booking'); return; }
-  const msg = `Hello ${b.name||''}, this is regarding your session request with ${b.trainerName||'us'}${b.note ? ' ('+b.note+')' : ''}.`;
-  window.open(`https://wa.me/${waNumber(b.phone)}?text=${encodeURIComponent(msg)}`, '_blank');
-}
-function renderAcademyAdminTable(){
-  const tbody = document.getElementById('trainersTable');
-  if(!tbody) return;
-  tbody.innerHTML = ACADEMY.length ? ACADEMY.map(t=>`
-    <tr>
-      <td>${t.photo ? `<img class="trainer-admin-thumb" src="${t.photo}">` : `<div class="trainer-admin-thumb-empty"></div>`}</td>
-      <td>${t.name}</td>
-      <td><span class="type-pill">${trainerTypeLabel(t.type)}</span></td>
-      <td>${trainerBookingCount(t.id)}</td>
-      <td class="row-actions">
-        <button class="btn small secondary" onclick="openTrainerForm('${t.id}')">Edit</button>
-        <button class="btn small danger" onclick="deleteTrainer('${t.id}')">Delete</button>
-      </td>
-    </tr>`).join('') : `<tr><td colspan="5" class="empty-note">No trainers added yet.</td></tr>`;
-}
-function openTrainerForm(id){
-  editingTrainerId = id || null;
-  const panel = document.getElementById('trainerFormPanel');
-  panel.classList.add('open');
-  if(id){
-    const t = ACADEMY.find(x=>x.id===id);
-    document.getElementById('tfName').value = t.name || '';
-    document.getElementById('tfType').value = t.type || 'academy';
-    document.getElementById('tfPrice').value = t.price || '';
-    document.getElementById('tfSessions').value = t.sessions || '';
-    document.getElementById('tfYears').value = t.years || '';
-    document.getElementById('tfBio').value = t.bio || '';
-    document.getElementById('tfSession').value = t.session || '';
-    document.getElementById('tfLocation').value = t.location || '';
-    document.getElementById('tfWhatsapp').value = t.whatsapp || '';
-    window._tfPhoto = t.photo || null;
-  } else {
-    document.getElementById('tfName').value = '';
-    document.getElementById('tfType').value = 'academy';
-    document.getElementById('tfPrice').value = '';
-    document.getElementById('tfSessions').value = '';
-    document.getElementById('tfYears').value = '';
-    document.getElementById('tfBio').value = '';
-    document.getElementById('tfSession').value = '';
-    document.getElementById('tfLocation').value = '';
-    document.getElementById('tfWhatsapp').value = '';
-    window._tfPhoto = null;
-  }
-  renderTrainerPhotoPreview();
-  panel.scrollIntoView({behavior:'smooth'});
-}
-function closeTrainerForm(){ document.getElementById('trainerFormPanel').classList.remove('open'); editingTrainerId=null; }
-function renderTrainerPhotoPreview(){
-  const img = document.getElementById('tfPhotoPreview'), empty = document.getElementById('tfPhotoEmpty');
-  if(window._tfPhoto){ img.src = window._tfPhoto; img.classList.remove('hidden'); empty.classList.add('hidden'); }
-  else { img.classList.add('hidden'); empty.classList.remove('hidden'); }
-}
-async function onTrainerFileChange(e){
-  const file = e.target.files[0]; e.target.value=''; if(!file) return;
-  const compressed = await compressImageFile(file, 900, 0.8);
-  if(!compressed) return;
-  window._tfPhoto = compressed;
-  renderTrainerPhotoPreview();
-}
-async function saveTrainer(){
-  const name = document.getElementById('tfName').value.trim();
-  if(!name){ showToast('Please enter a name'); return; }
-  const data = {
-    id: editingTrainerId || uid('trainer'),
-    name,
-    type: document.getElementById('tfType').value,
-    photo: window._tfPhoto || null,
-    price: document.getElementById('tfPrice').value.trim(),
-    sessions: document.getElementById('tfSessions').value.trim(),
-    years: document.getElementById('tfYears').value.trim(),
-    bio: document.getElementById('tfBio').value.trim(),
-    session: document.getElementById('tfSession').value.trim(),
-    location: document.getElementById('tfLocation').value.trim(),
-    whatsapp: document.getElementById('tfWhatsapp').value.trim(),
-  };
-  if(editingTrainerId){
-    const idx = ACADEMY.findIndex(x=>x.id===editingTrainerId);
-    if(idx>-1) ACADEMY[idx] = data;
-  } else {
-    ACADEMY.push(data);
-  }
-  await setData('atlas:academy', ACADEMY, true);
-  renderAcademyAdminTable();
-  closeTrainerForm();
-  showToast('Trainer saved');
-}
-async function deleteTrainer(id){
-  if(!confirm('Delete this trainer?')) return;
-  ACADEMY = ACADEMY.filter(x=>x.id!==id);
-  await setData('atlas:academy', ACADEMY, true);
-  renderAcademyAdminTable();
-  showToast('Trainer deleted');
-}
-
-/* ================= ADMIN: PRIVATE & FITNESS (trainers) ================= */
-function renderPrivateAdminTable(){
-  const tbody = document.getElementById('privateTrainersTable');
-  if(!tbody) return;
-  tbody.innerHTML = PRIVATE_TRAINERS.length ? PRIVATE_TRAINERS.map(t=>`
-    <tr>
-      <td>${t.photo ? `<img class="trainer-admin-thumb" src="${t.photo}">` : `<div class="trainer-admin-thumb-empty"></div>`}</td>
-      <td>${t.name}</td>
-      <td><span class="type-pill">${trainerTypeLabel(t.type)}</span></td>
-      <td>${t.whatsapp ? `<code>${t.whatsapp}</code>` : '<span class="empty-note">—</span>'}</td>
-      <td class="row-actions">
-        <button class="btn small secondary" onclick="openPrivateTrainerForm('${t.id}')">Edit</button>
-        <button class="btn small danger" onclick="deletePrivateTrainer('${t.id}')">Delete</button>
-      </td>
-    </tr>`).join('') : `<tr><td colspan="5" class="empty-note">No trainers added yet.</td></tr>`;
-}
-function openPrivateTrainerForm(id){
-  editingPrivateTrainerId = id || null;
-  const panel = document.getElementById('privateTrainerFormPanel');
-  panel.classList.add('open');
-  if(id){
-    const t = PRIVATE_TRAINERS.find(x=>x.id===id);
-    document.getElementById('ptfName').value = t.name || '';
-    document.getElementById('ptfType').value = t.type || 'coach';
-    document.getElementById('ptfSessions').value = t.sessions || '';
-    document.getElementById('ptfYears').value = t.years || '';
-    document.getElementById('ptfBio').value = t.bio || '';
-    document.getElementById('ptfSession').value = t.session || '';
-    document.getElementById('ptfLocation').value = t.location || '';
-    document.getElementById('ptfWhatsapp').value = t.whatsapp || '';
-    window._pfPhoto = t.photo || null;
-  } else {
-    document.getElementById('ptfName').value = '';
-    document.getElementById('ptfType').value = 'coach';
-    document.getElementById('ptfSessions').value = '';
-    document.getElementById('ptfYears').value = '';
-    document.getElementById('ptfBio').value = '';
-    document.getElementById('ptfSession').value = '';
-    document.getElementById('ptfLocation').value = '';
-    document.getElementById('ptfWhatsapp').value = '';
-    window._pfPhoto = null;
-  }
-  renderPrivateTrainerPhotoPreview();
-  panel.scrollIntoView({behavior:'smooth'});
-}
-function closePrivateTrainerForm(){ document.getElementById('privateTrainerFormPanel').classList.remove('open'); editingPrivateTrainerId=null; }
-function renderPrivateTrainerPhotoPreview(){
-  const img = document.getElementById('ptfPhotoPreview'), empty = document.getElementById('ptfPhotoEmpty');
-  if(window._pfPhoto){ img.src = window._pfPhoto; img.classList.remove('hidden'); empty.classList.add('hidden'); }
-  else { img.classList.add('hidden'); empty.classList.remove('hidden'); }
-}
-async function onPrivateTrainerFileChange(e){
-  const file = e.target.files[0]; e.target.value=''; if(!file) return;
-  const compressed = await compressImageFile(file, 900, 0.8);
-  if(!compressed) return;
-  window._pfPhoto = compressed;
-  renderPrivateTrainerPhotoPreview();
-}
-async function savePrivateTrainer(){
-  const name = document.getElementById('ptfName').value.trim();
-  if(!name){ showToast('Please enter a name'); return; }
-  const data = {
-    id: editingPrivateTrainerId || uid('trainer'),
-    name,
-    type: document.getElementById('ptfType').value,
-    photo: window._pfPhoto || null,
-    sessions: document.getElementById('ptfSessions').value.trim(),
-    years: document.getElementById('ptfYears').value.trim(),
-    bio: document.getElementById('ptfBio').value.trim(),
-    session: document.getElementById('ptfSession').value.trim(),
-    location: document.getElementById('ptfLocation').value.trim(),
-    whatsapp: document.getElementById('ptfWhatsapp').value.trim(),
-  };
-  if(editingPrivateTrainerId){
-    const idx = PRIVATE_TRAINERS.findIndex(x=>x.id===editingPrivateTrainerId);
-    if(idx>-1) PRIVATE_TRAINERS[idx] = data;
-  } else {
-    PRIVATE_TRAINERS.push(data);
-  }
-  await setData('atlas:privatetrainers', PRIVATE_TRAINERS, true);
-  renderPrivateAdminTable();
-  closePrivateTrainerForm();
-  showToast('Trainer saved');
-}
-async function deletePrivateTrainer(id){
-  if(!confirm('Delete this trainer?')) return;
-  PRIVATE_TRAINERS = PRIVATE_TRAINERS.filter(x=>x.id!==id);
-  await setData('atlas:privatetrainers', PRIVATE_TRAINERS, true);
-  renderPrivateAdminTable();
-  showToast('Trainer deleted');
-}
-
-/* ================= ADMIN: INTRO / HOME SCREEN (onboarding slides + tile images) ================= */
-function renderHomeTilesAdmin(){
-  const map = { store:'Store', academy:'Academy', camp:'Camp', private:'Private' };
-  Object.keys(map).forEach(k=>{
-    const img = document.getElementById('htPreview_'+k), empty = document.getElementById('htEmpty_'+k);
-    if(img){
-      if(HOME_TILES && HOME_TILES[k]){ img.src = HOME_TILES[k]; img.classList.remove('hidden'); if(empty) empty.classList.add('hidden'); }
-      else { img.classList.add('hidden'); if(empty) empty.classList.remove('hidden'); }
-    }
-    const titleInput = document.getElementById('htTitle_'+k), subInput = document.getElementById('htSub_'+k);
-    if(titleInput) titleInput.value = (HOME_TILES && HOME_TILES[k+'Title']) || '';
-    if(subInput) subInput.value = (HOME_TILES && HOME_TILES[k+'Sub']) || '';
-  });
-}
-async function saveHomeTileText(key){
-  HOME_TILES = HOME_TILES || {};
-  HOME_TILES[key+'Title'] = document.getElementById('htTitle_'+key).value.trim();
-  HOME_TILES[key+'Sub'] = document.getElementById('htSub_'+key).value.trim();
-  await setData('atlas:hometiles', HOME_TILES, true);
-  renderHomeTiles();
-  showToast('Tile text updated');
-}
-async function onHomeTileFileChange(e, key){
-  const file = e.target.files[0]; e.target.value=''; if(!file) return;
-  const compressed = await compressImageFile(file, 700, 0.8);
-  if(!compressed) return;
-  HOME_TILES = HOME_TILES || {};
-  HOME_TILES[key] = compressed;
-  await setData('atlas:hometiles', HOME_TILES, true);
-  renderHomeTilesAdmin();
-  renderHomeTiles();
-  showToast('Tile image updated');
-}
-function renderIntroSlidesAdmin(){
-  const tbody = document.getElementById('introSlidesTable');
-  if(!tbody) return;
-  tbody.innerHTML = INTRO_SLIDES.length ? INTRO_SLIDES.map(s=>`
-    <tr>
-      <td>${s.image ? `<img class="trainer-admin-thumb" src="${s.image}">` : `<div class="trainer-admin-thumb-empty"></div>`}</td>
-      <td>${s.title || '<span class="empty-note">—</span>'}</td>
-      <td style="max-width:220px; white-space:normal;">${s.text || '<span class="empty-note">—</span>'}</td>
-      <td class="row-actions">
-        <button class="btn small secondary" onclick="openIntroSlideForm('${s.id}')">Edit</button>
-        <button class="btn small danger" onclick="deleteIntroSlide('${s.id}')">Delete</button>
-      </td>
-    </tr>`).join('') : `<tr><td colspan="4" class="empty-note">No intro screens yet — visitors will see a default ATLAS welcome screen.</td></tr>`;
-}
-function openIntroSlideForm(id){
-  editingIntroSlideId = id || null;
-  const panel = document.getElementById('introSlideFormPanel');
-  panel.classList.add('open');
-  if(id){
-    const s = INTRO_SLIDES.find(x=>x.id===id);
-    document.getElementById('isfTitle').value = s.title || '';
-    document.getElementById('isfText').value = s.text || '';
-    window._isfImage = s.image || null;
-  } else {
-    document.getElementById('isfTitle').value = '';
-    document.getElementById('isfText').value = '';
-    window._isfImage = null;
-  }
-  renderIntroSlidePhotoPreview();
-  panel.scrollIntoView({behavior:'smooth'});
-}
-function closeIntroSlideForm(){ document.getElementById('introSlideFormPanel').classList.remove('open'); editingIntroSlideId=null; }
-function renderIntroSlidePhotoPreview(){
-  const img = document.getElementById('isfPhotoPreview'), empty = document.getElementById('isfPhotoEmpty');
-  if(window._isfImage){ img.src = window._isfImage; img.classList.remove('hidden'); empty.classList.add('hidden'); }
-  else { img.classList.add('hidden'); empty.classList.remove('hidden'); }
-}
-async function onIntroSlideFileChange(e){
-  const file = e.target.files[0]; e.target.value=''; if(!file) return;
-  const compressed = await compressImageFile(file, 900, 0.8);
-  if(!compressed) return;
-  window._isfImage = compressed;
-  renderIntroSlidePhotoPreview();
-}
-async function saveIntroSlide(){
-  const title = document.getElementById('isfTitle').value.trim();
-  const text = document.getElementById('isfText').value.trim();
-  if(!title && !text && !window._isfImage){ showToast('Add an image, title or text first'); return; }
-  const data = {
-    id: editingIntroSlideId || uid('intro'),
-    image: window._isfImage || null,
-    title, text,
-  };
-  if(editingIntroSlideId){
-    const idx = INTRO_SLIDES.findIndex(x=>x.id===editingIntroSlideId);
-    if(idx>-1) INTRO_SLIDES[idx] = data;
-  } else {
-    INTRO_SLIDES.push(data);
-  }
-  await setData('atlas:introslides', INTRO_SLIDES, true);
-  renderIntroSlidesAdmin();
-  closeIntroSlideForm();
-  showToast('Intro screen saved');
-}
-async function deleteIntroSlide(id){
-  if(!confirm('Delete this intro screen?')) return;
-  INTRO_SLIDES = INTRO_SLIDES.filter(x=>x.id!==id);
-  await setData('atlas:introslides', INTRO_SLIDES, true);
-  renderIntroSlidesAdmin();
-  showToast('Intro screen deleted');
 }
 
 /* ================= WHATSAPP BLAST (admin bulk-messaging tool) =================
@@ -5159,13 +4120,13 @@ async function saveCoupon(){
   const limit = parseInt(document.getElementById('cpLimit').value)||0;
   if(!code || !percent){ showToast('Code and discount % are required'); return; }
   COUPONS.push({code, percent, expiry, limit, used:0});
-  await setData('atlas:coupons', COUPONS, true);
+  await setData('aura:coupons', COUPONS, true);
   ['cpCode','cpPercent','cpExpiry','cpLimit'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('couponFormPanel').classList.remove('open');
   renderCouponsTable();
   showToast('Coupon created');
 }
-async function deleteCoupon(code){ COUPONS = COUPONS.filter(c=>c.code!==code); await setData('atlas:coupons', COUPONS, true); renderCouponsTable(); }
+async function deleteCoupon(code){ COUPONS = COUPONS.filter(c=>c.code!==code); await setData('aura:coupons', COUPONS, true); renderCouponsTable(); }
 function renderCouponsTable(){
   document.getElementById('couponsTable').innerHTML = COUPONS.map(c=>`
     <tr><td>${c.code}</td><td>${c.percent}%</td><td>${c.expiry||'—'}</td><td>${c.used||0} / ${c.limit||'∞'}</td>
@@ -5188,7 +4149,7 @@ async function saveReturn(){
   const qty = Math.max(1, parseInt(document.getElementById('rtQty').value)||1);
   const reason = document.getElementById('rtReason').value.trim();
   RETURNS.push({id:uid('ret'), productId, productName:product.name, qty, reason, date: todayStr()});
-  await setData('atlas:returns', RETURNS, true);
+  await setData('aura:returns', RETURNS, true);
   document.getElementById('rtQty').value = 1;
   document.getElementById('rtReason').value = '';
   renderReturnsAdmin();
@@ -5197,7 +4158,7 @@ async function saveReturn(){
 }
 async function deleteReturn(id){
   RETURNS = RETURNS.filter(r=>r.id!==id);
-  await setData('atlas:returns', RETURNS, true);
+  await setData('aura:returns', RETURNS, true);
   renderReturnsAdmin();
   if(typeof renderStatistics==='function' && document.getElementById('sec-statistics')) renderStatistics();
 }
@@ -5302,42 +4263,6 @@ function renderStatistics(){
   document.getElementById('topGovernoratesTable').innerHTML = govTop3.map(([g,s])=>`
     <tr><td>${g}</td><td>${s.orders}</td><td>${fmtMoney(s.revenue)}</td></tr>
   `).join('') || '<tr><td colspan="3" class="empty-note">No orders yet.</td></tr>';
-  renderTrainerStats();
-}
-/* Trainer bookings — how many trainers exist, how many sessions each got booked, and how
-   much that's worth (price × bookings, when the trainer's price field is a plain number). */
-function allTrainers(){ return [...ACADEMY, ...PRIVATE_TRAINERS]; }
-function trainerBookingCount(trainerId){ return TRAINER_BOOKINGS.filter(b=>b.trainerId===trainerId).length; }
-function trainerPriceNumber(t){ const n = parseFloat(String(t.price||'').replace(/[^0-9.]/g,'')); return isNaN(n) ? 0 : n; }
-function renderTrainerStats(){
-  const bookingsInRange = TRAINER_BOOKINGS.filter(b=>inStatsRange((b.createdAt||'').slice(0,10)));
-  const totalTrainers = allTrainers().length;
-  const totalBookings = bookingsInRange.length;
-  const totalRevenue = bookingsInRange.reduce((s,b)=>s + (b.price||0), 0);
-  const campBookings = bookingsInRange.filter(b=>b.trainerKind==='camp');
-  const campRevenue = campBookings.reduce((s,b)=>s + (b.price||0), 0);
-  const academyBookings = bookingsInRange.filter(b=>b.trainerKind==='academy');
-  const academyRevenue = academyBookings.reduce((s,b)=>s + (b.price||0), 0);
-  const cards = [
-    ['🏋', totalTrainers, 'Total Trainers'],
-    ['📅', totalBookings, 'Trainer Bookings'],
-    ['💰', fmtMoney(totalRevenue), 'Trainer Bookings Revenue'],
-    ['🏕', campBookings.length, 'Camp Subscribers'],
-    ['💰', fmtMoney(campRevenue), 'Camp Revenue'],
-    ['🎓', academyBookings.length, 'Academy Subscribers'],
-    ['💰', fmtMoney(academyRevenue), 'Academy Revenue'],
-  ];
-  const grid = document.getElementById('trainerStatsGrid');
-  if(grid) grid.innerHTML = cards.map(c=>`<div class="stat-card"><div class="si">${c[0]}</div><div class="sv">${c[1]}</div><div class="sl">${c[2]}</div></div>`).join('');
-  const rows = allTrainers().map(t=>{
-    const bookings = bookingsInRange.filter(b=>b.trainerId===t.id);
-    const revenue = bookings.reduce((s,b)=>s + (b.price||0), 0);
-    return { name: t.name, type: trainerTypeLabel(t.type), count: bookings.length, revenue };
-  }).sort((a,b)=>b.count-a.count);
-  const tbl = document.getElementById('trainerBookingsTable');
-  if(tbl) tbl.innerHTML = rows.map(r=>`
-    <tr><td>${r.name}</td><td>${r.type}</td><td>${r.count}</td><td>${fmtMoney(r.revenue)}</td></tr>
-  `).join('') || '<tr><td colspan="4" class="empty-note">No trainers added yet.</td></tr>';
 }
 
 /* ================= MONTHLY SALES REPORT ================= */
@@ -5372,7 +4297,7 @@ function exportMonthlyPDF(){
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
   doc.setFontSize(14);
-  doc.text(`${(SETTINGS&&SETTINGS.name)||'ATLAS'} — Sales Report — ${month}`, 14, 16);
+  doc.text(`${(SETTINGS&&SETTINGS.name)||'AURA'} — Sales Report — ${month}`, 14, 16);
   const body = rows.map(o=>[o.id, o.customer, o.date, o.items.reduce((s,i)=>s+i.qty,0), fmtMoney(o.subtotal), fmtMoney(o.shipping), fmtMoney(o.amount), o.status]);
   doc.autoTable({ head:[['Order ID','Customer','Date','Items','Subtotal','Shipping','Total','Status']], body, startY:22, styles:{fontSize:8} });
   const finalY = (doc.lastAutoTable && doc.lastAutoTable.finalY) || 22;
@@ -5390,8 +4315,8 @@ function renderNotifications(){
   updateNotifBadge();
 }
 function iconFor(type){ return {order:'🛒',stock:'📦',review:'⭐',coupon:'🏷'}[type] || '🔔'; }
-async function markRead(id){ const n=NOTIFS.find(x=>x.id===id); if(n){ n.read=true; await setData('atlas:notifications', NOTIFS, true); renderNotifications(); } }
-async function markAllRead(){ NOTIFS.forEach(n=>n.read=true); await setData('atlas:notifications', NOTIFS, true); renderNotifications(); }
+async function markRead(id){ const n=NOTIFS.find(x=>x.id===id); if(n){ n.read=true; await setData('aura:notifications', NOTIFS, true); renderNotifications(); } }
+async function markAllRead(){ NOTIFS.forEach(n=>n.read=true); await setData('aura:notifications', NOTIFS, true); renderNotifications(); }
 
 /* ================= SETTINGS ================= */
 function renderSettingsForm(){
@@ -5454,7 +4379,7 @@ async function onStLogoFileChange(e){
 }
 async function saveSettings(){
   SETTINGS = SETTINGS || defaultSettings();
-  SETTINGS.name = document.getElementById('stName').value.trim() || 'ATLAS';
+  SETTINGS.name = document.getElementById('stName').value.trim() || 'AURA';
   SETTINGS.currency = document.getElementById('stCurrency').value.trim() || 'EGP';
   SETTINGS.whatsapp = document.getElementById('stWhatsapp').value.trim();
   SETTINGS.address = document.getElementById('stAddress').value.trim();
@@ -5471,7 +4396,7 @@ async function saveSettings(){
   SETTINGS.active = document.getElementById('stActiveSwitch').classList.contains('on');
   SETTINGS.ribbon = document.getElementById('stRibbon').value.trim();
   if(window._stLogoData){ SETTINGS.logo = window._stLogoData; window._stLogoData = null; }
-  await setData('atlas:settings', SETTINGS, true);
+  await setData('aura:settings', SETTINGS, true);
   applySettingsToStorefront();
   showToast('Settings saved');
 }
@@ -5482,7 +4407,7 @@ async function changeAdminPassword(){
   if(oldP !== (SETTINGS.password||'123')){ showToast('Current password is incorrect'); return; }
   if(!newP || newP.length<3){ showToast('New password must be at least 3 characters'); return; }
   SETTINGS.password = newP;
-  await setData('atlas:settings', SETTINGS, true);
+  await setData('aura:settings', SETTINGS, true);
   document.getElementById('admOldPass').value=''; document.getElementById('admNewPass').value='';
   showToast('Password updated');
 }
@@ -5533,17 +4458,17 @@ async function removeDataSection(section){
   if(!confirmAdminPassword('Type your admin password to delete this data:')){ showToast('Incorrect password — cancelled'); return; }
   if(!confirm('This will permanently delete this data. Continue?')) return;
   const map = {
-    products: async()=>{ PRODUCTS=[]; await setData('atlas:products', PRODUCTS, true); renderProductsTable(); },
-    orders: async()=>{ ORDERS=[]; await setData('atlas:orders', ORDERS, true); renderOrdersTable(); },
-    returns: async()=>{ RETURNS=[]; await setData('atlas:returns', RETURNS, true); renderReturnsAdmin(); },
-    returnrequests: async()=>{ RETURN_REQUESTS=[]; await setData('atlas:returnrequests', RETURN_REQUESTS, true); renderReturnRequestsAdmin(); },
-    customers: async()=>{ CUSTOMERS=[]; await setData('atlas:customers', CUSTOMERS, true); renderCustomersTable(); },
-    stats: async()=>{ STATS={visitorsByDay:{},salesByDay:{},ordersByDay:{}}; await setData('atlas:stats', STATS, true); },
-    banner: async()=>{ BANNER={image:null,sub:''}; BANNER_SLIDES=[]; await Promise.all([setData('atlas:banner', BANNER, true), setData('atlas:bannerslides', BANNER_SLIDES, true)]); renderBannerAdmin(); renderSlidesAdmin(); renderBanner(); renderSlidesBanner(); },
-    shipping: async()=>{ SHIPPING=defaultShippingRates(); await setData('atlas:shipping', SHIPPING, true); renderShippingAdmin(); },
-    coupons: async()=>{ COUPONS=[]; await setData('atlas:coupons', COUPONS, true); renderCouponsTable(); },
-    categoryimages: async()=>{ CATEGORY_IMAGES={}; await setData('atlas:categoryimages', CATEGORY_IMAGES, true); renderCategoryImagesAdmin(); renderCategoryTiles(); },
-    cart: async()=>{ CART=[]; await setData('atlas:cart', CART, false); renderCart(); }
+    products: async()=>{ PRODUCTS=[]; await setData('aura:products', PRODUCTS, true); renderProductsTable(); },
+    orders: async()=>{ ORDERS=[]; await setData('aura:orders', ORDERS, true); renderOrdersTable(); },
+    returns: async()=>{ RETURNS=[]; await setData('aura:returns', RETURNS, true); renderReturnsAdmin(); },
+    returnrequests: async()=>{ RETURN_REQUESTS=[]; await setData('aura:returnrequests', RETURN_REQUESTS, true); renderReturnRequestsAdmin(); },
+    customers: async()=>{ CUSTOMERS=[]; await setData('aura:customers', CUSTOMERS, true); renderCustomersTable(); },
+    stats: async()=>{ STATS={visitorsByDay:{},salesByDay:{},ordersByDay:{}}; await setData('aura:stats', STATS, true); },
+    banner: async()=>{ BANNER={image:null,sub:''}; BANNER_SLIDES=[]; await Promise.all([setData('aura:banner', BANNER, true), setData('aura:bannerslides', BANNER_SLIDES, true)]); renderBannerAdmin(); renderSlidesAdmin(); renderBanner(); renderSlidesBanner(); },
+    shipping: async()=>{ SHIPPING=defaultShippingRates(); await setData('aura:shipping', SHIPPING, true); renderShippingAdmin(); },
+    coupons: async()=>{ COUPONS=[]; await setData('aura:coupons', COUPONS, true); renderCouponsTable(); },
+    categoryimages: async()=>{ CATEGORY_IMAGES={}; await setData('aura:categoryimages', CATEGORY_IMAGES, true); renderCategoryImagesAdmin(); renderCategoryTiles(); },
+    cart: async()=>{ CART=[]; await setData('aura:cart', CART, false); renderCart(); }
   };
   if(map[section]) await map[section]();
   showToast(section+' data removed');
@@ -5559,17 +4484,17 @@ async function removeAllData(){
 }
 async function removeDataSectionSilent(section){
   const map = {
-    products: async()=>{ PRODUCTS=[]; await setData('atlas:products', PRODUCTS, true); },
-    orders: async()=>{ ORDERS=[]; await setData('atlas:orders', ORDERS, true); },
-    returns: async()=>{ RETURNS=[]; await setData('atlas:returns', RETURNS, true); },
-    returnrequests: async()=>{ RETURN_REQUESTS=[]; await setData('atlas:returnrequests', RETURN_REQUESTS, true); },
-    customers: async()=>{ CUSTOMERS=[]; await setData('atlas:customers', CUSTOMERS, true); },
-    stats: async()=>{ STATS={visitorsByDay:{},salesByDay:{},ordersByDay:{}}; await setData('atlas:stats', STATS, true); },
-    banner: async()=>{ BANNER={image:null,sub:''}; BANNER_SLIDES=[]; await Promise.all([setData('atlas:banner', BANNER, true), setData('atlas:bannerslides', BANNER_SLIDES, true)]); },
-    shipping: async()=>{ SHIPPING=defaultShippingRates(); await setData('atlas:shipping', SHIPPING, true); },
-    coupons: async()=>{ COUPONS=[]; await setData('atlas:coupons', COUPONS, true); },
-    categoryimages: async()=>{ CATEGORY_IMAGES={}; await setData('atlas:categoryimages', CATEGORY_IMAGES, true); },
-    cart: async()=>{ CART=[]; await setData('atlas:cart', CART, false); }
+    products: async()=>{ PRODUCTS=[]; await setData('aura:products', PRODUCTS, true); },
+    orders: async()=>{ ORDERS=[]; await setData('aura:orders', ORDERS, true); },
+    returns: async()=>{ RETURNS=[]; await setData('aura:returns', RETURNS, true); },
+    returnrequests: async()=>{ RETURN_REQUESTS=[]; await setData('aura:returnrequests', RETURN_REQUESTS, true); },
+    customers: async()=>{ CUSTOMERS=[]; await setData('aura:customers', CUSTOMERS, true); },
+    stats: async()=>{ STATS={visitorsByDay:{},salesByDay:{},ordersByDay:{}}; await setData('aura:stats', STATS, true); },
+    banner: async()=>{ BANNER={image:null,sub:''}; BANNER_SLIDES=[]; await Promise.all([setData('aura:banner', BANNER, true), setData('aura:bannerslides', BANNER_SLIDES, true)]); },
+    shipping: async()=>{ SHIPPING=defaultShippingRates(); await setData('aura:shipping', SHIPPING, true); },
+    coupons: async()=>{ COUPONS=[]; await setData('aura:coupons', COUPONS, true); },
+    categoryimages: async()=>{ CATEGORY_IMAGES={}; await setData('aura:categoryimages', CATEGORY_IMAGES, true); },
+    cart: async()=>{ CART=[]; await setData('aura:cart', CART, false); }
   };
   if(map[section]) await map[section]();
 }
@@ -5577,8 +4502,7 @@ async function removeDataSectionSilent(section){
 /* ================= BACKUP ================= */
 function exportBackup(){
   const backup = { exportedAt: new Date().toISOString(), products:PRODUCTS, orders:ORDERS, customers:CUSTOMERS,
-    coupons:COUPONS, notifications:NOTIFS, banner:BANNER, bannerslides:BANNER_SLIDES, stats:STATS, shipping:SHIPPING, settings:SETTINGS, sizeguides:SIZEGUIDES, categoryimages:CATEGORY_IMAGES, returns:RETURNS,
-    academy:ACADEMY, privatetrainers:PRIVATE_TRAINERS, introslides:INTRO_SLIDES, hometiles:HOME_TILES };
+    coupons:COUPONS, notifications:NOTIFS, banner:BANNER, bannerslides:BANNER_SLIDES, stats:STATS, shipping:SHIPPING, settings:SETTINGS, sizeguides:SIZEGUIDES, categoryimages:CATEGORY_IMAGES, returns:RETURNS };
   const blob = new Blob([JSON.stringify(backup, null, 2)], {type:'application/json'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
@@ -5594,22 +4518,18 @@ function importBackup(e){
     try{
       const data = JSON.parse(reader.result);
       if(!confirm('This will overwrite all current store data with the backup file. Continue?')) return;
-      if(data.products) { PRODUCTS = data.products; await setData('atlas:products', PRODUCTS, true); }
-      if(data.orders) { ORDERS = data.orders; await setData('atlas:orders', ORDERS, true); }
-      if(data.customers) { CUSTOMERS = data.customers; await setData('atlas:customers', CUSTOMERS, true); }
-      if(data.coupons) { COUPONS = data.coupons; await setData('atlas:coupons', COUPONS, true); }
-      if(data.notifications) { NOTIFS = data.notifications; await setData('atlas:notifications', NOTIFS, true); }
-      if(data.banner) { BANNER = data.banner; await setData('atlas:banner', BANNER, true); }
-      if(data.stats) { STATS = data.stats; await setData('atlas:stats', STATS, true); }
-      if(data.shipping) { SHIPPING = data.shipping; await setData('atlas:shipping', SHIPPING, true); }
-      if(data.settings) { SETTINGS = data.settings; await setData('atlas:settings', SETTINGS, true); }
-      if(data.sizeguides) { SIZEGUIDES = data.sizeguides; await setData('atlas:sizeguides', SIZEGUIDES, true); }
-      if(data.categoryimages) { CATEGORY_IMAGES = data.categoryimages; await setData('atlas:categoryimages', CATEGORY_IMAGES, true); }
-      if(data.returns) { RETURNS = data.returns; await setData('atlas:returns', RETURNS, true); }
-      if(data.academy) { ACADEMY = data.academy; await setData('atlas:academy', ACADEMY, true); }
-      if(data.privatetrainers) { PRIVATE_TRAINERS = data.privatetrainers; await setData('atlas:privatetrainers', PRIVATE_TRAINERS, true); }
-      if(data.introslides) { INTRO_SLIDES = data.introslides; await setData('atlas:introslides', INTRO_SLIDES, true); }
-      if(data.hometiles) { HOME_TILES = data.hometiles; await setData('atlas:hometiles', HOME_TILES, true); }
+      if(data.products) { PRODUCTS = data.products; await setData('aura:products', PRODUCTS, true); }
+      if(data.orders) { ORDERS = data.orders; await setData('aura:orders', ORDERS, true); }
+      if(data.customers) { CUSTOMERS = data.customers; await setData('aura:customers', CUSTOMERS, true); }
+      if(data.coupons) { COUPONS = data.coupons; await setData('aura:coupons', COUPONS, true); }
+      if(data.notifications) { NOTIFS = data.notifications; await setData('aura:notifications', NOTIFS, true); }
+      if(data.banner) { BANNER = data.banner; await setData('aura:banner', BANNER, true); }
+      if(data.stats) { STATS = data.stats; await setData('aura:stats', STATS, true); }
+      if(data.shipping) { SHIPPING = data.shipping; await setData('aura:shipping', SHIPPING, true); }
+      if(data.settings) { SETTINGS = data.settings; await setData('aura:settings', SETTINGS, true); }
+      if(data.sizeguides) { SIZEGUIDES = data.sizeguides; await setData('aura:sizeguides', SIZEGUIDES, true); }
+      if(data.categoryimages) { CATEGORY_IMAGES = data.categoryimages; await setData('aura:categoryimages', CATEGORY_IMAGES, true); }
+      if(data.returns) { RETURNS = data.returns; await setData('aura:returns', RETURNS, true); }
       showToast('Backup restored — reloading...');
       setTimeout(()=>location.reload(), 1200);
     }catch(err){ console.error(err); showToast('Invalid backup file'); }
