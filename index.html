@@ -116,16 +116,41 @@ header.site-header{position:absolute; top:14px; left:0; right:0; z-index:40; pad
 .banner-bg{position:absolute; inset:0; background:radial-gradient(circle at 50% 40%, var(--maroon-glow), transparent 60%), linear-gradient(180deg, #0a0909 0%, #150d10 60%, #0a0909 100%); z-index:0;}
 .banner-bg.has-image{background-size:cover; background-position:center;}
 .banner-bg.has-image::after{content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(10,9,9,.5), rgba(10,9,9,.88)); mix-blend-mode:multiply;}
+.banner-bg::before{content:''; position:absolute; inset:0; z-index:1; background-image:radial-gradient(rgba(236,231,222,0.05) 1px, transparent 1px); background-size:26px 26px; opacity:.5; pointer-events:none;}
+.banner::after{content:''; position:absolute; left:0; right:0; bottom:0; height:70px; background:linear-gradient(180deg, transparent, var(--bg) 92%); z-index:2; pointer-events:none;}
 .banner-glow{position:absolute; width:340px; height:340px; border-radius:50%; background:radial-gradient(circle, var(--maroon-glow), transparent 70%); filter:blur(10px); animation:pulse 5s ease-in-out infinite; z-index:0;}
 @keyframes pulse{0%,100%{transform:scale(1); opacity:.6;} 50%{transform:scale(1.25); opacity:1;}}
-.banner-content{position:relative; z-index:1; padding:0 20px;}
+.banner-frame{position:absolute; inset:16px; z-index:1; border:1px solid rgba(236,231,222,0.14); border-radius:22px; pointer-events:none;}
+.banner-frame::before, .banner-frame::after, .banner-frame > i::before, .banner-frame > i::after{content:''; position:absolute; width:22px; height:22px; border-color:var(--maroon-light); border-style:solid; opacity:.85;}
+.banner-frame::before{top:-1px; left:-1px; border-width:2px 0 0 2px; border-radius:14px 0 0 0;}
+.banner-frame::after{top:-1px; right:-1px; border-width:2px 2px 0 0; border-radius:0 14px 0 0;}
+.banner-frame > i::before{bottom:-1px; left:-1px; border-width:0 0 2px 2px; border-radius:0 0 0 14px;}
+.banner-frame > i::after{bottom:-1px; right:-1px; border-width:0 2px 2px 0; border-radius:0 0 14px 0;}
+.banner-content{position:relative; z-index:2; padding:0 20px;}
 .banner-content .eyebrow{letter-spacing:5px; font-size:10px; color:var(--gold); text-transform:uppercase; margin-bottom:12px;}
 .banner-content h1{font-family:'Cormorant SC',serif; font-size:clamp(42px,13vw,64px); font-weight:600; letter-spacing:9px; color:var(--cream); text-shadow:0 0 30px var(--maroon-glow);}
 .banner-content p{margin-top:14px; color:var(--muted); font-size:13px; max-width:300px; margin-left:auto; margin-right:auto; line-height:1.6;}
 .banner-content .cta{margin-top:24px; display:inline-block; padding:13px 32px; border:1px solid var(--maroon-light); color:var(--cream); letter-spacing:3px; font-size:11px; text-transform:uppercase; transition:.25s;}
 .banner-content .cta:hover{background:var(--maroon-light); box-shadow:0 0 25px var(--maroon-glow);}
-.banner-content .cta-hero{margin-top:0; padding:18px 46px; font-size:13px; letter-spacing:4px; background:rgba(161,49,72,0.16); backdrop-filter:blur(2px); box-shadow:0 0 40px var(--maroon-glow);}
-.banner-content .cta-hero:hover{transform:translateY(-1px);}
+.banner-content .cta-hero{
+  position:relative; margin-top:26px; display:inline-flex; align-items:center; gap:10px;
+  padding:17px 40px; font-size:12px; letter-spacing:4px; font-weight:600;
+  color:#fff; background:linear-gradient(135deg, var(--maroon-light), var(--maroon) 80%);
+  border:1px solid rgba(236,231,222,0.25); border-radius:30px; overflow:hidden;
+  box-shadow:0 10px 30px rgba(161,49,72,.5), inset 0 1px 0 rgba(255,255,255,.18);
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.banner-content .cta-hero::before{
+  content:''; position:absolute; top:0; left:-60%; width:40%; height:100%;
+  background:linear-gradient(115deg, transparent, rgba(255,255,255,.35), transparent);
+  transform:skewX(-20deg); animation:ctaShine 3.2s ease-in-out infinite;
+}
+@keyframes ctaShine{0%{left:-60%;} 55%,100%{left:130%;}}
+.banner-content .cta-hero svg{width:15px; height:15px; position:relative; z-index:1; transition:transform .25s ease;}
+.banner-content .cta-hero span{position:relative; z-index:1;}
+.banner-content .cta-hero:hover{transform:translateY(-2px); box-shadow:0 14px 36px rgba(161,49,72,.65), inset 0 1px 0 rgba(255,255,255,.22);}
+html[dir="rtl"] .banner-content .cta-hero:hover svg{transform:translateX(-3px);}
+html:not([dir="rtl"]) .banner-content .cta-hero:hover svg{transform:translateX(3px);}
 
 /* ---------- AUTO-MOVING SLIDES BANNER ---------- */
 .slides-banner{position:relative; width:100%; aspect-ratio:16/8; overflow:hidden; background:var(--bg-alt);}
@@ -166,36 +191,44 @@ html[dir="rtl"] .cat-tile-foot{left:16px; right:16px;}
 .cat-chip.active,.cat-chip:hover{border-color:var(--maroon-light); color:var(--cream);}
 
 .grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
-/* Product cards — clean elevated tile: soft glow border, a floating
-   frosted-glass price pill and a glassy wishlist button on the image. */
+/* Product cards — richer elevated tile: a deeper gradient body, a
+   visible dual-tone border, a floating frosted-glass price pill and a
+   glassy wishlist button on the image, with a subtle hover lift. */
 .card{
   background:linear-gradient(180deg, var(--panel) 0%, var(--bg-alt) 100%);
-  border:1px solid var(--line); border-radius:18px; position:relative; overflow:hidden;
-  box-shadow:0 3px 16px rgba(0,0,0,.3);
+  border:1.5px solid rgba(236,231,222,0.14); border-radius:20px; position:relative; overflow:hidden;
+  box-shadow:0 10px 28px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.04);
+  transition:transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .28s ease, border-color .28s ease;
 }
-.card .imgwrap{position:relative; aspect-ratio:3/4; overflow:hidden; background:#1c1518; border-radius:18px 18px 0 0;}
-.card .imgwrap img{width:100%; height:100%; object-fit:cover; filter:grayscale(.5) contrast(1.08) brightness(.93);}
+.card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(161,49,72,0.55);
+  box-shadow:0 18px 40px rgba(0,0,0,.5), 0 0 0 1px rgba(161,49,72,0.2), inset 0 1px 0 rgba(255,255,255,.06);
+}
+.card .imgwrap{position:relative; aspect-ratio:3/4; overflow:hidden; background:#1c1518; border-radius:18px 18px 0 0; border-bottom:1px solid rgba(236,231,222,0.1);}
+.card .imgwrap img{width:100%; height:100%; object-fit:cover; filter:grayscale(.5) contrast(1.08) brightness(.93); transition:transform .5s ease, filter .3s ease;}
+.card:hover .imgwrap img{transform:scale(1.05); filter:grayscale(.25) contrast(1.1) brightness(.98);}
 .card .imgwrap::after{content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(161,49,72,.14) 0%, transparent 40%, rgba(10,9,9,.62) 100%); pointer-events:none;}
-.tag{position:absolute; top:10px; left:10px; background:var(--maroon); color:#fff; font-size:10px; font-weight:600; padding:4px 10px; letter-spacing:.5px; border-radius:20px; z-index:2; box-shadow:0 4px 10px rgba(0,0,0,.35);}
+.tag{position:absolute; top:10px; left:10px; background:linear-gradient(135deg, var(--maroon-light), var(--maroon)); color:#fff; font-size:10px; font-weight:700; padding:5px 11px; letter-spacing:.5px; border-radius:20px; z-index:2; box-shadow:0 4px 12px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.2);}
 html[dir="rtl"] .tag{left:auto; right:10px;}
 .soldout-badge{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(10,9,9,0.6); backdrop-filter:blur(2px); z-index:2;}
 .soldout-badge span{border:1px solid var(--cream); padding:6px 14px; font-size:10px; letter-spacing:1.5px; text-transform:uppercase; border-radius:20px;}
 .price-tag{
-  position:absolute; left:10px; bottom:10px; z-index:2; background:rgba(20,15,17,0.72); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
-  color:#fff; font-size:12px; font-weight:600; padding:6px 13px; border-radius:20px;
-  border:1px solid rgba(236,231,222,0.16); box-shadow:0 4px 14px rgba(0,0,0,.4);
+  position:absolute; left:10px; bottom:10px; z-index:2; background:rgba(20,15,17,0.78); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  color:#fff; font-size:12.5px; font-weight:700; padding:7px 14px; border-radius:20px;
+  border:1px solid rgba(236,231,222,0.22); box-shadow:0 6px 18px rgba(0,0,0,.5);
 }
 html[dir="rtl"] .price-tag{left:auto; right:10px;}
 .card-perf{display:none;}
-.card-body{padding:12px 14px 14px;}
-.card-body .cat{font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:4px;}
-.card-body h3{font-size:13.5px; font-weight:500; margin-bottom:8px; line-height:1.35;}
-.price-row{display:flex; align-items:baseline; gap:7px; margin-bottom:12px; flex-wrap:wrap;}
-.price{font-size:14.5px; color:var(--cream); font-weight:500;}
-.price.discount{color:var(--maroon-light); font-weight:600;}
+.card-body{padding:14px 15px 16px; border-top:1px solid rgba(236,231,222,0.06);}
+.card-body .cat{font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:5px;}
+.card-body h3{font-size:14px; font-weight:600; margin-bottom:9px; line-height:1.35;}
+.price-row{display:flex; align-items:baseline; gap:7px; margin-bottom:13px; flex-wrap:wrap;}
+.price{font-size:15px; color:var(--cream); font-weight:600;}
+.price.discount{color:var(--maroon-light); font-weight:700;}
 .price.strike{color:var(--muted); text-decoration:line-through; font-size:12px; font-weight:400;}
-.quick-add{width:100%; padding:10px; background:transparent; border:1px solid var(--line); border-radius:24px; color:var(--cream); font-size:10px; letter-spacing:1.5px; text-transform:uppercase; transition:background .25s ease, border-color .25s ease, box-shadow .25s ease, transform .2s ease;}
-.quick-add:hover{background:linear-gradient(135deg, var(--maroon-light), var(--maroon)); border-color:transparent; box-shadow:0 8px 20px rgba(161,49,72,.42); transform:translateY(-1px);}
+.quick-add{width:100%; padding:11px; background:rgba(236,231,222,0.03); border:1.5px solid var(--line); border-radius:24px; color:var(--cream); font-size:10px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; transition:background .25s ease, border-color .25s ease, box-shadow .25s ease, transform .2s ease;}
+.quick-add:hover{background:linear-gradient(135deg, var(--maroon-light), var(--maroon)); border-color:transparent; box-shadow:0 10px 24px rgba(161,49,72,.48); transform:translateY(-1px);}
 .quick-add:active{transform:translateY(0);}
 .quick-add:disabled{opacity:.4; cursor:not-allowed; transform:none;}
 
@@ -409,12 +442,35 @@ html[dir="rtl"] .low-stock-tag{right:auto; left:48px;}
 .form-card .btn{border-radius:24px; letter-spacing:2px; box-shadow:0 10px 24px rgba(110,20,35,.35); transition:box-shadow .25s ease, background .25s ease, transform .2s ease;}
 .form-card .btn:hover{box-shadow:0 12px 28px rgba(161,49,72,.5); transform:translateY(-1px);}
 .form-card .btn:active{transform:translateY(0);}
-.invoice-box{border:1px solid var(--line); background:var(--panel); padding:16px; margin-top:8px;}
-.invoice-box h4{font-family:'Cormorant SC',serif; font-size:16px; letter-spacing:1.5px; margin-bottom:10px;}
-.invoice-row{display:flex; justify-content:space-between; gap:10px; font-size:12px; color:var(--muted); padding:7px 0; border-bottom:1px solid var(--line);}
+/* Checkout invoice — styled like a printed paper receipt: warm paper
+   tone, monospace item lines, dashed dividers and a torn/zigzag edge
+   at the top and bottom (cut from a roll). */
+.invoice-box{
+  position:relative; background:#f4efe3; color:#2c2621;
+  padding:20px 16px 24px; margin:18px 0 26px; border-radius:2px;
+  font-family:'Courier New', Courier, monospace;
+  box-shadow:0 14px 30px rgba(0,0,0,.45), 0 1px 0 rgba(255,255,255,.5) inset;
+  transform:rotate(-.4deg);
+}
+.invoice-box::before, .invoice-box::after{
+  content:''; position:absolute; left:0; right:0; height:10px;
+  background-image:
+    linear-gradient(135deg, var(--bg) 50%, transparent 50%),
+    linear-gradient(225deg, var(--bg) 50%, transparent 50%);
+  background-size:14px 14px; background-repeat:repeat-x;
+}
+.invoice-box::before{top:-9px; background-position:top left;}
+.invoice-box::after{bottom:-9px; transform:rotate(180deg); background-position:top left;}
+.invoice-box h4{
+  font-family:'Cormorant SC',serif; font-size:16px; letter-spacing:3px; text-transform:uppercase;
+  text-align:center; margin-bottom:12px; padding-bottom:10px; color:#2c2621;
+  border-bottom:1.5px dashed rgba(44,38,33,.35);
+}
+html[dir="rtl"] .invoice-box h4{font-family:'Tajawal',sans-serif; font-weight:700;}
+.invoice-row{display:flex; justify-content:space-between; gap:10px; font-size:11.5px; color:#665e54; padding:7px 0; border-bottom:1px dashed rgba(44,38,33,.22);}
 .invoice-row:last-child{border-bottom:none;}
-.invoice-item-name{color:var(--cream);}
-.invoice-total-row{display:flex; justify-content:space-between; font-size:16px; margin-top:12px; padding-top:12px; border-top:1px solid var(--line); color:var(--cream);}
+.invoice-item-name{color:#2c2621;}
+.invoice-total-row{display:flex; justify-content:space-between; font-size:16px; font-weight:700; margin-top:12px; padding-top:12px; border-top:1.5px dashed rgba(44,38,33,.35); color:#2c2621;}
 
 .toast{position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:var(--maroon); color:#fff; padding:12px 22px; font-size:12px; letter-spacing:1px; z-index:200; opacity:0; transition:.3s; pointer-events:none; white-space:nowrap;}
 .toast.show{opacity:1; transform:translateX(-50%) translateY(-6px);}
@@ -673,7 +729,9 @@ button:active, .icon-btn:active, .quick-add:active, .btn:active, .checkout-btn:a
   display:flex; align-items:center; justify-content:center;
   box-shadow:0 8px 22px rgba(18,150,90,.45), 0 0 0 1px rgba(255,255,255,.08);
   color:#fff; animation:fadeInUp .4s ease .3s both, waFloatBob 2.6s ease-in-out .8s infinite;
+  cursor:grab; touch-action:none; user-select:none; -webkit-user-select:none;
 }
+.wa-float:active{cursor:grabbing;}
 .wa-float::before, .wa-float::after{
   content:''; position:absolute; inset:0; border-radius:50%;
   border:2px solid rgba(47,214,107,.55); pointer-events:none;
@@ -853,9 +911,10 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
   <section class="banner">
     <div class="banner-bg" id="bannerBg"></div>
     <div class="banner-glow"></div>
+    <div class="banner-frame"><i></i></div>
     <div class="banner-content">
       <p id="bannerSub" style="display:none;">Minimal streetwear for those who move differently.</p>
-      <a href="javascript:void(0)" onclick="scrollToShop()" class="cta cta-hero" data-i18n="shopNow">Shopping Now</a>
+      <a href="javascript:void(0)" onclick="scrollToShop()" class="cta cta-hero"><span data-i18n="shopNow">Shopping Now</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg></a>
     </div>
   </section>
 
@@ -2189,6 +2248,7 @@ async function init(){
 
   setupRouter();
   setupScrollReveal();
+  initWaFloatDrag();
 
   syncFromFirestore(); // real data catches up quietly in the background
 }
@@ -3235,6 +3295,85 @@ function openWhatsAppFloat(){
   if(!SETTINGS || !SETTINGS.whatsapp) return;
   const greeting = LANG==='ar' ? `مرحباً، عندي سؤال عن منتج على ${SETTINGS.name||'AURA'}` : `Hi! I have a question about a product on ${SETTINGS.name||'AURA'}.`;
   window.open(`https://wa.me/${waNumber(SETTINGS.whatsapp)}?text=${encodeURIComponent(greeting)}`, '_blank');
+}
+/* Makes the floating WhatsApp button draggable anywhere on screen (mouse + touch).
+   A tap still opens WhatsApp — only a real drag (past a small threshold) moves the
+   button and is remembered for next visit via cacheSet/cacheGet. */
+function applyWaFloatPos(btn, left, top){
+  btn.style.left = left + 'px';
+  btn.style.top = top + 'px';
+  btn.style.right = 'auto';
+  btn.style.bottom = 'auto';
+}
+function initWaFloatDrag(){
+  const btn = document.getElementById('waFloatBtn');
+  if(!btn || btn.dataset.dragInit) return;
+  btn.dataset.dragInit = '1';
+  // Take over the click behavior ourselves so a drag can suppress the tap-to-open action.
+  btn.removeAttribute('onclick');
+  btn.addEventListener('click', (e)=>{
+    if(btn.dataset.dragged==='1'){ btn.dataset.dragged='0'; e.preventDefault(); e.stopPropagation(); return; }
+    openWhatsAppFloat();
+  });
+
+  const saved = cacheGet('aura:wafloatpos', null);
+  if(saved && typeof saved.left==='number' && typeof saved.top==='number'){
+    const w = btn.offsetWidth || 54, h = btn.offsetHeight || 54;
+    const left = Math.max(6, Math.min(window.innerWidth - w - 6, saved.left));
+    const top = Math.max(6, Math.min(window.innerHeight - h - 6, saved.top));
+    applyWaFloatPos(btn, left, top);
+  }
+
+  let startX=0, startY=0, originLeft=0, originTop=0, moved=false, dragging=false;
+  const THRESH = 6;
+
+  function pointerDown(e){
+    dragging = true; moved = false;
+    const p = e.touches ? e.touches[0] : e;
+    startX = p.clientX; startY = p.clientY;
+    const rect = btn.getBoundingClientRect();
+    originLeft = rect.left; originTop = rect.top;
+    btn.style.transition = 'none';
+    btn.style.animation = 'none';
+    document.addEventListener('mousemove', pointerMove);
+    document.addEventListener('mouseup', pointerUp);
+    document.addEventListener('touchmove', pointerMove, {passive:false});
+    document.addEventListener('touchend', pointerUp);
+  }
+  function pointerMove(e){
+    if(!dragging) return;
+    const p = e.touches ? e.touches[0] : e;
+    const dx = p.clientX - startX, dy = p.clientY - startY;
+    if(Math.abs(dx) > THRESH || Math.abs(dy) > THRESH) moved = true;
+    if(moved && e.cancelable) e.preventDefault();
+    const w = btn.offsetWidth, h = btn.offsetHeight;
+    let left = Math.max(6, Math.min(window.innerWidth - w - 6, originLeft + dx));
+    let top = Math.max(6, Math.min(window.innerHeight - h - 6, originTop + dy));
+    applyWaFloatPos(btn, left, top);
+  }
+  function pointerUp(){
+    dragging = false;
+    btn.style.transition = '';
+    document.removeEventListener('mousemove', pointerMove);
+    document.removeEventListener('mouseup', pointerUp);
+    document.removeEventListener('touchmove', pointerMove);
+    document.removeEventListener('touchend', pointerUp);
+    if(moved){
+      btn.dataset.dragged = '1';
+      const rect = btn.getBoundingClientRect();
+      cacheSet('aura:wafloatpos', {left:rect.left, top:rect.top});
+    }
+  }
+  btn.addEventListener('mousedown', pointerDown);
+  btn.addEventListener('touchstart', pointerDown, {passive:true});
+  window.addEventListener('resize', ()=>{
+    const saved2 = cacheGet('aura:wafloatpos', null);
+    if(!saved2) return;
+    const w = btn.offsetWidth || 54, h = btn.offsetHeight || 54;
+    const left = Math.max(6, Math.min(window.innerWidth - w - 6, saved2.left));
+    const top = Math.max(6, Math.min(window.innerHeight - h - 6, saved2.top));
+    applyWaFloatPos(btn, left, top);
+  });
 }
 function confirmOrderViaWhatsApp(order){
   if(!SETTINGS || !SETTINGS.whatsapp){ return false; }
