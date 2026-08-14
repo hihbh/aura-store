@@ -199,7 +199,7 @@ html[dir="rtl"] .cat-tile-foot{left:16px; right:16px;}
 .cat-chip{flex:0 0 auto; padding:8px 16px; border:1px solid var(--line); border-radius:20px; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); white-space:nowrap;}
 .cat-chip.active,.cat-chip:hover{border-color:var(--maroon-light); color:var(--cream);}
 
-.grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
 /* Product cards — flat, borderless dark tile: the photo sits true-color
    with no color grading, inset a touch from the card edge, an unboxed
    outline heart floats above it, and the name/price/cart sit in a plain
@@ -218,7 +218,7 @@ html[dir="rtl"] .cat-tile-foot{left:16px; right:16px;}
 @media(max-width:480px){
   .card{border-width:1px;}
 }
-.card .imgwrap{position:relative; aspect-ratio:4/5; overflow:hidden; background:#151112; border-radius:12px; margin:8px 8px 0;}
+.card .imgwrap{position:relative; aspect-ratio:3/4; overflow:hidden; background:#151112; border-radius:12px; margin:6px 6px 0;}
 .card .imgwrap img{width:100%; height:100%; object-fit:cover; transition:transform .5s ease;}
 .card:hover .imgwrap img{transform:scale(1.04);}
 .tag{position:absolute; top:10px; left:10px; background:linear-gradient(135deg, var(--maroon-light), var(--maroon)); color:#fff; font-size:10px; font-weight:700; padding:5px 11px; letter-spacing:.5px; border-radius:20px; z-index:2; box-shadow:0 4px 12px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.2);}
@@ -228,25 +228,25 @@ html[dir="rtl"] .tag{left:auto; right:10px;}
 .card-perf{display:none;}
 /* Card body: name, rating (if any), price on the left; the cart button
    floats as a plain outlined circle on the right, level with the price. */
-.card-body{padding:12px 48px 14px 14px; position:relative;}
-.card-body .cat{font-size:8px; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:3px;}
-.card-body h3{font-size:13.5px; font-weight:500; margin-bottom:6px; line-height:1.3; color:var(--cream);}
+.card-body{padding:14px 52px 16px 16px; position:relative;}
+.card-body .cat{font-size:9px; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:4px;}
+.card-body h3{font-size:15px; font-weight:500; margin-bottom:7px; line-height:1.3; color:var(--cream);}
 .card-rating{display:flex; align-items:center; gap:4px; margin-bottom:6px;}
 .card-rating .stars{font-size:9.5px; letter-spacing:1px;}
 .card-rating .count{font-size:8.5px; color:var(--muted);}
 .card-rating.no-rating{display:none;}
 .price-row{display:flex; align-items:baseline; gap:6px; flex-wrap:wrap;}
-.price{font-size:13px; color:var(--muted); font-weight:500;}
+.price{font-size:14.5px; color:var(--muted); font-weight:500;}
 .price.discount{color:var(--cream); font-weight:600;}
-.price.strike{color:var(--muted); text-decoration:line-through; font-size:10.5px; font-weight:400;}
+.price.strike{color:var(--muted); text-decoration:line-through; font-size:11.5px; font-weight:400;}
 .quick-add{
-  position:absolute; right:12px; bottom:12px; z-index:2; width:34px; height:34px; padding:0;
+  position:absolute; right:14px; bottom:14px; z-index:2; width:40px; height:40px; padding:0;
   display:flex; align-items:center; justify-content:center; border-radius:50%;
   background:transparent; border:1.5px solid rgba(236,231,222,0.3); color:var(--cream);
   box-shadow:none; transition:background .25s ease, border-color .25s ease, color .25s ease, transform .2s ease;
 }
-html[dir="rtl"] .quick-add{right:auto; left:12px;}
-.quick-add svg{width:15px; height:15px; stroke:currentColor; fill:none;}
+html[dir="rtl"] .quick-add{right:auto; left:14px;}
+.quick-add svg{width:17px; height:17px; stroke:currentColor; fill:none;}
 .quick-add:hover{background:var(--cream); border-color:var(--cream); color:#0a0909; transform:translateY(-1px) scale(1.05);}
 .quick-add:active{transform:translateY(0) scale(.97);}
 .quick-add:disabled{opacity:.35; cursor:not-allowed; transform:none; box-shadow:none;}
@@ -476,8 +476,8 @@ html[dir="rtl"] .wishlist-panel .drawer-head h3::before{margin-right:0; margin-l
 .wish-actions .wa-add{color:var(--maroon-light); text-decoration:underline;}
 .wish-actions .wa-remove{color:var(--muted); text-decoration:underline;}
 
-.card-wish{position:absolute; top:10px; right:10px; z-index:3; width:30px; height:30px; border-radius:50%; background:none; backdrop-filter:none; -webkit-backdrop-filter:none; border:none; display:flex; align-items:center; justify-content:center; padding:0; color:var(--cream); filter:drop-shadow(0 1px 3px rgba(0,0,0,.6)); transition:.22s ease;}
-.card-wish .wish-heart-svg{width:19px; height:19px;}
+.card-wish{position:absolute; top:12px; right:12px; z-index:3; width:34px; height:34px; border-radius:50%; background:none; backdrop-filter:none; -webkit-backdrop-filter:none; border:none; display:flex; align-items:center; justify-content:center; padding:0; color:var(--cream); filter:drop-shadow(0 1px 3px rgba(0,0,0,.6)); transition:.22s ease;}
+.card-wish .wish-heart-svg{width:22px; height:22px;}
 html[dir="rtl"] .card-wish{right:auto; left:10px;}
 .card-wish:hover{color:var(--maroon-light); transform:scale(1.08);}
 .card-wish.active{color:var(--danger);}
