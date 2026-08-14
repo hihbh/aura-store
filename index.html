@@ -106,26 +106,30 @@ header.site-header{position:absolute; top:14px; left:0; right:0; z-index:40; pad
 
 /* ---------- SLIDE MENU ---------- */
 .menu-panel{position:absolute; inset:0; background:var(--bg); z-index:60; padding:26px 24px; overflow-y:auto;}
-.menu-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:36px;}
-.menu-top .logo{font-family:'Cormorant SC',serif; font-size:29px; letter-spacing:5px; color:var(--maroon-light);}
-.menu-links a{display:block; padding:16px 0; border-bottom:1px solid var(--line); font-size:16px; letter-spacing:1px; text-transform:uppercase; color:var(--cream);}
-.menu-links a:hover{color:var(--maroon-light);}
+.menu-panel::before{content:''; position:absolute; top:0; left:0; right:0; height:220px; background:radial-gradient(circle at 20% 0%, var(--maroon-glow), transparent 65%); opacity:.35; pointer-events:none; z-index:0;}
+.menu-top{position:relative; z-index:1; display:flex; justify-content:space-between; align-items:center; margin-bottom:30px; padding-bottom:18px; border-bottom:1px solid var(--line);}
+.menu-top .logo{font-family:'Cormorant SC',serif; font-size:29px; letter-spacing:5px; color:var(--maroon-light); text-shadow:0 0 14px var(--maroon-glow);}
+.menu-links{position:relative; z-index:1;}
+.menu-links a{display:flex; align-items:center; justify-content:space-between; padding:17px 4px; border-bottom:1px solid var(--line); font-family:'Cormorant SC',serif; font-weight:600; font-size:19px; letter-spacing:2px; text-transform:uppercase; color:var(--cream); transition:color .2s ease, padding-left .2s ease, padding-right .2s ease;}
+html[dir="rtl"] .menu-links a{font-family:'Tajawal',sans-serif; font-weight:600; letter-spacing:.5px;}
+.menu-links a::after{content:'\2192'; font-size:14px; color:var(--muted); transition:transform .2s ease, color .2s ease;}
+html[dir="rtl"] .menu-links a::after{content:'\2190';}
+.menu-links a:hover{color:var(--maroon-light); padding-left:10px;}
+html[dir="rtl"] .menu-links a:hover{padding-left:4px; padding-right:10px;}
+.menu-links a:hover::after{color:var(--maroon-light); transform:translateX(4px);}
+html[dir="rtl"] .menu-links a:hover::after{transform:translateX(-4px);}
 
 /* ---------- BANNER ---------- */
-.banner{position:relative; overflow:hidden; height:78vw; max-height:520px; min-height:400px; display:flex; align-items:center; justify-content:center; text-align:center; padding-top:60px;}
+.banner{position:relative; overflow:hidden; width:100%; height:92vw; max-height:620px; min-height:460px; display:flex; align-items:flex-end; justify-content:center; text-align:center; padding:0 20px 46px;}
 .banner-bg{position:absolute; inset:0; background:radial-gradient(circle at 50% 40%, var(--maroon-glow), transparent 60%), linear-gradient(180deg, #0a0909 0%, #150d10 60%, #0a0909 100%); z-index:0;}
 .banner-bg.has-image{background-size:cover; background-position:center;}
 .banner-bg.has-image::after{content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(10,9,9,.5), rgba(10,9,9,.88)); mix-blend-mode:multiply;}
 .banner-bg::before{content:''; position:absolute; inset:0; z-index:1; background-image:radial-gradient(rgba(236,231,222,0.05) 1px, transparent 1px); background-size:26px 26px; opacity:.5; pointer-events:none;}
-.banner::after{content:''; position:absolute; left:0; right:0; bottom:0; height:70px; background:linear-gradient(180deg, transparent, var(--bg) 92%); z-index:2; pointer-events:none;}
+.banner::after{content:''; position:absolute; left:0; right:0; bottom:0; height:180px; background:linear-gradient(180deg, transparent, rgba(4,4,4,.55) 55%, var(--bg) 96%); z-index:2; pointer-events:none;}
 .banner-glow{position:absolute; width:340px; height:340px; border-radius:50%; background:radial-gradient(circle, var(--maroon-glow), transparent 70%); filter:blur(10px); animation:pulse 5s ease-in-out infinite; z-index:0;}
 @keyframes pulse{0%,100%{transform:scale(1); opacity:.6;} 50%{transform:scale(1.25); opacity:1;}}
-.banner-frame{position:absolute; inset:16px; z-index:1; border:1px solid rgba(236,231,222,0.14); border-radius:22px; pointer-events:none;}
-.banner-frame::before, .banner-frame::after, .banner-frame > i::before, .banner-frame > i::after{content:''; position:absolute; width:22px; height:22px; border-color:var(--maroon-light); border-style:solid; opacity:.85;}
-.banner-frame::before{top:-1px; left:-1px; border-width:2px 0 0 2px; border-radius:14px 0 0 0;}
-.banner-frame::after{top:-1px; right:-1px; border-width:2px 2px 0 0; border-radius:0 14px 0 0;}
-.banner-frame > i::before{bottom:-1px; left:-1px; border-width:0 0 2px 2px; border-radius:0 0 0 14px;}
-.banner-frame > i::after{bottom:-1px; right:-1px; border-width:0 2px 2px 0; border-radius:0 0 14px 0;}
+.banner-frame{position:absolute; inset:16px; z-index:1; border:1px solid rgba(161,49,72,0.35); border-radius:22px; pointer-events:none;}
+/* Corner brackets removed per request — the frame is now a single clean burgundy line with no corner accents. */
 .banner-content{position:relative; z-index:2; padding:0 20px;}
 .banner-content .eyebrow{letter-spacing:5px; font-size:10px; color:var(--gold); text-transform:uppercase; margin-bottom:12px;}
 .banner-content h1{font-family:'Cormorant SC',serif; font-size:clamp(42px,13vw,64px); font-weight:600; letter-spacing:9px; color:var(--cream); text-shadow:0 0 30px var(--maroon-glow);}
@@ -135,20 +139,25 @@ header.site-header{position:absolute; top:14px; left:0; right:0; z-index:40; pad
 .banner-content .cta-hero{
   position:relative; margin-top:26px; display:inline-flex; align-items:center; gap:10px;
   padding:17px 40px; font-size:12px; letter-spacing:4px; font-weight:600;
-  color:#fff; background:linear-gradient(135deg, var(--maroon-light), var(--maroon) 80%);
-  border:1px solid rgba(236,231,222,0.25); border-radius:30px; overflow:hidden;
-  box-shadow:0 10px 30px rgba(161,49,72,.5), inset 0 1px 0 rgba(255,255,255,.18);
+  color:#fff; background:linear-gradient(135deg, #c04664, var(--maroon-light) 55%, var(--maroon) 100%);
+  border:1px solid rgba(236,231,222,0.4); border-radius:30px; overflow:hidden;
+  box-shadow:0 10px 34px rgba(161,49,72,.7), 0 0 40px rgba(161,49,72,.45), inset 0 1px 0 rgba(255,255,255,.28);
   transition:transform .25s ease, box-shadow .25s ease;
+  animation:ctaGlow 2.6s ease-in-out infinite;
+}
+@keyframes ctaGlow{
+  0%,100%{box-shadow:0 10px 34px rgba(161,49,72,.7), 0 0 40px rgba(161,49,72,.45), inset 0 1px 0 rgba(255,255,255,.28);}
+  50%{box-shadow:0 10px 34px rgba(161,49,72,.85), 0 0 60px rgba(161,49,72,.75), inset 0 1px 0 rgba(255,255,255,.35);}
 }
 .banner-content .cta-hero::before{
   content:''; position:absolute; top:0; left:-60%; width:40%; height:100%;
-  background:linear-gradient(115deg, transparent, rgba(255,255,255,.35), transparent);
+  background:linear-gradient(115deg, transparent, rgba(255,255,255,.5), transparent);
   transform:skewX(-20deg); animation:ctaShine 3.2s ease-in-out infinite;
 }
 @keyframes ctaShine{0%{left:-60%;} 55%,100%{left:130%;}}
 .banner-content .cta-hero svg{width:15px; height:15px; position:relative; z-index:1; transition:transform .25s ease;}
 .banner-content .cta-hero span{position:relative; z-index:1;}
-.banner-content .cta-hero:hover{transform:translateY(-2px); box-shadow:0 14px 36px rgba(161,49,72,.65), inset 0 1px 0 rgba(255,255,255,.22);}
+.banner-content .cta-hero:hover{transform:translateY(-2px); box-shadow:0 14px 36px rgba(161,49,72,.8), 0 0 55px rgba(161,49,72,.6), inset 0 1px 0 rgba(255,255,255,.32);}
 html[dir="rtl"] .banner-content .cta-hero:hover svg{transform:translateX(-3px);}
 html:not([dir="rtl"]) .banner-content .cta-hero:hover svg{transform:translateX(3px);}
 
@@ -196,14 +205,17 @@ html[dir="rtl"] .cat-tile-foot{left:16px; right:16px;}
    glassy wishlist button on the image, with a subtle hover lift. */
 .card{
   background:linear-gradient(180deg, var(--panel) 0%, var(--bg-alt) 100%);
-  border:1.5px solid rgba(236,231,222,0.14); border-radius:20px; position:relative; overflow:hidden;
-  box-shadow:0 10px 28px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.04);
+  border:2.5px solid rgba(236,231,222,0.24); border-radius:20px; position:relative; overflow:hidden;
+  box-shadow:0 10px 28px rgba(0,0,0,.45), 0 0 0 1px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.05);
   transition:transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .28s ease, border-color .28s ease;
 }
 .card:hover{
   transform:translateY(-4px);
-  border-color:rgba(161,49,72,0.55);
-  box-shadow:0 18px 40px rgba(0,0,0,.5), 0 0 0 1px rgba(161,49,72,0.2), inset 0 1px 0 rgba(255,255,255,.06);
+  border-color:rgba(161,49,72,0.7);
+  box-shadow:0 18px 40px rgba(0,0,0,.55), 0 0 0 1px rgba(161,49,72,0.25), inset 0 1px 0 rgba(255,255,255,.07);
+}
+@media(max-width:480px){
+  .card{border-width:3px;} /* extra weight on small phones so the card edge never reads as a hairline */
 }
 .card .imgwrap{position:relative; aspect-ratio:3/4; overflow:hidden; background:#1c1518; border-radius:18px 18px 0 0; border-bottom:1px solid rgba(236,231,222,0.1);}
 .card .imgwrap img{width:100%; height:100%; object-fit:cover; filter:grayscale(.5) contrast(1.08) brightness(.93); transition:transform .5s ease, filter .3s ease;}
@@ -268,6 +280,11 @@ html[dir="rtl"] .card.featured .card-body h3{font-family:'Tajawal',sans-serif; f
 }
 html[dir="rtl"] .featured-ribbon{left:auto; right:-38px; transform:rotate(40deg);}
 .featured-ribbon.deal{background:linear-gradient(120deg, var(--danger), var(--maroon));}
+/* The ribbon sweeps across the same top corner as the discount/low-stock
+   badges — on featured cards, drop those badges below the ribbon's sash
+   so nothing gets covered or clipped. */
+.card.featured .tag,
+.card.featured .low-stock-tag{top:56px;}
 
 footer.site-footer{border-top:1px solid var(--line); margin-top:20px; padding:40px 20px 110px; text-align:center; color:var(--muted); font-size:11px;}
 footer.site-footer .flogo{font-family:'Cormorant SC',serif; color:var(--maroon-light); font-size:20px; letter-spacing:5px; margin-bottom:12px;}
@@ -318,7 +335,21 @@ footer.site-footer p{max-width:340px; margin:0 auto 16px; line-height:1.7;}
 .product-panel{position:absolute; inset:0; background:var(--bg); overflow-y:auto;}
 .pp-topbar{position:sticky; top:0; z-index:5; display:flex; justify-content:space-between; align-items:center; padding:14px 16px; background:rgba(10,9,9,0.85); backdrop-filter:blur(8px);}
 .pp-topbar button{background:none; color:var(--cream); font-size:20px;}
-.pp-main-img{aspect-ratio:4/5; overflow:hidden; background:#1c1518;}
+.pp-main-img{position:relative; aspect-ratio:4/5; overflow:hidden; background:#1c1518;}
+/* Floating heart + share buttons over the product photo, matching the
+   glassy circular icon style used on the product-card wishlist button. */
+.pp-img-actions{position:absolute; top:14px; right:14px; z-index:4; display:flex; gap:10px;}
+html[dir="rtl"] .pp-img-actions{right:auto; left:14px;}
+.pp-img-actions button{
+  width:38px; height:38px; border-radius:50%; padding:0;
+  background:rgba(10,9,9,0.55); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(236,231,222,0.18); display:flex; align-items:center; justify-content:center;
+  color:var(--cream); font-size:17px; transition:background .22s ease, color .2s ease, transform .2s ease;
+}
+.pp-img-actions button:hover{background:rgba(10,9,9,0.75); transform:scale(1.06);}
+.pp-img-actions button:active{transform:scale(.94);}
+.pp-img-actions .pp-wish-btn.active{color:var(--danger); box-shadow:0 0 0 1px rgba(178,58,79,.4);}
+.pp-img-actions svg{width:17px; height:17px; stroke:currentColor; fill:none;}
 .pp-main-img img{width:100%; height:100%; object-fit:cover; filter:grayscale(.4) contrast(1.05);}
 .pp-thumbs{display:flex; gap:8px; padding:10px 16px; overflow-x:auto;}
 .pp-thumbs img{width:56px; height:70px; object-fit:cover; filter:grayscale(.5); border:1px solid var(--line); flex:0 0 auto; cursor:pointer;}
@@ -369,9 +400,10 @@ footer.site-footer p{max-width:340px; margin:0 auto 16px; line-height:1.7;}
 .color-swatch.active .swatch-dot{border-color:var(--maroon-light); box-shadow:0 0 0 2px var(--maroon-light);}
 .color-swatch .swatch-name{font-size:10px; color:var(--muted); letter-spacing:.3px; max-width:64px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
 .color-swatch.active .swatch-name{color:var(--cream);}
-.color-swatch.sold-out{opacity:.4; cursor:not-allowed;}
+.color-swatch.sold-out{opacity:.45; cursor:not-allowed;}
 .color-swatch.sold-out .swatch-dot{position:relative;}
-.color-swatch.sold-out .swatch-dot::after{content:''; position:absolute; inset:0; background:linear-gradient(to top right, transparent calc(50% - 1px), var(--danger), transparent calc(50% + 1px)); border-radius:50%;}
+.color-swatch.sold-out .swatch-dot::after{content:''; position:absolute; inset:-1px; background:linear-gradient(to top right, transparent calc(50% - 1.5px), var(--danger), transparent calc(50% + 1.5px)); border-radius:50%;}
+.color-swatch.sold-out .swatch-name{text-decoration:line-through; text-decoration-color:var(--danger);}
 /* ---- Admin: dynamic color builder (name / swatch / linked product / sold out) ---- */
 .pf-color-rows{display:flex; flex-direction:column; gap:10px; margin-top:8px;}
 .pf-color-row{display:flex; align-items:center; gap:8px; flex-wrap:wrap; border:1px solid var(--line); padding:10px; border-radius:4px;}
@@ -411,7 +443,14 @@ footer.site-footer p{max-width:340px; margin:0 auto 16px; line-height:1.7;}
 .drawer-head h3{font-family:'Cormorant SC',serif; font-size:20px; letter-spacing:2px;}
 .drawer-head button{background:none; color:var(--cream); font-size:20px;}
 .wishlist-panel .drawer-head{background:linear-gradient(180deg, rgba(161,49,72,0.12), transparent);}
-.wishlist-panel .drawer-head h3::before{content:'♥'; color:var(--maroon-light); font-size:16px; margin-right:8px; text-shadow:0 0 12px var(--maroon-glow);}
+.wishlist-panel .drawer-head h3{display:flex; align-items:center;}
+.wishlist-panel .drawer-head h3::before{content:''; display:inline-block; width:15px; height:15px; margin-right:8px; flex-shrink:0;
+  background-color:var(--maroon-light);
+  -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg>");
+  mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg>");
+  -webkit-mask-size:contain; mask-size:contain; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+  filter:drop-shadow(0 0 6px var(--maroon-glow));
+}
 html[dir="rtl"] .wishlist-panel .drawer-head h3::before{margin-right:0; margin-left:8px;}
 .wishlist-panel .cart-item img{border:1px solid rgba(161,49,72,0.25);}
 .ship-progress-note{padding:14px 20px 0; font-size:12px; text-align:center; color:var(--muted);}
@@ -430,15 +469,25 @@ html[dir="rtl"] .wishlist-panel .drawer-head h3::before{margin-right:0; margin-l
 .cart-item .stepper button{padding:5px 12px; background:none; color:var(--cream); font-size:13px;}
 .cart-item .remove{font-size:11px; color:var(--muted); text-decoration:underline; margin-top:7px; background:none;}
 .cart-empty{text-align:center; color:var(--muted); font-size:13px; padding:40px 0;}
+.cart-empty .ce-icon{width:52px; height:52px; margin:0 auto 14px; border-radius:50%; background:rgba(236,231,222,0.05); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--muted);}
+.cart-empty .ce-icon svg{width:24px; height:24px; stroke:currentColor; fill:none;}
+.cart-empty p{margin-bottom:16px;}
+.cart-empty .ce-browse{display:inline-block; padding:10px 24px; background:transparent; border:1px solid var(--maroon-light); border-radius:20px; color:var(--cream); font-size:11px; font-weight:500; letter-spacing:2px; text-transform:uppercase; transition:.22s ease;}
+.cart-empty .ce-browse:hover{background:var(--maroon-light); box-shadow:0 0 20px var(--maroon-glow);}
 .wish-actions{display:flex; gap:14px; align-items:center; margin-top:6px;}
 .wish-actions button{background:none; font-size:11px; letter-spacing:.5px;}
 .wish-actions .wa-add{color:var(--maroon-light); text-decoration:underline;}
 .wish-actions .wa-remove{color:var(--muted); text-decoration:underline;}
 
-.card-wish{position:absolute; top:10px; right:10px; z-index:3; width:30px; height:30px; border-radius:50%; background:rgba(10,9,9,0.5); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); border:1px solid rgba(236,231,222,0.16); display:flex; align-items:center; justify-content:center; font-size:15px; color:var(--cream); transition:.22s ease;}
+.card-wish{position:absolute; top:10px; right:10px; z-index:3; width:30px; height:30px; border-radius:50%; background:rgba(10,9,9,0.5); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); border:1px solid rgba(236,231,222,0.16); display:flex; align-items:center; justify-content:center; padding:0; color:var(--cream); transition:.22s ease;}
 html[dir="rtl"] .card-wish{right:auto; left:10px;}
 .card-wish:hover{color:var(--maroon-light); background:rgba(10,9,9,0.7); transform:scale(1.08);}
 .card-wish.active{color:var(--danger); background:rgba(10,9,9,0.75); box-shadow:0 0 0 1px rgba(178,58,79,.4);}
+/* Heart icon as a proper SVG (not a text glyph) so it never renders clipped/cropped
+   at small button sizes — thin outline stroke when inactive, solid fill when wishlisted. */
+.wish-heart-svg{width:16px; height:16px; overflow:visible; display:block; stroke:currentColor; stroke-width:1.6; stroke-linejoin:round; fill:none; transition:fill .2s ease;}
+.card-wish.active .wish-heart-svg, .pp-wish-btn.active .wish-heart-svg{fill:currentColor; stroke:currentColor;}
+.pp-img-actions .wish-heart-svg{width:18px; height:18px;}
 .low-stock-tag{position:absolute; top:10px; right:48px; background:var(--danger); color:#fff; font-size:9px; font-weight:600; padding:4px 9px; letter-spacing:.5px; border-radius:20px; z-index:2; box-shadow:0 4px 10px rgba(0,0,0,.35);}
 html[dir="rtl"] .low-stock-tag{right:auto; left:48px;}
 .sale-countdown{font-size:10px; letter-spacing:.5px; color:var(--danger); font-weight:500; margin-top:4px;}
@@ -447,9 +496,19 @@ html[dir="rtl"] .low-stock-tag{right:auto; left:48px;}
 .sale-countdown-lg.ended{background:var(--panel); color:var(--muted);}
 
 .drawer-foot{padding:16px 20px 20px; border-top:1px solid var(--line);}
-.coupon-row{display:flex; gap:8px; margin-bottom:12px;}
-.coupon-row input{flex:1;}
-.coupon-row button{padding:0 16px; background:var(--bg); border:1px solid var(--line); color:var(--cream); font-size:12px;}
+.coupon-row{display:flex; gap:8px; margin-bottom:12px; position:relative;}
+.coupon-row input{flex:1; border-radius:10px; padding-left:36px;}
+html[dir="rtl"] .coupon-row input{padding-left:12px; padding-right:36px;}
+.coupon-row::before{
+  content:''; position:absolute; left:12px; top:50%; transform:translateY(-50%); width:15px; height:15px;
+  background:var(--muted); opacity:.65; pointer-events:none;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.59 13.41 11 3.83 3.83 11l9.58 9.58a2 2 0 0 0 2.83 0l4.35-4.35a2 2 0 0 0 0-2.82Z'/%3E%3Cline x1='7.5' y1='7.5' x2='7.51' y2='7.5'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.59 13.41 11 3.83 3.83 11l9.58 9.58a2 2 0 0 0 2.83 0l4.35-4.35a2 2 0 0 0 0-2.82Z'/%3E%3Cline x1='7.5' y1='7.5' x2='7.51' y2='7.5'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+html[dir="rtl"] .coupon-row::before{left:auto; right:12px;}
+.coupon-row button{padding:0 20px; background:linear-gradient(135deg, var(--maroon-light), var(--maroon)); border:none; border-radius:10px; color:#fff; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; font-weight:500; transition:filter .2s ease, transform .2s ease;}
+.coupon-row button:hover{filter:brightness(1.1);}
+.coupon-row button:active{transform:scale(.97);}
 .subtotal-row{display:flex; justify-content:space-between; font-size:15px; margin-bottom:12px;}
 .checkout-btn{width:100%; padding:14px; background:var(--maroon); color:#fff; letter-spacing:3px; font-size:12px; text-transform:uppercase;}
 .checkout-btn:hover{background:var(--maroon-light);}
@@ -483,10 +542,11 @@ html[dir="rtl"] .low-stock-tag{right:auto; left:48px;}
    tone, monospace item lines, dashed dividers and a torn/zigzag edge
    at the top and bottom (cut from a roll). */
 .invoice-box{
-  position:relative; background:#f4efe3; color:#2c2621;
+  position:relative; background:linear-gradient(175deg, #1c0f13 0%, #0a0708 100%); color:var(--cream);
   padding:20px 16px 24px; margin:18px 0 26px; border-radius:2px;
   font-family:'Courier New', Courier, monospace;
-  box-shadow:0 14px 30px rgba(0,0,0,.45), 0 1px 0 rgba(255,255,255,.5) inset;
+  border:1px solid rgba(161,49,72,0.4);
+  box-shadow:0 14px 30px rgba(0,0,0,.55), 0 0 0 1px rgba(161,49,72,.12) inset, 0 1px 0 rgba(161,49,72,.12) inset;
   transform:rotate(-.4deg);
 }
 .invoice-box::before, .invoice-box::after{
@@ -500,14 +560,14 @@ html[dir="rtl"] .low-stock-tag{right:auto; left:48px;}
 .invoice-box::after{bottom:-9px; transform:rotate(180deg); background-position:top left;}
 .invoice-box h4{
   font-family:'Cormorant SC',serif; font-size:16px; letter-spacing:3px; text-transform:uppercase;
-  text-align:center; margin-bottom:12px; padding-bottom:10px; color:#2c2621;
-  border-bottom:1.5px dashed rgba(44,38,33,.35);
+  text-align:center; margin-bottom:12px; padding-bottom:10px; color:var(--maroon-light);
+  border-bottom:1.5px dashed rgba(161,49,72,.4);
 }
 html[dir="rtl"] .invoice-box h4{font-family:'Tajawal',sans-serif; font-weight:700;}
-.invoice-row{display:flex; justify-content:space-between; gap:10px; font-size:11.5px; color:#665e54; padding:7px 0; border-bottom:1px dashed rgba(44,38,33,.22);}
+.invoice-row{display:flex; justify-content:space-between; gap:10px; font-size:11.5px; color:var(--muted); padding:7px 0; border-bottom:1px dashed rgba(161,49,72,.2);}
 .invoice-row:last-child{border-bottom:none;}
-.invoice-item-name{color:#2c2621;}
-.invoice-total-row{display:flex; justify-content:space-between; font-size:16px; font-weight:700; margin-top:12px; padding-top:12px; border-top:1.5px dashed rgba(44,38,33,.35); color:#2c2621;}
+.invoice-item-name{color:var(--cream);}
+.invoice-total-row{display:flex; justify-content:space-between; font-size:16px; font-weight:700; margin-top:12px; padding-top:12px; border-top:1.5px dashed rgba(161,49,72,.4); color:var(--maroon-light);}
 
 .toast{position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:var(--maroon); color:#fff; padding:12px 22px; font-size:12px; letter-spacing:1px; z-index:200; opacity:0; transition:.3s; pointer-events:none; white-space:nowrap;}
 .toast.show{opacity:1; transform:translateX(-50%) translateY(-6px);}
@@ -999,7 +1059,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
     <button class="active" onclick="scrollToShop()"><span class="ti"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"></rect><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"></rect><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"></rect><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"></rect></svg></span><span data-i18n="tabShop">Shop</span></button>
     <button onclick="openTrackOrder()"><span class="ti"><svg viewBox="0 0 24 24"><path d="M3 7h11v9H3z"></path><path d="M14 10h4l3 3v3h-7z"></path><circle cx="7" cy="18" r="1.6"></circle><circle cx="17.5" cy="18" r="1.6"></circle></svg></span><span data-i18n="tabTrack">Track</span></button>
     <button class="cart-tab" onclick="openCart()"><span class="cart-fab"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1.2 11a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 8Z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="badge" id="cartBadge2">0</span></span><span class="cart-tab-label" data-i18n="tabCart">Cart</span></button>
-    <button onclick="openWishlist()"><span class="ti"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.35-9.5-8.5C.8 8 2.2 4.5 5.5 4c2-.3 3.7.7 4.5 2 .8-1.3 2.5-2.3 4.5-2 3.3.5 4.7 4 3 7.5C19 15.65 12 20 12 20Z"></path></svg><span class="badge hidden" id="wishBadge2">0</span></span><span data-i18n="tabWishlist">Wishlist</span></button>
+    <button onclick="openWishlist()"><span class="ti"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg><span class="badge hidden" id="wishBadge2">0</span></span><span data-i18n="tabWishlist">Wishlist</span></button>
     <button onclick="openReturnRequest()"><span class="ti"><svg viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"></path><path d="M4 9h10a6 6 0 0 1 0 12h-3"></path></svg></span><span data-i18n="tabReturn">Return</span></button>
   </div>
 </div>
@@ -2039,7 +2099,7 @@ function renderCategoryGridIfChanged(cat, force){
   const list = visibleProducts().filter(p=>p.category===cat);
   const grid = document.getElementById('categoryGrid');
   if(grid){
-    grid.innerHTML = list.length ? list.map(productCardHTML).join('') : '<div class="empty-note" style="grid-column:1/-1;">No products in this category yet.</div>';
+    grid.innerHTML = list.length ? list.map(productCardHTML).join('') : `<div class="empty-note" style="grid-column:1/-1;">${tr('noProductsInCategoryYet')}</div>`;
   }
 }
 
@@ -2162,6 +2222,11 @@ const I18N = {
     getInTouch:'Get in touch — we usually reply within a day.',
     aboutUsEmpty:'This store hasn\'t added an About Us page yet.',
     contactUsEmpty:'Contact details coming soon.', myAccount:'My Account', ourStory:'Our Story',
+    noProductsFound:'No products found.', noProductsYet:'No products yet.', noProductsInCategoryYet:'No products in this category yet.',
+    noProductsViewedYet:'No products viewed yet.', noReturnRequestsYet:'No return requests yet.',
+    invalidCouponCode:'Invalid coupon code.', couponExpiredMsg:'This coupon has expired.', couponLimitReachedMsg:'This coupon has reached its usage limit.',
+    couponAppliedMsg:'Coupon applied:',
+    browseProducts:'Browse Products',
   },
   ar:{
     searchPlaceholder:'ابحث عن المنتجات...', shopNow:'تسوقي الآن',
@@ -2208,6 +2273,11 @@ const I18N = {
     getInTouch:'تواصل معنا — بنرد عادةً خلال يوم.',
     aboutUsEmpty:'المتجر لسه معملش صفحة "من نحن".',
     contactUsEmpty:'بيانات التواصل هتضاف قريباً.', myAccount:'حسابي', ourStory:'قصتنا',
+    noProductsFound:'مفيش منتجات مطابقة.', noProductsYet:'لسه مفيش منتجات.', noProductsInCategoryYet:'لسه مفيش منتجات في القسم ده.',
+    noProductsViewedYet:'لسه معملتيش تصفح لأي منتج.', noReturnRequestsYet:'لسه مفيش طلبات إرجاع.',
+    invalidCouponCode:'كود الخصم غير صحيح.', couponExpiredMsg:'كود الخصم ده منتهي الصلاحية.', couponLimitReachedMsg:'كود الخصم ده وصل للحد الأقصى من الاستخدام.',
+    couponAppliedMsg:'تم تطبيق الكود:',
+    browseProducts:'تصفحي المنتجات',
   }
 };
 function tr(key){ return (I18N[LANG] && I18N[LANG][key]) || I18N.en[key] || key; }
@@ -2526,6 +2596,7 @@ function setupScrollReveal(){
 }
 
 function scrollToShop(){ document.getElementById('shop').scrollIntoView({behavior:'smooth'}); }
+function browseFromEmptyState(){ goBack(); setTimeout(scrollToShop, 350); }
 
 function openMenu(){ navigateTo('menu'); }
 function closeMenu(){ goBack(); }
@@ -2616,7 +2687,7 @@ function renderSearchResults(term){
   if(!term){ box.innerHTML=''; return; }
   const t = term.toLowerCase();
   const matches = visibleProducts().filter(p=>p.name.toLowerCase().includes(t) || p.category.toLowerCase().includes(t));
-  if(matches.length===0){ box.innerHTML = '<div class="search-empty">No products found.</div>'; return; }
+  if(matches.length===0){ box.innerHTML = `<div class="search-empty">${tr('noProductsFound')}</div>`; return; }
   box.innerHTML = matches.slice(0,8).map(p=>{
     const hasDiscount = p.discount && p.discount>0;
     return `<div class="search-result-item" onclick="selectSearchResult('${p.id}')">
@@ -2663,8 +2734,8 @@ function productCardHTML(p, bestSellerIds){
       <div class="imgwrap" onclick="openProductModal('${p.id}')">
         ${ribbon}
         ${hasDiscount ? `<div class="tag">-${discountPct}%</div>` : ''}
-        ${lowStock ? `<div class="low-stock-tag">${tr('onlyLeft').replace('{n}', p.qty)}</div>` : ''}
-        <button class="card-wish ${wished?'active':''}" onclick="event.stopPropagation(); toggleWishlist('${p.id}')">${wished?'♥':'♡'}</button>
+        ${(lowStock && !hasDiscount) ? `<div class="low-stock-tag">${tr('onlyLeft').replace('{n}', p.qty)}</div>` : ''}
+        <button class="card-wish ${wished?'active':''}" onclick="event.stopPropagation(); toggleWishlist('${p.id}')"><svg viewBox="0 0 24 24" class="wish-heart-svg"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg></button>
         ${soldOut ? `<div class="soldout-badge"><span>${tr('soldOut')}</span></div>` : ''}
         <img src="${p.image}" alt="${p.name}" loading="lazy" onload="this.classList.add('loaded'); this.parentElement.classList.add('loaded')" onerror="this.parentElement.classList.add('loaded')">
       </div>
@@ -2686,7 +2757,7 @@ function productCardHTML(p, bestSellerIds){
 function renderProducts(){
   const grid = document.getElementById('productGrid');
   const list = visibleProducts();
-  if(list.length===0){ grid.innerHTML = '<div class="empty-note" style="grid-column:1/-1;">No products found.</div>'; return; }
+  if(list.length===0){ grid.innerHTML = `<div class="empty-note" style="grid-column:1/-1;">${tr('noProductsFound')}</div>`; return; }
   const bsIds = bestSellerIdSet();
   grid.innerHTML = list.map(p=>productCardHTML(p, bsIds)).join('');
 }
@@ -2698,7 +2769,7 @@ function renderBestSellers(){
   const sold = vis.filter(p=>(p.purchases||0)>0).sort((a,b)=>(b.purchases||0)-(a.purchases||0));
   const list = (sold.length ? sold : vis).slice(0,6);
   const bsIds = bestSellerIdSet();
-  grid.innerHTML = list.length ? list.map(p=>productCardHTML(p, bsIds)).join('') : '<div class="empty-note" style="grid-column:1/-1;">No products yet.</div>';
+  grid.innerHTML = list.length ? list.map(p=>productCardHTML(p, bsIds)).join('') : `<div class="empty-note" style="grid-column:1/-1;">${tr('noProductsYet')}</div>`;
 }
 /* ================= PRODUCT PAGE ================= */
 function galleryFor(p){
@@ -2770,6 +2841,10 @@ function renderProductPage(){
   document.getElementById('ppContent').innerHTML = `
     <div class="pp-main-img" id="ppMainWrap">
       <img id="ppMainImg" src="${currentGallery[currentGalleryIdx]}">
+      <div class="pp-img-actions">
+        <button class="pp-wish-btn ${isWished(p.id)?'active':''}" onclick="event.stopPropagation(); toggleWishlist('${p.id}')" aria-label="Wishlist"><svg viewBox="0 0 24 24" class="wish-heart-svg"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg></button>
+        <button class="pp-share-btn" onclick="event.stopPropagation(); shareProduct('${p.id}')" aria-label="Share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"></path><path d="M7.5 7.5 12 3l4.5 4.5"></path><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"></path></svg></button>
+      </div>
       ${currentGallery.length>1 ? `
       <div class="gal-dots">${currentGallery.map((g,i)=>`<span class="${i===currentGalleryIdx?'active':''}"></span>`).join('')}</div>
       ` : ''}
@@ -2814,7 +2889,6 @@ function renderProductPage(){
       <div class="pp-actions">
         <button class="add-cart-btn" ${p.qty<=0?'disabled':''} onclick="addToCartFromModal()">${p.qty<=0?tr('soldOut'):tr('addToCart')}</button>
         <button class="order-now-btn" ${p.qty<=0?'disabled':''} onclick="buyItNow()">${tr('buyItNow')}</button>
-        <button class="share-btn" onclick="shareProduct('${p.id}')"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"></line><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"></line></svg></button>
       </div>
 
       <div class="pp-tabs">
@@ -3103,11 +3177,11 @@ function renderAccountPage(){
     ${lastViewedProduct ? `<div class="cart-item" onclick="openProductModal('${lastViewedProduct.id}')" style="cursor:pointer;">
       <img src="${lastViewedProduct.image}">
       <div class="ci-info"><div class="nm">${lastViewedProduct.name}</div><div class="meta">${fmtMoney(lastViewedProduct.discount>0?lastViewedProduct.discount:lastViewedProduct.price)}</div></div>
-    </div>` : '<div class="empty-note">No products viewed yet.</div>'}
+    </div>` : `<div class="empty-note">${tr('noProductsViewedYet')}</div>`}
     <div style="font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin:20px 0 10px;">Wishlist (${wishItems.length})</div>
-    ${wishItems.length ? wishItems.map(p=>`<div class="cart-item" onclick="openProductModal('${p.id}')" style="cursor:pointer;"><img src="${p.image}"><div class="ci-info"><div class="nm">${p.name}</div><div class="meta">${fmtMoney(p.discount>0?p.discount:p.price)}</div></div></div>`).join('') : '<div class="empty-note">Your wishlist is empty.</div>'}
+    ${wishItems.length ? wishItems.map(p=>`<div class="cart-item" onclick="openProductModal('${p.id}')" style="cursor:pointer;"><img src="${p.image}"><div class="ci-info"><div class="nm">${p.name}</div><div class="meta">${fmtMoney(p.discount>0?p.discount:p.price)}</div></div></div>`).join('') : `<div class="empty-note">${tr('yourWishlistEmpty')}</div>`}
     <div style="font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin:20px 0 10px;">Bag (${cartItems.reduce((s,i)=>s+i.qty,0)} item(s))</div>
-    ${cartItems.length ? cartItems.map(i=>`<div class="cart-item"><img src="${i.image}"><div class="ci-info"><div class="nm">${i.name}</div><div class="meta">${i.size} / ${i.color} × ${i.qty} — ${fmtMoney(i.price*i.qty)}</div></div></div>`).join('') : '<div class="empty-note">Your bag is empty.</div>'}
+    ${cartItems.length ? cartItems.map(i=>`<div class="cart-item"><img src="${i.image}"><div class="ci-info"><div class="nm">${i.name}</div><div class="meta">${i.size} / ${i.color} × ${i.qty} — ${fmtMoney(i.price*i.qty)}</div></div></div>`).join('') : `<div class="empty-note">${tr('yourBagEmpty')}</div>`}
     <button class="btn secondary" style="width:100%; margin-top:22px;" onclick="logoutMyProfile()">Switch Account</button>
   `;
 }
@@ -3516,7 +3590,7 @@ function submitTrackOrder(){
 function renderWishlist(){
   const wrap = document.getElementById('wishlistItems');
   const items = WISHLIST.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean);
-  if(items.length===0){ wrap.innerHTML = `<div class="cart-empty">${tr('yourWishlistEmpty')}</div>`; return; }
+  if(items.length===0){ wrap.innerHTML = `<div class="cart-empty"><div class="ce-icon"><svg viewBox="0 0 24 24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg></div><p>${tr('yourWishlistEmpty')}</p><button class="ce-browse" onclick="browseFromEmptyState()">${tr('browseProducts')}</button></div>`; return; }
   wrap.innerHTML = items.map(p=>{
     const hasDiscount = p.discount && p.discount>0;
     const soldOut = p.qty<=0;
@@ -3671,7 +3745,7 @@ function renderCart(){
   document.getElementById('cartBadge').textContent = count;
   document.getElementById('cartBadge2').textContent = count;
 
-  if(CART.length===0){ wrap.innerHTML = `<div class="cart-empty">${tr('yourBagEmpty')}</div>`; }
+  if(CART.length===0){ wrap.innerHTML = `<div class="cart-empty"><div class="ce-icon">${CART_ICON_SVG}</div><p>${tr('yourBagEmpty')}</p><button class="ce-browse" onclick="browseFromEmptyState()">${tr('browseProducts')}</button></div>`; }
   else {
     wrap.innerHTML = CART.map((i,idx)=>`
       <div class="cart-item">
@@ -3700,17 +3774,17 @@ async function applyCoupon(){
   const code = document.getElementById('couponInput').value.trim().toUpperCase();
   const msg = document.getElementById('couponMsg');
   const c = COUPONS.find(x=>x.code.toUpperCase()===code);
-  if(!c){ msg.textContent = 'Invalid coupon code.'; msg.style.color='var(--danger)'; return; }
-  if(c.expiry && new Date(c.expiry) < new Date()){ msg.textContent='This coupon has expired.'; msg.style.color='var(--danger)'; return; }
-  if(c.limit && c.used >= c.limit){ msg.textContent='This coupon has reached its usage limit.'; msg.style.color='var(--danger)'; return; }
+  if(!c){ msg.textContent = tr('invalidCouponCode'); msg.style.color='var(--danger)'; return; }
+  if(c.expiry && new Date(c.expiry) < new Date()){ msg.textContent=tr('couponExpiredMsg'); msg.style.color='var(--danger)'; return; }
+  if(c.limit && c.used >= c.limit){ msg.textContent=tr('couponLimitReachedMsg'); msg.style.color='var(--danger)'; return; }
   appliedCoupon = c;
-  msg.textContent = `Coupon applied: ${c.percent}% off`; msg.style.color='var(--gold)';
+  msg.textContent = `${tr('couponAppliedMsg')} ${c.percent}% ${tr('offLabel')}`; msg.style.color='var(--gold)';
   renderCart();
 }
 
 function openCheckout(fromCart){
   if(fromCart !== false){ CHECKOUT_ITEMS = CART.map(i=>({...i})); }
-  if(CHECKOUT_ITEMS.length===0){ showToast('Your bag is empty'); return; }
+  if(CHECKOUT_ITEMS.length===0){ showToast(tr('yourBagEmpty')); return; }
   navigateTo('checkout');
 }
 function closeCheckout(){ goBack(); }
