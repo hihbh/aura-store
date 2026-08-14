@@ -230,25 +230,25 @@ html[dir="rtl"] .tag{left:auto; right:10px;}
    gone — cleaner image, and the info reads top-to-bottom like a price tag
    sewn into the tee: name, rating, price, with the cart action floating
    as a circular icon button in the bottom-right corner. */
-.card-body{padding:14px 54px 16px 15px; border-top:1px solid rgba(236,231,222,0.06); position:relative;}
-.card-body .cat{font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:5px;}
-.card-body h3{font-size:14px; font-weight:600; margin-bottom:6px; line-height:1.35;}
-.card-rating{display:flex; align-items:center; gap:5px; margin-bottom:9px;}
-.card-rating .stars{font-size:11.5px; letter-spacing:1.5px;}
-.card-rating .count{font-size:10px; color:var(--muted);}
-.card-rating.no-rating{font-size:10px; color:var(--muted); letter-spacing:.5px;}
-.price-row{display:flex; align-items:baseline; gap:7px; flex-wrap:wrap;}
-.price{font-size:15px; color:var(--cream); font-weight:600;}
+.card-body{padding:10px 44px 12px 13px; border-top:1px solid rgba(236,231,222,0.06); position:relative;}
+.card-body .cat{font-size:8px; letter-spacing:1.2px; text-transform:uppercase; color:var(--muted); margin-bottom:3px;}
+.card-body h3{font-size:12.5px; font-weight:600; margin-bottom:4px; line-height:1.3;}
+.card-rating{display:flex; align-items:center; gap:4px; margin-bottom:6px;}
+.card-rating .stars{font-size:10px; letter-spacing:1.2px;}
+.card-rating .count{font-size:9px; color:var(--muted);}
+.card-rating.no-rating{font-size:9px; color:var(--muted); letter-spacing:.5px;}
+.price-row{display:flex; align-items:baseline; gap:6px; flex-wrap:wrap;}
+.price{font-size:13px; color:var(--cream); font-weight:600;}
 .price.discount{color:var(--maroon-light); font-weight:700;}
-.price.strike{color:var(--muted); text-decoration:line-through; font-size:12px; font-weight:400;}
+.price.strike{color:var(--muted); text-decoration:line-through; font-size:10.5px; font-weight:400;}
 .quick-add{
-  position:absolute; right:12px; bottom:12px; z-index:2; width:38px; height:38px; padding:0;
+  position:absolute; right:10px; bottom:10px; z-index:2; width:32px; height:32px; padding:0;
   display:flex; align-items:center; justify-content:center; border-radius:50%;
   background:rgba(236,231,222,0.04); border:1.5px solid var(--line); color:var(--cream);
   box-shadow:0 8px 18px rgba(0,0,0,.4); transition:background .25s ease, border-color .25s ease, box-shadow .25s ease, transform .2s ease;
 }
 html[dir="rtl"] .quick-add{right:auto; left:12px;}
-.quick-add svg{width:17px; height:17px; stroke:currentColor; fill:none;}
+.quick-add svg{width:15px; height:15px; stroke:currentColor; fill:none;}
 .quick-add:hover{background:linear-gradient(135deg, var(--maroon-light), var(--maroon)); border-color:transparent; box-shadow:0 10px 24px rgba(161,49,72,.5); transform:translateY(-1px) scale(1.05);}
 .quick-add:active{transform:translateY(0) scale(.97);}
 .quick-add:disabled{opacity:.35; cursor:not-allowed; transform:none; box-shadow:none;}
@@ -267,7 +267,7 @@ html[dir="rtl"] .quick-add{right:auto; left:12px;}
 .card.featured:hover{box-shadow:0 0 0 1px rgba(161,49,72,0.5), 0 22px 44px rgba(161,49,72,0.34);}
 .card.featured .imgwrap img{filter:grayscale(.3) contrast(1.12) brightness(.96);}
 .card.featured .card-body{padding-top:12px;}
-.card.featured .card-body h3{font-family:'Cormorant SC',serif; font-size:15.5px; letter-spacing:.5px;}
+.card.featured .card-body h3{font-family:'Cormorant SC',serif; font-size:13.5px; letter-spacing:.5px;}
 html[dir="rtl"] .card.featured .card-body h3{font-family:'Tajawal',sans-serif; font-weight:600;}
 .card.featured .price.discount, .card.featured .price:not(.strike){color:var(--gold);}
 .card.featured .quick-add{border-color:var(--maroon-light); color:var(--cream);}
