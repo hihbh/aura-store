@@ -120,7 +120,8 @@ html[dir="rtl"] .menu-links a:hover{padding-left:4px; padding-right:10px;}
 html[dir="rtl"] .menu-links a:hover::after{transform:translateX(-4px);}
 
 /* ---------- BANNER ---------- */
-.banner{position:relative; overflow:hidden; width:100%; height:92vw; max-height:620px; min-height:460px; display:flex; align-items:flex-end; justify-content:center; text-align:center; padding:0 20px 46px;}
+.banner{position:relative; overflow:hidden; width:100%; height:92vw; max-height:620px; min-height:460px; display:flex; align-items:flex-end; justify-content:center; text-align:center; padding:0 24px 42px;}
+html[dir="rtl"] .banner{justify-content:center; text-align:center;}
 .banner-bg{position:absolute; inset:0; background:radial-gradient(circle at 50% 40%, var(--maroon-glow), transparent 60%), linear-gradient(180deg, #0a0909 0%, #150d10 60%, #0a0909 100%); z-index:0;}
 .banner-bg.has-image{background-size:cover; background-position:center;}
 .banner-bg.has-image::after{content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(10,9,9,.5), rgba(10,9,9,.88)); mix-blend-mode:multiply;}
@@ -130,36 +131,33 @@ html[dir="rtl"] .menu-links a:hover::after{transform:translateX(-4px);}
 @keyframes pulse{0%,100%{transform:scale(1); opacity:.6;} 50%{transform:scale(1.25); opacity:1;}}
 .banner-frame{position:absolute; inset:16px; z-index:1; border:1px solid rgba(161,49,72,0.35); border-radius:22px; pointer-events:none;}
 /* Corner brackets removed per request — the frame is now a single clean burgundy line with no corner accents. */
-.banner-content{position:relative; z-index:2; padding:0 20px;}
+.banner-content{position:relative; z-index:2; padding:0;}
 .banner-content .eyebrow{letter-spacing:5px; font-size:10px; color:var(--gold); text-transform:uppercase; margin-bottom:12px;}
 .banner-content h1{font-family:'Cormorant SC',serif; font-size:clamp(42px,13vw,64px); font-weight:600; letter-spacing:9px; color:var(--cream); text-shadow:0 0 30px var(--maroon-glow);}
-.banner-content p{margin-top:14px; color:var(--muted); font-size:13px; max-width:300px; margin-left:auto; margin-right:auto; line-height:1.6;}
+.banner-content p{margin-top:14px; color:var(--muted); font-size:13px; max-width:300px; line-height:1.6;}
 .banner-content .cta{margin-top:24px; display:inline-block; padding:13px 32px; border:1px solid var(--maroon-light); color:var(--cream); letter-spacing:3px; font-size:11px; text-transform:uppercase; transition:.25s;}
 .banner-content .cta:hover{background:var(--maroon-light); box-shadow:0 0 25px var(--maroon-glow);}
+/* CTA restyled to match a reference: a compact, semi-transparent outlined
+   rectangle tucked in the corner of the banner photo, not a glowing centered
+   pill — but kept in the store's own maroon palette rather than copying the
+   reference's colors. */
 .banner-content .cta-hero{
-  position:relative; margin-top:26px; display:inline-flex; align-items:center; gap:10px;
-  padding:17px 40px; font-size:12px; letter-spacing:4px; font-weight:600;
-  color:#fff; background:linear-gradient(135deg, #c04664, var(--maroon-light) 55%, var(--maroon) 100%);
-  border:1px solid rgba(236,231,222,0.4); border-radius:30px; overflow:hidden;
-  box-shadow:0 10px 34px rgba(161,49,72,.7), 0 0 40px rgba(161,49,72,.45), inset 0 1px 0 rgba(255,255,255,.28);
-  transition:transform .25s ease, box-shadow .25s ease;
-  animation:ctaGlow 2.6s ease-in-out infinite;
+  position:relative; margin-top:0; display:inline-flex; align-items:center; gap:9px;
+  padding:14px 22px; font-size:13px; letter-spacing:.5px; font-weight:500;
+  color:var(--cream); background:rgba(10,9,9,0.55); backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px);
+  border:1.5px solid var(--maroon-light); border-radius:10px; overflow:visible;
+  box-shadow:0 4px 18px rgba(0,0,0,.35);
+  transition:background .25s ease, transform .2s ease, box-shadow .25s ease;
 }
 @keyframes ctaGlow{
   0%,100%{box-shadow:0 10px 34px rgba(161,49,72,.7), 0 0 40px rgba(161,49,72,.45), inset 0 1px 0 rgba(255,255,255,.28);}
   50%{box-shadow:0 10px 34px rgba(161,49,72,.85), 0 0 60px rgba(161,49,72,.75), inset 0 1px 0 rgba(255,255,255,.35);}
 }
-.banner-content .cta-hero::before{
-  content:''; position:absolute; top:0; left:-60%; width:40%; height:100%;
-  background:linear-gradient(115deg, transparent, rgba(255,255,255,.5), transparent);
-  transform:skewX(-20deg); animation:ctaShine 3.2s ease-in-out infinite;
-}
-@keyframes ctaShine{0%{left:-60%;} 55%,100%{left:130%;}}
+.banner-content .cta-hero:hover{background:rgba(161,49,72,0.3); transform:translateY(-2px); box-shadow:0 6px 22px rgba(0,0,0,.4);}
 .banner-content .cta-hero svg{width:15px; height:15px; position:relative; z-index:1; transition:transform .25s ease;}
 .banner-content .cta-hero span{position:relative; z-index:1;}
-.banner-content .cta-hero:hover{transform:translateY(-2px); box-shadow:0 14px 36px rgba(161,49,72,.8), 0 0 55px rgba(161,49,72,.6), inset 0 1px 0 rgba(255,255,255,.32);}
-html[dir="rtl"] .banner-content .cta-hero:hover svg{transform:translateX(-3px);}
-html:not([dir="rtl"]) .banner-content .cta-hero:hover svg{transform:translateX(3px);}
+html[dir="rtl"] .banner-content .cta-hero:hover svg{transform:translate(-3px,-3px);}
+html:not([dir="rtl"]) .banner-content .cta-hero:hover svg{transform:translate(3px,-3px);}
 
 /* ---------- AUTO-MOVING SLIDES BANNER ---------- */
 .slides-banner{position:relative; width:100%; aspect-ratio:16/8; overflow:hidden; background:var(--bg-alt);}
@@ -1008,7 +1006,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
     <div class="banner-frame"><i></i></div>
     <div class="banner-content">
       <p id="bannerSub" style="display:none;">Minimal streetwear for those who move differently.</p>
-      <a href="javascript:void(0)" onclick="scrollToShop()" class="cta cta-hero"><span data-i18n="shopNow">Shopping Now</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg></a>
+      <a href="javascript:void(0)" onclick="scrollToShop()" class="cta cta-hero"><span data-i18n="shopNow">Shop Now</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
     </div>
   </section>
 
@@ -1293,7 +1291,12 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
       <div class="form-panel" id="productFormPanel">
         <div class="form-grid">
           <div><label>Name</label><input id="pfName"></div>
-          <div><label>Category</label><input id="pfCategory" placeholder="e.g. Tees, Denim"></div>
+          <div class="full">
+            <label>Category — pick an existing one or add a new one</label>
+            <div class="cat-strip" id="pfCatStrip" style="margin-bottom:0;"></div>
+            <input id="pfCategoryNew" placeholder="Type new category name..." class="hidden" style="margin-top:8px;">
+            <input type="hidden" id="pfCategory">
+          </div>
           <div><label>Price ($)</label><input id="pfPrice" type="number" step="0.01"></div>
           <div><label>Discount Price ($)</label><input id="pfDiscount" type="number" step="0.01"></div>
           <div><label>Offer Ends (optional)</label><input id="pfSaleEnd" type="datetime-local"></div>
@@ -1824,19 +1827,35 @@ function cacheSet(key, val){
    shared=false -> data private to this browser/device (cart, wishlist) — stored per
                     anonymous-auth user in "users/{uid}/private"
 ================================================================================= */
+/* Distinguishes "the document genuinely doesn't exist yet" from "we couldn't reach
+   Firestore" (timeout, offline, blocked network...). These used to be indistinguishable
+   — getData returned `def` for both — which meant a slow/dropped connection looked
+   exactly like "this store has no products yet" to syncFromFirestore, and that function
+   would reseed the demo catalog AND WRITE IT BACK to Firestore, wiping out real admin
+   data for every visitor. See the FETCH_FAILED checks in syncFromFirestore. */
+const FETCH_FAILED = Symbol('fetch-failed');
 async function getData(key, def, shared){
-  if(!fbReady) return def; // Firebase not configured yet — falls back to defaults
+  if(!fbReady) return FETCH_FAILED; // Firebase not configured yet — this is a failure to reach it, not "no data"
   try{
     const uidVal = shared ? null : await ensureAuth();
     const ref = shared
       ? fbDb.collection('store').doc(key)
       : fbDb.collection('users').doc(uidVal).collection('private').doc(key);
-    const snap = await withTimeout(ref.get(), 8000, null); // bounded — never hangs the caller forever
-    if(!snap || !snap.exists) return def;
+    const snap = await withTimeout(ref.get(), 8000, FETCH_FAILED); // bounded — never hangs the caller forever
+    if(snap === FETCH_FAILED) return FETCH_FAILED;
+    if(!snap.exists) return def;
     const val = snap.data().value;
     cacheSet(key, val);
     return val;
-  }catch(e){ console.error('getData failed for '+key, e); return def; }
+  }catch(e){ console.error('getData failed for '+key, e); return FETCH_FAILED; }
+}
+/* For every caller that doesn't need to tell "failed" apart from "empty" (they already
+   pass their current in-memory value as `def`, so falling back to it is correct either
+   way) — use this instead of getData directly. Only syncFromFirestore needs the raw
+   FETCH_FAILED signal, to avoid reseeding/overwriting shared data on a bad connection. */
+async function getDataOrDefault(key, def, shared){
+  const v = await getData(key, def, shared);
+  return v===FETCH_FAILED ? def : v;
 }
 async function setData(key, val, shared){
   cacheSet(key, val); // reflect the change locally immediately, don't wait on the network round-trip
@@ -2029,7 +2048,7 @@ async function registerPushToken(){
     const reg = await navigator.serviceWorker.register('firebase-messaging-sw.js');
     const token = await fbMessaging.getToken({ vapidKey: FCM_VAPID_KEY, serviceWorkerRegistration: reg });
     if(!token) return;
-    const existing = await getData('aura:pushtokens', [], true);
+    const existing = await getDataOrDefault('aura:pushtokens', [], true);
     if(!existing.includes(token)){
       existing.push(token);
       await setData('aura:pushtokens', existing, true);
@@ -2176,7 +2195,7 @@ function seedProducts(){
 let LANG = cacheGet('aura:lang', 'en');
 const I18N = {
   en:{
-    searchPlaceholder:'Search products...', shopNow:'Shopping Now',
+    searchPlaceholder:'Search products...', shopNow:'Shop Now',
     shopByCategory:'Shop by Category', findYourFit:'Find your fit',
     bestSellers:'Best Sellers', mostLoved:'Our most-loved styles',
     allProducts:'All Products', everyPiece:'Every piece, one energy',
@@ -2341,6 +2360,7 @@ async function init(){
   document.getElementById('pfImageFile').addEventListener('change', onProductFileChange);
   document.getElementById('sizeGuideFile').addEventListener('change', onSizeGuideFileChange);
   document.getElementById('categoryImageFile').addEventListener('change', onCategoryImageFileChange);
+  document.getElementById('pfCategoryNew').addEventListener('input', onPfCategoryNewInput);
   document.getElementById('stLogoFile').addEventListener('change', onStLogoFileChange);
   document.querySelectorAll('#adminNav button').forEach(btn=>{
     btn.addEventListener('click', ()=> switchAdminSection(btn.dataset.sec));
@@ -2381,18 +2401,36 @@ async function syncFromFirestore(){
   const prevSlidesJSON = JSON.stringify(BANNER_SLIDES);
   const prevSettingsJSON = JSON.stringify(SETTINGS);
 
-  PRODUCTS = products || seedProducts();
-  if(!products){ await setData('aura:products', PRODUCTS, true); }
-  ORDERS = orders; CUSTOMERS = customers; COUPONS = coupons; NOTIFS = notifs;
-  BANNER = banner; BANNER_SLIDES = bannerslides; STATS = stats; CART = cart; WISHLIST = wishlist; SHIPPING = shipping;
-  SETTINGS = settings || defaultSettings();
-  if(!settings){ await setData('aura:settings', SETTINGS, true); }
-  SIZEGUIDES = sizeguides;
-  RETURNS = returns;
-  RETURN_REQUESTS = returnrequests;
-  CATEGORY_IMAGES = categoryimages || {};
-  MY_PROFILE = myprofile || MY_PROFILE;
-  MY_LAST_VIEWED = lastviewed || MY_LAST_VIEWED;
+  /* Only ever reseed-and-write-back when Firestore genuinely confirmed there's no
+     products/settings doc yet (products/settings !== FETCH_FAILED but falsy). If the
+     read merely failed (timeout, dropped connection, blocked domain) we keep whatever
+     is already in memory and try again on the next sync — we never treat "couldn't
+     check" as "empty store". This is what used to silently wipe out real products on a
+     bad connection. */
+  if(products !== FETCH_FAILED){
+    PRODUCTS = products || seedProducts();
+    if(!products){ await setData('aura:products', PRODUCTS, true); }
+  }
+  if(orders!==FETCH_FAILED) ORDERS = orders;
+  if(customers!==FETCH_FAILED) CUSTOMERS = customers;
+  if(coupons!==FETCH_FAILED) COUPONS = coupons;
+  if(notifs!==FETCH_FAILED) NOTIFS = notifs;
+  if(banner!==FETCH_FAILED) BANNER = banner;
+  if(bannerslides!==FETCH_FAILED) BANNER_SLIDES = bannerslides;
+  if(stats!==FETCH_FAILED) STATS = stats;
+  if(cart!==FETCH_FAILED) CART = cart;
+  if(wishlist!==FETCH_FAILED) WISHLIST = wishlist;
+  if(shipping!==FETCH_FAILED) SHIPPING = shipping;
+  if(settings !== FETCH_FAILED){
+    SETTINGS = settings || defaultSettings();
+    if(!settings){ await setData('aura:settings', SETTINGS, true); }
+  }
+  if(sizeguides!==FETCH_FAILED) SIZEGUIDES = sizeguides;
+  if(returns!==FETCH_FAILED) RETURNS = returns;
+  if(returnrequests!==FETCH_FAILED) RETURN_REQUESTS = returnrequests;
+  if(categoryimages!==FETCH_FAILED) CATEGORY_IMAGES = categoryimages || {};
+  if(myprofile!==FETCH_FAILED) MY_PROFILE = myprofile || MY_PROFILE;
+  if(lastviewed!==FETCH_FAILED) MY_LAST_VIEWED = lastviewed || MY_LAST_VIEWED;
 
   const t = todayStr();
   STATS.visitorsByDay[t] = (STATS.visitorsByDay[t]||0) + 1;
@@ -3243,6 +3281,16 @@ function toggleWishlist(id){
   setData('aura:wishlist', WISHLIST, false);
 }
 function renderWishlistBadge(){
+  /* WISHLIST can end up holding an id whose product no longer exists (deleted, or not
+     synced yet), and that id used to sit in the array forever — the badge (raw
+     WISHLIST.length) kept counting it while the drawer (which filters by real products)
+     showed empty. Pruning here keeps the badge and the drawer showing the same truth,
+     and stops the stale id from coming back. */
+  const validIds = WISHLIST.filter(id=>PRODUCTS.some(p=>p.id===id));
+  if(validIds.length !== WISHLIST.length){
+    WISHLIST = validIds;
+    setData('aura:wishlist', WISHLIST, false);
+  }
   const b = document.getElementById('wishBadge2');
   b.textContent = WISHLIST.length;
   b.classList.toggle('hidden', WISHLIST.length===0);
@@ -3913,7 +3961,7 @@ async function addNotification(type, message){
 
 /* ================= ADMIN ================= */
 async function openAdmin(){
-  SETTINGS = await getData('aura:settings', SETTINGS || defaultSettings(), true);
+  SETTINGS = await getDataOrDefault('aura:settings', SETTINGS || defaultSettings(), true);
   if(!ADMIN_LOGGED_IN){
     document.getElementById('admLoginErr').textContent='';
     document.getElementById('admLoginPass').value='';
@@ -3926,7 +3974,7 @@ async function openAdmin(){
 }
 async function submitAdminLogin(){
   const pass = document.getElementById('admLoginPass').value;
-  SETTINGS = SETTINGS || await getData('aura:settings', defaultSettings(), true);
+  SETTINGS = SETTINGS || await getDataOrDefault('aura:settings', defaultSettings(), true);
   if(pass !== (SETTINGS.password || '123')){
     document.getElementById('admLoginErr').textContent = 'Incorrect password';
     return;
@@ -3942,16 +3990,16 @@ function cancelAdminLogin(){
   document.getElementById('adminLoginBackdrop').classList.add('hidden');
 }
 async function loadAdminAndShow(){
-  PRODUCTS = await getData('aura:products', PRODUCTS, true);
-  ORDERS = await getData('aura:orders', ORDERS, true);
-  CUSTOMERS = await getData('aura:customers', CUSTOMERS, true);
-  COUPONS = await getData('aura:coupons', COUPONS, true);
-  NOTIFS = await getData('aura:notifications', NOTIFS, true);
-  BANNER = await getData('aura:banner', BANNER, true);
-  STATS = await getData('aura:stats', STATS, true);
-  SHIPPING = await getData('aura:shipping', SHIPPING, true);
-  SETTINGS = await getData('aura:settings', SETTINGS || defaultSettings(), true);
-  SIZEGUIDES = await getData('aura:sizeguides', SIZEGUIDES, true);
+  PRODUCTS = await getDataOrDefault('aura:products', PRODUCTS, true);
+  ORDERS = await getDataOrDefault('aura:orders', ORDERS, true);
+  CUSTOMERS = await getDataOrDefault('aura:customers', CUSTOMERS, true);
+  COUPONS = await getDataOrDefault('aura:coupons', COUPONS, true);
+  NOTIFS = await getDataOrDefault('aura:notifications', NOTIFS, true);
+  BANNER = await getDataOrDefault('aura:banner', BANNER, true);
+  STATS = await getDataOrDefault('aura:stats', STATS, true);
+  SHIPPING = await getDataOrDefault('aura:shipping', SHIPPING, true);
+  SETTINGS = await getDataOrDefault('aura:settings', SETTINGS || defaultSettings(), true);
+  SIZEGUIDES = await getDataOrDefault('aura:sizeguides', SIZEGUIDES, true);
   document.getElementById('admin').classList.remove('hidden');
   switchAdminSection('products');
 }
@@ -4039,6 +4087,7 @@ function openProductForm(id){
     document.getElementById('pfName').value = p.name;
     document.getElementById('pfCategory').value = p.category;
     document.getElementById('pfPrice').value = p.price;
+    renderPfCategoryPicker();
     document.getElementById('pfDiscount').value = p.discount||'';
     document.getElementById('pfSaleEnd').value = p.saleEndsAt||'';
     document.getElementById('pfQty').value = p.qty;
@@ -4061,17 +4110,52 @@ function openProductForm(id){
       ? {name:c, hex:'', productId:'', soldOut:false}
       : {name:c.name||'', hex:c.hex||'', productId:(c.productId && c.productId!==p.id) ? c.productId : '', soldOut:!!c.soldOut});
   } else {
-    ['pfName','pfCategory','pfPrice','pfDiscount','pfSaleEnd','pfQty','pfSku','pfTags','pfVideo','pfDesc','pfDetails'].forEach(id=>document.getElementById(id).value='');
+    ['pfName','pfCategory','pfCategoryNew','pfPrice','pfDiscount','pfSaleEnd','pfQty','pfSku','pfTags','pfVideo','pfDesc','pfDetails'].forEach(id=>document.getElementById(id).value='');
     window._pfImages = [];
     window._pfSizes = [];
     window._pfColors = [];
   }
+  renderPfCategoryPicker();
   renderPfSizeRows();
   renderPfImagesGrid();
   renderPfColorRows();
   panel.scrollIntoView({behavior:'smooth'});
 }
 /* ---- Dynamic color builder for the product form: name / swatch / linked product / sold out ---- */
+/* ---- Category picker for the product form: pill chips (store's existing .cat-chip
+   style, same shape/colors as the homepage category strip) built from every category
+   already in use, plus a "+ New Category" chip that reveals a text field. Lets the
+   admin either reuse an existing category or type a brand new one without ever having
+   two categories that only differ by a typo. ---- */
+function renderPfCategoryPicker(){
+  const strip = document.getElementById('pfCatStrip');
+  const newInput = document.getElementById('pfCategoryNew');
+  if(!strip) return;
+  const current = document.getElementById('pfCategory').value;
+  const cats = [...new Set(PRODUCTS.map(p=>p.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+  const isNew = !!current && !cats.includes(current);
+  strip.innerHTML = cats.map(c=>`<button type="button" class="cat-chip${(c===current && !isNew)?' active':''}" onclick="selectPfCategory('${c.replace(/'/g,"\\'")}')">${c.replace(/</g,'&lt;')}</button>`).join('')
+    + `<button type="button" class="cat-chip${isNew?' active':''}" onclick="selectPfCategoryNew()">+ New Category</button>`;
+  newInput.classList.toggle('hidden', !isNew);
+  if(isNew) newInput.value = current; else if(document.activeElement!==newInput) newInput.value = '';
+}
+function selectPfCategory(cat){
+  document.getElementById('pfCategory').value = cat;
+  renderPfCategoryPicker();
+}
+function selectPfCategoryNew(){
+  document.getElementById('pfCategory').value = '';
+  renderPfCategoryPicker();
+  document.getElementById('pfCategoryNew').focus();
+}
+function onPfCategoryNewInput(){
+  const val = document.getElementById('pfCategoryNew').value.trim();
+  document.getElementById('pfCategory').value = val;
+  /* Just flip the active chip instead of a full re-render, so the field being typed into never loses focus. */
+  const strip = document.getElementById('pfCatStrip');
+  strip.querySelectorAll('.cat-chip').forEach(ch=>ch.classList.remove('active'));
+  if(strip.lastElementChild) strip.lastElementChild.classList.add('active');
+}
 function renderPfColorRows(){
   const box = document.getElementById('pfColorRows');
   if(!box) return;
