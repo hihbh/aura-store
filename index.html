@@ -194,8 +194,9 @@ html[dir="rtl"] .cat-tile-foot{left:16px; right:16px;}
 .cat-tile-img img{transition:transform .5s ease;}
 
 .cat-strip{display:flex; gap:10px; overflow-x:auto; padding-bottom:6px; margin-bottom:24px;}
-.cat-chip{flex:0 0 auto; padding:8px 16px; border:1px solid var(--line); border-radius:20px; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); white-space:nowrap;}
-.cat-chip.active,.cat-chip:hover{border-color:var(--maroon-light); color:var(--cream);}
+.cat-chip{flex:0 0 auto; padding:8px 16px; border:1px solid var(--line); border-radius:20px; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); white-space:nowrap; transition:background .15s ease, border-color .15s ease, color .15s ease;}
+.cat-chip:hover{border-color:var(--maroon-light); color:var(--cream);}
+.cat-chip.active{border-color:var(--maroon-light); color:#fff; background:var(--maroon); box-shadow:0 0 0 1px var(--maroon-light);}
 
 .grid{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
 /* Product cards — flat, borderless dark tile: the photo sits true-color
@@ -1097,7 +1098,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
 <div class="overlay hidden" id="cartOverlay">
   <div class="stage">
     <div class="cart-panel">
-      <div class="drawer-head"><h3 data-i18n="shoppingBag">Shopping Bag</h3><button onclick="closeCart()">✕</button></div>
+      <div class="drawer-head"><h3 data-i18n="shoppingBag">Shopping Bag</h3><div style="display:flex; align-items:center; gap:8px;"><button class="icon-btn" style="width:32px;height:32px;" onclick="closeCart(); openAccount();" aria-label="My Account" data-i18n-aria="myAccount"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="16" height="16"><circle cx="12" cy="8" r="3.6"></circle><path d="M4.5 20c1.4-4 4.2-6 7.5-6s6.1 2 7.5 6"></path></svg></button><button onclick="closeCart()">✕</button></div></div>
       <div class="cart-items" id="cartItems"></div>
       <div class="drawer-foot">
         <div class="coupon-row">
@@ -1294,6 +1295,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
           <div class="full">
             <label>Category — pick an existing one or add a new one</label>
             <div class="cat-strip" id="pfCatStrip" style="margin-bottom:0;"></div>
+            <div id="pfCategorySelectedNote" style="font-size:12px; color:var(--muted); margin-top:8px;"></div>
             <input id="pfCategoryNew" placeholder="Type new category name..." class="hidden" style="margin-top:8px;">
             <input type="hidden" id="pfCategory">
           </div>
@@ -1873,6 +1875,220 @@ async function setData(key, val, shared){
   }catch(e){ console.error('setData failed for '+key, e); return false; }
 }
 
+/* ================= PRODUCTS: ONE FIRESTORE DOCUMENT PER PRODUCT =================
+   Every other shared data type (orders, customers, coupons...) is small enough to live as
+   one JSON array inside a single "store/aura:<key>" document. Products can't: each one may
+   carry a few compressed photos as base64, and Firestore hard-caps a single document at
+   1MB — no way around it. Cramming every product into one shared document meant the WHOLE
+   catalog had to fit under that 1MB combined, which is why only a handful of products with
+   real photos could ever be saved. Products now live in their own top-level "products"
+   collection, one document per product (keyed by product id). Each product's own document
+   still has to stay under 1MB — comfortably true even with several compressed photos — but
+   the catalog as a whole no longer shares a single combined ceiling. */
+let _knownProductIds = new Set(); // ids last confirmed to exist in Firestore, so persistProducts() knows what to delete
+function productsColRef(){ return fbDb.collection('products'); }
+
+async function getProductsData(){
+  if(!fbReady) return FETCH_FAILED;
+  try{
+    const snap = await withTimeout(productsColRef().get(), 8000, FETCH_FAILED);
+    if(snap === FETCH_FAILED) return FETCH_FAILED;
+    if(snap.empty) return null; // "no products collection yet" — same signal the old missing-doc case gave
+    const list = snap.docs.map(d=>d.data());
+    _knownProductIds = new Set(list.map(p=>p.id));
+    cacheSet('aura:products', list);
+    return list;
+  }catch(e){ console.error('getProductsData failed', e); return FETCH_FAILED; }
+}
+
+async function setProductsData(products){
+  cacheSet('aura:products', products); // instant local mirror, same as setData()
+  if(!fbReady) return false;
+  try{
+    const batch = fbDb.batch();
+    const currentIds = new Set();
+    products.forEach(p=>{ currentIds.add(p.id); batch.set(productsColRef().doc(p.id), p); });
+    _knownProductIds.forEach(id=>{ if(!currentIds.has(id)) batch.delete(productsColRef().doc(id)); }); // remove products deleted since last save
+    const ok = await withTimeout(batch.commit().then(()=>true), 8000, false);
+    if(ok) _knownProductIds = currentIds;
+    return ok;
+  }catch(e){ console.error('setProductsData failed', e); return false; }
+}
+
+/* One-time upgrade for stores whose whole catalog still lives in the old single
+   "store/aura:products" document from before this change. Only runs when the new
+   collection is genuinely empty, so it can never overwrite real per-product data that's
+   already been migrated. */
+async function migrateLegacyProductsDocIfNeeded(){
+  if(!fbReady) return;
+  try{
+    const legacy = await fbDb.collection('store').doc('aura:products').get();
+    if(!legacy.exists) return;
+    const legacyList = legacy.data().value || [];
+    if(!legacyList.length) return;
+    const already = await productsColRef().limit(1).get();
+    if(!already.empty) return; // new collection already has data — nothing to migrate
+    const batch = fbDb.batch();
+    legacyList.forEach(p=> batch.set(productsColRef().doc(p.id), p));
+    await batch.commit();
+    _knownProductIds = new Set(legacyList.map(p=>p.id));
+  }catch(e){ console.error('product migration failed', e); }
+}
+
+/* ================= BANNER SLIDES / SIZE GUIDES / CATEGORY IMAGES:
+   ONE FIRESTORE DOCUMENT PER ITEM =================
+   Same 1MB-per-document ceiling that hit the products catalog also applies here:
+   these used to be stored as a single "store/aura:<key>" document holding EVERY
+   slide/guide/category image's base64 data combined. A handful of compressed
+   photos was enough to blow past 1MB combined, even though each individual image
+   was comfortably small on its own. Moved to the same one-doc-per-item pattern as
+   products: each item gets its own document, so the ceiling applies per-item
+   instead of to the whole collection. */
+
+/* ---- Banner slides: collection "bannerSlides", doc id "s<index>" ---- */
+let _knownBannerSlideCount = 0;
+function bannerSlidesColRef(){ return fbDb.collection('bannerSlides'); }
+async function getBannerSlidesData(){
+  if(!fbReady) return FETCH_FAILED;
+  try{
+    const snap = await withTimeout(bannerSlidesColRef().get(), 8000, FETCH_FAILED);
+    if(snap === FETCH_FAILED) return FETCH_FAILED;
+    if(snap.empty) return null; // "no slides collection yet" — same signal the old missing-doc case gave
+    const list = snap.docs.map(d=>d.data()).sort((a,b)=>(a.order||0)-(b.order||0)).map(d=>d.image);
+    _knownBannerSlideCount = list.length;
+    cacheSet('aura:bannerslides', list);
+    return list;
+  }catch(e){ console.error('getBannerSlidesData failed', e); return FETCH_FAILED; }
+}
+async function setBannerSlidesData(slides){
+  cacheSet('aura:bannerslides', slides); // instant local mirror, same as setData()
+  if(!fbReady) return false;
+  try{
+    const batch = fbDb.batch();
+    slides.forEach((img,i)=> batch.set(bannerSlidesColRef().doc('s'+i), {image:img, order:i}));
+    for(let i=slides.length; i<_knownBannerSlideCount; i++){ batch.delete(bannerSlidesColRef().doc('s'+i)); } // remove slides deleted since last save
+    const ok = await withTimeout(batch.commit().then(()=>true), 8000, false);
+    if(ok) _knownBannerSlideCount = slides.length;
+    return ok;
+  }catch(e){ console.error('setBannerSlidesData failed', e); return false; }
+}
+async function migrateLegacyBannerSlidesDocIfNeeded(){
+  if(!fbReady) return;
+  try{
+    const legacy = await fbDb.collection('store').doc('aura:bannerslides').get();
+    if(!legacy.exists) return;
+    const legacyList = legacy.data().value || [];
+    if(!legacyList.length) return;
+    const already = await bannerSlidesColRef().limit(1).get();
+    if(!already.empty) return; // new collection already has data — nothing to migrate
+    const batch = fbDb.batch();
+    legacyList.forEach((img,i)=> batch.set(bannerSlidesColRef().doc('s'+i), {image:img, order:i}));
+    await batch.commit();
+    _knownBannerSlideCount = legacyList.length;
+  }catch(e){ console.error('banner slides migration failed', e); }
+}
+
+/* ---- Size guides & category images: one doc per category, keyed by an
+   encoded category name (categories are free-text and may contain slashes,
+   spaces, unicode — encodeURIComponent keeps the doc id valid either way) ---- */
+function catDocId(cat){ return encodeURIComponent(cat); }
+
+let _knownSizeGuideIds = new Set();
+function sizeGuidesColRef(){ return fbDb.collection('sizeGuides'); }
+async function getSizeGuidesData(){
+  if(!fbReady) return FETCH_FAILED;
+  try{
+    const snap = await withTimeout(sizeGuidesColRef().get(), 8000, FETCH_FAILED);
+    if(snap === FETCH_FAILED) return FETCH_FAILED;
+    if(snap.empty) return null;
+    const obj = {};
+    snap.docs.forEach(d=>{ const v=d.data(); obj[v.category]=v.image; });
+    _knownSizeGuideIds = new Set(snap.docs.map(d=>d.id));
+    cacheSet('aura:sizeguides', obj);
+    return obj;
+  }catch(e){ console.error('getSizeGuidesData failed', e); return FETCH_FAILED; }
+}
+async function setSizeGuidesData(obj){
+  cacheSet('aura:sizeguides', obj);
+  if(!fbReady) return false;
+  try{
+    const batch = fbDb.batch();
+    const currentIds = new Set();
+    Object.keys(obj).forEach(cat=>{
+      const id = catDocId(cat);
+      currentIds.add(id);
+      batch.set(sizeGuidesColRef().doc(id), {category:cat, image:obj[cat]});
+    });
+    _knownSizeGuideIds.forEach(id=>{ if(!currentIds.has(id)) batch.delete(sizeGuidesColRef().doc(id)); });
+    const ok = await withTimeout(batch.commit().then(()=>true), 8000, false);
+    if(ok) _knownSizeGuideIds = currentIds;
+    return ok;
+  }catch(e){ console.error('setSizeGuidesData failed', e); return false; }
+}
+async function migrateLegacySizeGuidesDocIfNeeded(){
+  if(!fbReady) return;
+  try{
+    const legacy = await fbDb.collection('store').doc('aura:sizeguides').get();
+    if(!legacy.exists) return;
+    const legacyObj = legacy.data().value || {};
+    if(!Object.keys(legacyObj).length) return;
+    const already = await sizeGuidesColRef().limit(1).get();
+    if(!already.empty) return;
+    const batch = fbDb.batch();
+    Object.keys(legacyObj).forEach(cat=> batch.set(sizeGuidesColRef().doc(catDocId(cat)), {category:cat, image:legacyObj[cat]}));
+    await batch.commit();
+    _knownSizeGuideIds = new Set(Object.keys(legacyObj).map(catDocId));
+  }catch(e){ console.error('size guides migration failed', e); }
+}
+
+let _knownCategoryImageIds = new Set();
+function categoryImagesColRef(){ return fbDb.collection('categoryImages'); }
+async function getCategoryImagesData(){
+  if(!fbReady) return FETCH_FAILED;
+  try{
+    const snap = await withTimeout(categoryImagesColRef().get(), 8000, FETCH_FAILED);
+    if(snap === FETCH_FAILED) return FETCH_FAILED;
+    if(snap.empty) return null;
+    const obj = {};
+    snap.docs.forEach(d=>{ const v=d.data(); obj[v.category]=v.image; });
+    _knownCategoryImageIds = new Set(snap.docs.map(d=>d.id));
+    cacheSet('aura:categoryimages', obj);
+    return obj;
+  }catch(e){ console.error('getCategoryImagesData failed', e); return FETCH_FAILED; }
+}
+async function setCategoryImagesData(obj){
+  cacheSet('aura:categoryimages', obj);
+  if(!fbReady) return false;
+  try{
+    const batch = fbDb.batch();
+    const currentIds = new Set();
+    Object.keys(obj).forEach(cat=>{
+      const id = catDocId(cat);
+      currentIds.add(id);
+      batch.set(categoryImagesColRef().doc(id), {category:cat, image:obj[cat]});
+    });
+    _knownCategoryImageIds.forEach(id=>{ if(!currentIds.has(id)) batch.delete(categoryImagesColRef().doc(id)); });
+    const ok = await withTimeout(batch.commit().then(()=>true), 8000, false);
+    if(ok) _knownCategoryImageIds = currentIds;
+    return ok;
+  }catch(e){ console.error('setCategoryImagesData failed', e); return false; }
+}
+async function migrateLegacyCategoryImagesDocIfNeeded(){
+  if(!fbReady) return;
+  try{
+    const legacy = await fbDb.collection('store').doc('aura:categoryimages').get();
+    if(!legacy.exists) return;
+    const legacyObj = legacy.data().value || {};
+    if(!Object.keys(legacyObj).length) return;
+    const already = await categoryImagesColRef().limit(1).get();
+    if(!already.empty) return;
+    const batch = fbDb.batch();
+    Object.keys(legacyObj).forEach(cat=> batch.set(categoryImagesColRef().doc(catDocId(cat)), {category:cat, image:legacyObj[cat]}));
+    await batch.commit();
+    _knownCategoryImageIds = new Set(Object.keys(legacyObj).map(catDocId));
+  }catch(e){ console.error('category images migration failed', e); }
+}
+
 /* ================= REAL-TIME SYNC ACROSS DEVICES =================
    Whenever the admin (or another customer) changes shared data, every open
    tab/phone updates automatically — no refresh needed.
@@ -1880,10 +2096,15 @@ async function setData(key, val, shared){
 function attachRealtimeListeners(){
   if(!fbReady) return;
 
-  fbDb.collection('store').doc('aura:products').onSnapshot(snap=>{
-    if(!snap.exists) return;
-    PRODUCTS = snap.data().value || [];
-    renderMenu(); renderCategoryTiles(); renderProducts(); renderBestSellers();
+  productsColRef().onSnapshot(snap=>{
+    PRODUCTS = snap.docs.map(d=>d.data());
+    _knownProductIds = new Set(PRODUCTS.map(p=>p.id));
+    cacheSet('aura:products', PRODUCTS);
+    const _hgSig = homeGridSignature();
+    if(_hgSig !== _homeGridSig){
+      _homeGridSig = _hgSig;
+      renderMenu(); renderCategoryTiles(); renderProducts(); renderBestSellers();
+    }
     if(currentProduct){
       const p = PRODUCTS.find(x=>x.id===currentProduct.id);
       if(p){
@@ -1937,14 +2158,30 @@ function attachRealtimeListeners(){
     if(isNewRequest && ADMIN_LOGGED_IN){ notifyNewActivity(`New return request for order ${incoming[0].orderId}`); }
   });
   fbDb.collection('store').doc('aura:banner').onSnapshot(snap=>{ if(snap.exists){ BANNER = snap.data().value; renderBanner(); } });
-  fbDb.collection('store').doc('aura:bannerslides').onSnapshot(snap=>{ if(snap.exists){ BANNER_SLIDES = snap.data().value || []; renderSlidesBanner(); if(typeof renderSlidesAdmin==='function' && document.getElementById('sec-banner')) renderSlidesAdmin(); } });
+  bannerSlidesColRef().onSnapshot(snap=>{
+    const list = snap.docs.map(d=>d.data()).sort((a,b)=>(a.order||0)-(b.order||0)).map(d=>d.image);
+    BANNER_SLIDES = list;
+    _knownBannerSlideCount = list.length;
+    renderSlidesBanner();
+    if(typeof renderSlidesAdmin==='function' && document.getElementById('sec-banner')) renderSlidesAdmin();
+  });
   fbDb.collection('store').doc('aura:stats').onSnapshot(snap=>{ if(snap.exists){ STATS = snap.data().value || STATS; } });
   fbDb.collection('store').doc('aura:settings').onSnapshot(snap=>{ if(snap.exists){ SETTINGS = snap.data().value; applySettingsToStorefront(); } });
-  fbDb.collection('store').doc('aura:sizeguides').onSnapshot(snap=>{
-    if(!snap.exists) return;
-    SIZEGUIDES = snap.data().value || {};
+  sizeGuidesColRef().onSnapshot(snap=>{
+    const obj = {};
+    snap.docs.forEach(d=>{ const v=d.data(); obj[v.category]=v.image; });
+    SIZEGUIDES = obj;
+    _knownSizeGuideIds = new Set(snap.docs.map(d=>d.id));
     if(typeof renderSizeGuidesAdmin==='function' && document.getElementById('sec-sizeguides')) renderSizeGuidesAdmin();
     if(currentProduct) renderProductPage();
+  });
+  categoryImagesColRef().onSnapshot(snap=>{
+    const obj = {};
+    snap.docs.forEach(d=>{ const v=d.data(); obj[v.category]=v.image; });
+    CATEGORY_IMAGES = obj;
+    _knownCategoryImageIds = new Set(snap.docs.map(d=>d.id));
+    if(typeof renderCategoryImagesAdmin==='function' && document.getElementById('sec-categoryimages')) renderCategoryImagesAdmin();
+    renderCategoryTiles();
   });
 
   fbDb.collection('store').doc('aura:notifications').onSnapshot(snap=>{
@@ -2108,6 +2345,21 @@ function productPageSignature(p){
 let _catGridSig = null;
 function catGridSignature(cat){
   return visibleProducts().filter(p=>p.category===cat).map(p=>p.id+':'+p.qty+':'+p.price+':'+p.discount+':'+(p.purchases||0)).join('|');
+}
+/* Signature of everything the homepage (menu links, "shop by category" tiles, main product
+   grid, best sellers) is currently painted with. Same idea as catGridSignature above: the
+   realtime products listener fires on EVERY write to the shared products doc — including the
+   harmless view-count +1 that happens whenever ANY visitor opens ANY product — and it was
+   unconditionally re-running innerHTML on all four of those sections every single time. On a
+   store with real traffic that happens constantly, so a tap on a category tile or menu link
+   could land on an element that gets torn down and replaced mid-tap, which is exactly what
+   makes a tap look like it "did nothing" and need a second try. It also means a category you
+   just assigned to a product can appear to not have "taken" if the tile you're looking at gets
+   silently rebuilt back under your thumb a moment later. views is deliberately left out so
+   that harmless counter never triggers a repaint. */
+let _homeGridSig = null;
+function homeGridSignature(){
+  return PRODUCTS.map(p=>[p.id,p.category,p.name,p.image,p.qty,p.price,p.discount,p.purchases||0,!!p.archived].join(':')).join('|');
 }
 function renderCategoryGridIfChanged(cat, force){
   const sig = catGridSignature(cat);
@@ -2375,23 +2627,29 @@ async function init(){
 
 async function syncFromFirestore(){
   if(!fbReady){ return; }
+  await Promise.all([
+    migrateLegacyProductsDocIfNeeded(), // one-time: move any old single-document catalog into the new one-doc-per-product collection before reading
+    migrateLegacyBannerSlidesDocIfNeeded(),
+    migrateLegacySizeGuidesDocIfNeeded(),
+    migrateLegacyCategoryImagesDocIfNeeded(),
+  ]);
   const [products, orders, customers, coupons, notifs, banner, bannerslides, stats, cart, wishlist, shipping, settings, sizeguides, returns, returnrequests, categoryimages, myprofile, lastviewed] = await Promise.all([
-    getData('aura:products', null, true),
+    getProductsData(),
     getData('aura:orders', [], true),
     getData('aura:customers', [], true),
     getData('aura:coupons', [], true),
     getData('aura:notifications', [], true),
     getData('aura:banner', {image:null, sub:'Minimal streetwear for those who move differently.'}, true),
-    getData('aura:bannerslides', [], true),
+    getBannerSlidesData(),
     getData('aura:stats', {visitorsByDay:{}, salesByDay:{}, ordersByDay:{}}, true),
     getData('aura:cart', [], false),
     getData('aura:wishlist', [], false),
     getData('aura:shipping', defaultShippingRates(), true),
     getData('aura:settings', null, true),
-    getData('aura:sizeguides', {}, true),
+    getSizeGuidesData(),
     getData('aura:returns', [], true),
     getData('aura:returnrequests', [], true),
-    getData('aura:categoryimages', {}, true),
+    getCategoryImagesData(),
     getData('aura:myprofile', null, false),
     getData('aura:lastviewed', null, false),
   ]);
@@ -2409,14 +2667,14 @@ async function syncFromFirestore(){
      bad connection. */
   if(products !== FETCH_FAILED){
     PRODUCTS = products || seedProducts();
-    if(!products){ await setData('aura:products', PRODUCTS, true); }
+    if(!products){ await setProductsData(PRODUCTS); }
   }
   if(orders!==FETCH_FAILED) ORDERS = orders;
   if(customers!==FETCH_FAILED) CUSTOMERS = customers;
   if(coupons!==FETCH_FAILED) COUPONS = coupons;
   if(notifs!==FETCH_FAILED) NOTIFS = notifs;
   if(banner!==FETCH_FAILED) BANNER = banner;
-  if(bannerslides!==FETCH_FAILED) BANNER_SLIDES = bannerslides;
+  if(bannerslides!==FETCH_FAILED) BANNER_SLIDES = bannerslides || []; // null = collection genuinely empty (no slides yet)
   if(stats!==FETCH_FAILED) STATS = stats;
   if(cart!==FETCH_FAILED) CART = cart;
   if(wishlist!==FETCH_FAILED) WISHLIST = wishlist;
@@ -2425,7 +2683,7 @@ async function syncFromFirestore(){
     SETTINGS = settings || defaultSettings();
     if(!settings){ await setData('aura:settings', SETTINGS, true); }
   }
-  if(sizeguides!==FETCH_FAILED) SIZEGUIDES = sizeguides;
+  if(sizeguides!==FETCH_FAILED) SIZEGUIDES = sizeguides || {}; // null = collection genuinely empty (no size guides yet)
   if(returns!==FETCH_FAILED) RETURNS = returns;
   if(returnrequests!==FETCH_FAILED) RETURN_REQUESTS = returnrequests;
   if(categoryimages!==FETCH_FAILED) CATEGORY_IMAGES = categoryimages || {};
@@ -3953,7 +4211,7 @@ async function placeOrder(){
   }
 }
 
-async function persistProducts(){ return await setData('aura:products', PRODUCTS, true); }
+async function persistProducts(){ return await setProductsData(PRODUCTS); }
 async function addNotification(type, message){
   NOTIFS.unshift({id:uid('n'), type, message, date:new Date().toISOString(), read:false});
   await setData('aura:notifications', NOTIFS, true);
@@ -3990,7 +4248,7 @@ function cancelAdminLogin(){
   document.getElementById('adminLoginBackdrop').classList.add('hidden');
 }
 async function loadAdminAndShow(){
-  PRODUCTS = await getDataOrDefault('aura:products', PRODUCTS, true);
+  { const p = await getProductsData(); if(p !== FETCH_FAILED && p) PRODUCTS = p; }
   ORDERS = await getDataOrDefault('aura:orders', ORDERS, true);
   CUSTOMERS = await getDataOrDefault('aura:customers', CUSTOMERS, true);
   COUPONS = await getDataOrDefault('aura:coupons', COUPONS, true);
@@ -3999,7 +4257,9 @@ async function loadAdminAndShow(){
   STATS = await getDataOrDefault('aura:stats', STATS, true);
   SHIPPING = await getDataOrDefault('aura:shipping', SHIPPING, true);
   SETTINGS = await getDataOrDefault('aura:settings', SETTINGS || defaultSettings(), true);
-  SIZEGUIDES = await getDataOrDefault('aura:sizeguides', SIZEGUIDES, true);
+  { const sg = await getSizeGuidesData(); if(sg !== FETCH_FAILED) SIZEGUIDES = sg || {}; }
+  { const ci = await getCategoryImagesData(); if(ci !== FETCH_FAILED) CATEGORY_IMAGES = ci || {}; }
+  { const bs = await getBannerSlidesData(); if(bs !== FETCH_FAILED) BANNER_SLIDES = bs || []; }
   document.getElementById('admin').classList.remove('hidden');
   switchAdminSection('products');
 }
@@ -4080,6 +4340,7 @@ function renderProductsTable(){
 }
 function openProductForm(id){
   editingProductId = id || null;
+  _pfAddingNewCategory = false;
   const panel = document.getElementById('productFormPanel');
   panel.classList.add('open');
   if(id){
@@ -4127,23 +4388,40 @@ function openProductForm(id){
    already in use, plus a "+ New Category" chip that reveals a text field. Lets the
    admin either reuse an existing category or type a brand new one without ever having
    two categories that only differ by a typo. ---- */
+/* Whether the admin is currently in "typing a brand-new category" mode. This used to be
+   inferred from whether the hidden pfCategory field was empty — but selectPfCategoryNew()
+   itself clears that field right before deciding whether to show the text input, so the
+   check always failed and the "+ New Category" input never appeared. Tracking the mode
+   explicitly in its own flag fixes that and also makes the state easy to reason about. */
+let _pfAddingNewCategory = false;
 function renderPfCategoryPicker(){
   const strip = document.getElementById('pfCatStrip');
   const newInput = document.getElementById('pfCategoryNew');
+  const note = document.getElementById('pfCategorySelectedNote');
   if(!strip) return;
   const current = document.getElementById('pfCategory').value;
   const cats = [...new Set(PRODUCTS.map(p=>p.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
-  const isNew = !!current && !cats.includes(current);
+  const isNew = _pfAddingNewCategory || (!!current && !cats.includes(current));
   strip.innerHTML = cats.map(c=>`<button type="button" class="cat-chip${(c===current && !isNew)?' active':''}" onclick="selectPfCategory('${c.replace(/'/g,"\\'")}')">${c.replace(/</g,'&lt;')}</button>`).join('')
     + `<button type="button" class="cat-chip${isNew?' active':''}" onclick="selectPfCategoryNew()">+ New Category</button>`;
   newInput.classList.toggle('hidden', !isNew);
-  if(isNew) newInput.value = current; else if(document.activeElement!==newInput) newInput.value = '';
+  if(isNew){ if(document.activeElement!==newInput) newInput.value = current; }
+  else newInput.value = '';
+  /* Always show, in plain text, exactly which category is currently selected for this
+     product — so it's never ambiguous which chip (or typed name) is "active". */
+  if(note){
+    if(isNew) note.textContent = current ? `New category: “${current}”` : 'Type the new category name below.';
+    else if(current) note.textContent = `Selected category: “${current}”`;
+    else note.textContent = 'No category selected yet.';
+  }
 }
 function selectPfCategory(cat){
+  _pfAddingNewCategory = false;
   document.getElementById('pfCategory').value = cat;
   renderPfCategoryPicker();
 }
 function selectPfCategoryNew(){
+  _pfAddingNewCategory = true;
   document.getElementById('pfCategory').value = '';
   renderPfCategoryPicker();
   document.getElementById('pfCategoryNew').focus();
@@ -4151,10 +4429,12 @@ function selectPfCategoryNew(){
 function onPfCategoryNewInput(){
   const val = document.getElementById('pfCategoryNew').value.trim();
   document.getElementById('pfCategory').value = val;
-  /* Just flip the active chip instead of a full re-render, so the field being typed into never loses focus. */
+  /* Just flip the active chip + note instead of a full re-render, so the field being typed into never loses focus. */
   const strip = document.getElementById('pfCatStrip');
   strip.querySelectorAll('.cat-chip').forEach(ch=>ch.classList.remove('active'));
   if(strip.lastElementChild) strip.lastElementChild.classList.add('active');
+  const note = document.getElementById('pfCategorySelectedNote');
+  if(note) note.textContent = val ? `New category: “${val}”` : 'Type the new category name below.';
 }
 function renderPfColorRows(){
   const box = document.getElementById('pfColorRows');
@@ -4230,12 +4510,12 @@ function removePfImage(i){
   window._pfImages.splice(i,1);
   renderPfImagesGrid();
 }
-/* All product/banner/logo images are stored as base64 inside a single Firestore document
-   (the whole PRODUCTS array lives in one "aura:products" doc), and Firestore caps a single
-   document at 1MB. Uncompressed phone photos are often 2-5MB each, so a product with more
-   than one or two full-size photos could silently fail to save in full — which is why only
-   the first couple of images ever showed up. Compressing every upload down to a sane max
-   size/quality before it's stored fixes that without changing how images are displayed. */
+/* Product/banner/logo images are stored as base64. Each product now lives in its own
+   Firestore document (see productsColRef() above), so the 1MB-per-document cap applies
+   per product rather than to the whole catalog at once — but it still applies. Uncompressed
+   phone photos are often 2-5MB each, so a handful of full-size photos on one product could
+   still blow past 1MB. Compressing every upload down to a sane max size/quality before it's
+   stored keeps a product with several photos comfortably under that limit. */
 function compressImageFile(file, maxDim, quality){
   maxDim = maxDim || 1000; quality = quality || 0.72;
   return new Promise((resolve)=>{
@@ -4380,14 +4660,14 @@ async function onSlidesFileChange(e){
     if(compressed) BANNER_SLIDES.push(compressed);
   }
   e.target.value = '';
-  await setData('aura:bannerslides', BANNER_SLIDES, true);
+  await setBannerSlidesData(BANNER_SLIDES);
   renderSlidesAdmin();
   renderSlidesBanner();
   showToast('Slide(s) added');
 }
 async function removeSlide(i){
   BANNER_SLIDES.splice(i,1);
-  await setData('aura:bannerslides', BANNER_SLIDES, true);
+  await setBannerSlidesData(BANNER_SLIDES);
   renderSlidesAdmin();
   renderSlidesBanner();
   showToast('Slide removed');
@@ -4777,13 +5057,13 @@ async function onSizeGuideFileChange(e){
   const compressed = await compressImageFile(file, 1200, 0.78);
   if(!compressed) return;
   SIZEGUIDES[category] = compressed;
-  await setData('aura:sizeguides', SIZEGUIDES, true);
+  await setSizeGuidesData(SIZEGUIDES);
   renderSizeGuidesAdmin();
   showToast('Size guide saved for ' + category);
 }
 async function removeSizeGuide(category){
   delete SIZEGUIDES[category];
-  await setData('aura:sizeguides', SIZEGUIDES, true);
+  await setSizeGuidesData(SIZEGUIDES);
   renderSizeGuidesAdmin();
   showToast('Size guide removed for ' + category);
 }
@@ -4821,14 +5101,14 @@ async function onCategoryImageFileChange(e){
   const compressed = await compressImageFile(file, 900, 0.8);
   if(!compressed) return;
   CATEGORY_IMAGES[category] = compressed;
-  await setData('aura:categoryimages', CATEGORY_IMAGES, true);
+  await setCategoryImagesData(CATEGORY_IMAGES);
   renderCategoryImagesAdmin();
   renderCategoryTiles();
   showToast('Category image saved for ' + category);
 }
 async function removeCategoryImage(category){
   delete CATEGORY_IMAGES[category];
-  await setData('aura:categoryimages', CATEGORY_IMAGES, true);
+  await setCategoryImagesData(CATEGORY_IMAGES);
   renderCategoryImagesAdmin();
   renderCategoryTiles();
   showToast('Category image removed for ' + category);
@@ -5239,16 +5519,16 @@ async function removeDataSection(section){
   if(!confirmAdminPassword('Type your admin password to delete this data:')){ showToast('Incorrect password — cancelled'); return; }
   if(!confirm('This will permanently delete this data. Continue?')) return;
   const map = {
-    products: async()=>{ PRODUCTS=[]; await setData('aura:products', PRODUCTS, true); renderProductsTable(); },
+    products: async()=>{ PRODUCTS=[]; await setProductsData(PRODUCTS); renderProductsTable(); },
     orders: async()=>{ ORDERS=[]; await setData('aura:orders', ORDERS, true); renderOrdersTable(); },
     returns: async()=>{ RETURNS=[]; await setData('aura:returns', RETURNS, true); renderReturnsAdmin(); },
     returnrequests: async()=>{ RETURN_REQUESTS=[]; await setData('aura:returnrequests', RETURN_REQUESTS, true); renderReturnRequestsAdmin(); },
     customers: async()=>{ CUSTOMERS=[]; await setData('aura:customers', CUSTOMERS, true); renderCustomersTable(); },
     stats: async()=>{ STATS={visitorsByDay:{},salesByDay:{},ordersByDay:{}}; await setData('aura:stats', STATS, true); },
-    banner: async()=>{ BANNER={image:null,sub:''}; BANNER_SLIDES=[]; await Promise.all([setData('aura:banner', BANNER, true), setData('aura:bannerslides', BANNER_SLIDES, true)]); renderBannerAdmin(); renderSlidesAdmin(); renderBanner(); renderSlidesBanner(); },
+    banner: async()=>{ BANNER={image:null,sub:''}; BANNER_SLIDES=[]; await Promise.all([setData('aura:banner', BANNER, true), setBannerSlidesData(BANNER_SLIDES)]); renderBannerAdmin(); renderSlidesAdmin(); renderBanner(); renderSlidesBanner(); },
     shipping: async()=>{ SHIPPING=defaultShippingRates(); await setData('aura:shipping', SHIPPING, true); renderShippingAdmin(); },
     coupons: async()=>{ COUPONS=[]; await setData('aura:coupons', COUPONS, true); renderCouponsTable(); },
-    categoryimages: async()=>{ CATEGORY_IMAGES={}; await setData('aura:categoryimages', CATEGORY_IMAGES, true); renderCategoryImagesAdmin(); renderCategoryTiles(); },
+    categoryimages: async()=>{ CATEGORY_IMAGES={}; await setCategoryImagesData(CATEGORY_IMAGES); renderCategoryImagesAdmin(); renderCategoryTiles(); },
     cart: async()=>{ CART=[]; await setData('aura:cart', CART, false); renderCart(); }
   };
   if(map[section]) await map[section]();
@@ -5265,16 +5545,16 @@ async function removeAllData(){
 }
 async function removeDataSectionSilent(section){
   const map = {
-    products: async()=>{ PRODUCTS=[]; await setData('aura:products', PRODUCTS, true); },
+    products: async()=>{ PRODUCTS=[]; await setProductsData(PRODUCTS); },
     orders: async()=>{ ORDERS=[]; await setData('aura:orders', ORDERS, true); },
     returns: async()=>{ RETURNS=[]; await setData('aura:returns', RETURNS, true); },
     returnrequests: async()=>{ RETURN_REQUESTS=[]; await setData('aura:returnrequests', RETURN_REQUESTS, true); },
     customers: async()=>{ CUSTOMERS=[]; await setData('aura:customers', CUSTOMERS, true); },
     stats: async()=>{ STATS={visitorsByDay:{},salesByDay:{},ordersByDay:{}}; await setData('aura:stats', STATS, true); },
-    banner: async()=>{ BANNER={image:null,sub:''}; BANNER_SLIDES=[]; await Promise.all([setData('aura:banner', BANNER, true), setData('aura:bannerslides', BANNER_SLIDES, true)]); },
+    banner: async()=>{ BANNER={image:null,sub:''}; BANNER_SLIDES=[]; await Promise.all([setData('aura:banner', BANNER, true), setBannerSlidesData(BANNER_SLIDES)]); },
     shipping: async()=>{ SHIPPING=defaultShippingRates(); await setData('aura:shipping', SHIPPING, true); },
     coupons: async()=>{ COUPONS=[]; await setData('aura:coupons', COUPONS, true); },
-    categoryimages: async()=>{ CATEGORY_IMAGES={}; await setData('aura:categoryimages', CATEGORY_IMAGES, true); },
+    categoryimages: async()=>{ CATEGORY_IMAGES={}; await setCategoryImagesData(CATEGORY_IMAGES); },
     cart: async()=>{ CART=[]; await setData('aura:cart', CART, false); }
   };
   if(map[section]) await map[section]();
@@ -5299,17 +5579,18 @@ function importBackup(e){
     try{
       const data = JSON.parse(reader.result);
       if(!confirm('This will overwrite all current store data with the backup file. Continue?')) return;
-      if(data.products) { PRODUCTS = data.products; await setData('aura:products', PRODUCTS, true); }
+      if(data.products) { PRODUCTS = data.products; await setProductsData(PRODUCTS); }
       if(data.orders) { ORDERS = data.orders; await setData('aura:orders', ORDERS, true); }
       if(data.customers) { CUSTOMERS = data.customers; await setData('aura:customers', CUSTOMERS, true); }
       if(data.coupons) { COUPONS = data.coupons; await setData('aura:coupons', COUPONS, true); }
       if(data.notifications) { NOTIFS = data.notifications; await setData('aura:notifications', NOTIFS, true); }
       if(data.banner) { BANNER = data.banner; await setData('aura:banner', BANNER, true); }
+      if(data.bannerslides) { BANNER_SLIDES = data.bannerslides; await setBannerSlidesData(BANNER_SLIDES); }
       if(data.stats) { STATS = data.stats; await setData('aura:stats', STATS, true); }
       if(data.shipping) { SHIPPING = data.shipping; await setData('aura:shipping', SHIPPING, true); }
       if(data.settings) { SETTINGS = data.settings; await setData('aura:settings', SETTINGS, true); }
-      if(data.sizeguides) { SIZEGUIDES = data.sizeguides; await setData('aura:sizeguides', SIZEGUIDES, true); }
-      if(data.categoryimages) { CATEGORY_IMAGES = data.categoryimages; await setData('aura:categoryimages', CATEGORY_IMAGES, true); }
+      if(data.sizeguides) { SIZEGUIDES = data.sizeguides; await setSizeGuidesData(SIZEGUIDES); }
+      if(data.categoryimages) { CATEGORY_IMAGES = data.categoryimages; await setCategoryImagesData(CATEGORY_IMAGES); }
       if(data.returns) { RETURNS = data.returns; await setData('aura:returns', RETURNS, true); }
       showToast('Backup restored — reloading...');
       setTimeout(()=>location.reload(), 1200);
