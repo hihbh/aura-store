@@ -2368,7 +2368,7 @@ function renderCategoryGridIfChanged(cat, force){
   const list = visibleProducts().filter(p=>p.category===cat);
   const grid = document.getElementById('categoryGrid');
   if(grid){
-    grid.innerHTML = list.length ? list.map(productCardHTML).join('') : `<div class="empty-note" style="grid-column:1/-1;">${tr('noProductsInCategoryYet')}</div>`;
+    grid.innerHTML = list.length ? list.map(p=>productCardHTML(p)).join('') : `<div class="empty-note" style="grid-column:1/-1;">${tr('noProductsInCategoryYet')}</div>`;
   }
 }
 
