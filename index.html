@@ -973,6 +973,147 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
 .section-title{position:relative;}
 .card-body h3{transition:color .2s ease;}
 .card:hover .card-body h3{color:var(--maroon-light);}
+
+/* ===== WHITE BACKGROUND (colors only — all shapes/layout unchanged) ===== */
+:root{
+  --bg:#ffffff;
+  --bg-alt:#faf6f6;
+  --panel:#ffffff;
+  --line:rgba(20,12,14,0.11);
+  --maroon-glow:rgba(110,20,35,0.16);
+  --cream:#151012;
+  --muted:#7d6e71;
+}
+html,body{background:#f5f1f1; color:var(--cream);}
+#storeStage{background:#fff;}
+.header-pill, .search-drop, .tabbar{background:rgba(255,255,255,.94);}
+.icon-btn{background:rgba(20,12,14,.05);}
+.card{background:#fff;}
+.card .imgwrap{background:#f3eded;}
+.imgwrap::before{background:linear-gradient(100deg, #f5eeee 30%, rgba(110,20,35,0.07) 50%, #f5eeee 70%); background-size:220% 100%;}
+.card.featured{background:#fff;}
+.quick-add{border-color:rgba(20,12,14,.3);}
+.quick-add:hover{background:var(--maroon); border-color:var(--maroon); color:#fff;}
+.card-wish{color:var(--cream); filter:none;}
+.soldout-badge{background:rgba(255,255,255,.72);}
+.pp-topbar{background:rgba(255,255,255,.92);}
+.pp-img-actions button{background:rgba(255,255,255,.9); color:var(--cream);}
+.opt-btn.active{color:#fff;}
+.banner-content h1, .banner-content .cta-hero{color:#fff;}
+.banner-content .cta-hero:hover{color:#fff;}
+.cat-tile-label{color:#fff;}
+.cat-tile-underline{background:#fff;}
+.invoice-box{background:linear-gradient(175deg,#fffdfb 0%,#f7efef 100%); box-shadow:0 14px 30px rgba(20,12,14,.12);}
+footer.site-footer{background:#120c0e; color:#b8a9ab;}
+footer.site-footer .flogo{color:#fff;}
+.foot-icons span, .foot-icons a{color:#fff; border-color:rgba(255,255,255,.28);}
+.lang-switch{border-color:rgba(255,255,255,.28);}
+.lang-switch button{color:#b8a9ab;}
+.lang-switch button.active{color:#fff;}
+.admin-sidebar{background:#120c0e;}
+.admin-logo{color:#fff;}
+.admin-nav button{color:#b8a9ab;}
+.admin-nav button:hover, .admin-nav button.active{color:#fff;}
+.admin-exit button{color:#fff; border-color:rgba(255,255,255,.28);}
+.admin-main, #admin{background:#faf6f6;}
+.store-offline-banner{background:rgba(255,255,255,.97);}
+.status-Pending, .status-pending{background:#f6e9ec; color:#8a1c31;}
+.status-Confirmed{background:#efd3da; color:#6e1423;}
+.status-Shipping{background:#e3b9c4; color:#5a0f1c;}
+.status-Delivered, .status-approved{background:#6e1423; color:#fff;}
+.status-Cancelled, .status-rejected{background:#ece7e7; color:#6b5c5f;}
+.status-Returned{background:#151012; color:#fff;}
+
+/* ===== NEW REVIEW SECTION LOOK ===== */
+.review-toggle{display:flex; width:100%; justify-content:center; margin-top:24px; padding:14px 18px; background:var(--maroon); color:#fff; border:none; border-radius:12px; font-size:12px; letter-spacing:2.5px; box-shadow:0 10px 24px rgba(110,20,35,.28);}
+.review-toggle:hover{background:var(--maroon-light); color:#fff; transform:translateY(-1px);}
+.review-form{margin-top:14px; padding:20px 18px; gap:12px; background:#faf6f6; border:1px solid var(--line); border-radius:18px; box-shadow:0 12px 30px rgba(20,12,14,.07);}
+.review-form .star-input{justify-content:center; gap:8px; font-size:34px; padding:4px 0 8px;}
+.review-form .star-input span{color:#dccfd2; transition:color .15s ease, transform .15s ease;}
+.review-form .star-input span.on{color:var(--maroon-light);}
+.review-form .star-input span:hover{transform:scale(1.18);}
+.review-form input, .review-form textarea{background:#fff; border:1px solid var(--line); border-radius:12px; padding:13px 14px; width:100%;}
+.review-form textarea{min-height:96px; resize:vertical;}
+.review-form .btn.small{width:100%; padding:13px; border-radius:12px; font-size:12px; letter-spacing:2px;}
+.review-list{margin-top:22px; display:flex; flex-direction:column; gap:12px;}
+.review-list .rev{display:flex; gap:12px; align-items:flex-start; background:#fff; border:1px solid var(--line); border-radius:16px; padding:14px 16px; box-shadow:0 6px 18px rgba(20,12,14,.05);}
+.rev-avatar{flex:0 0 auto; width:40px; height:40px; border-radius:50%; background:linear-gradient(160deg,var(--maroon-light),var(--maroon)); color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Cormorant SC',serif; font-weight:700; font-size:17px;}
+.rev-main{flex:1; min-width:0;}
+.rev-head{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;}
+.rev-head strong{font-size:13.5px; color:var(--cream); font-weight:600;}
+.review-list .rev .rev-rating{display:inline; margin:0; color:var(--maroon-light); font-size:12px; letter-spacing:1px;}
+.rev-text{font-size:13px; line-height:1.7; color:var(--muted); margin-top:6px; word-break:break-word;}
+.rev-date{font-size:10.5px; color:#b3a4a7; margin-top:6px; letter-spacing:.5px;}
+.review-list .rev-empty{text-align:center; padding:18px; background:#faf6f6; border:1px dashed var(--line); border-radius:14px;}
+
+/* ===== NEW PRODUCT CARD LOOK (grid / outside the product page) ===== */
+.card{border:none; border-radius:20px; background:#fff; box-shadow:0 10px 30px rgba(20,12,14,.09);}
+.card:hover{transform:translateY(-6px); border:none; box-shadow:0 22px 44px rgba(110,20,35,.2);}
+.card .imgwrap{margin:0; border-radius:20px 20px 0 0; aspect-ratio:4/5;}
+.card .imgwrap::after{content:''; position:absolute; left:0; right:0; bottom:0; height:38%; background:linear-gradient(180deg, transparent, rgba(20,12,14,.22)); pointer-events:none; z-index:1;}
+.card-body{padding:16px 16px 18px; text-align:center; position:relative;}
+.card-body::before{content:''; display:block; width:28px; height:2px; background:var(--maroon-light); margin:0 auto 12px; border-radius:2px;}
+.card-body .cat{color:var(--maroon-light); letter-spacing:2.5px; font-size:9px; margin-bottom:6px;}
+.card-body h3{font-family:'Cormorant SC',serif; font-weight:700; font-size:17px; letter-spacing:.6px; margin-bottom:8px; color:var(--cream);}
+.card-rating{justify-content:center;}
+.price-row{justify-content:center; gap:8px;}
+.price{font-size:15px;}
+.price.discount{color:var(--maroon); font-weight:700;}
+.quick-add{position:static; display:flex; width:100%; height:42px; margin:14px 0 0; border-radius:12px; background:var(--cream); border:none; color:#fff; box-shadow:none;}
+.quick-add svg{width:18px; height:18px;}
+.quick-add:hover{background:var(--maroon); color:#fff; transform:none;}
+.card-body{padding-right:16px;}
+html[dir="rtl"] .card-body{padding-right:16px;}
+.tag{border-radius:30px; background:var(--cream); top:12px; left:12px; z-index:3;}
+.card-wish{top:12px; right:12px; z-index:3; background:rgba(255,255,255,.92); border:none; box-shadow:0 4px 12px rgba(20,12,14,.18);}
+.card.featured{border:none; background:#fff; box-shadow:0 0 0 2px var(--maroon-light), 0 20px 42px rgba(110,20,35,.22);}
+.card.featured .quick-add{background:var(--maroon); border:none; color:#fff;}
+.card.featured .card-body h3{font-size:17px;}
+
+/* ===== NEW PRODUCT PAGE LOOK (inside the product) ===== */
+.pp-main-img{aspect-ratio:4/5; border-radius:0 0 30px 30px; box-shadow:0 18px 40px rgba(20,12,14,.18);}
+.pp-main-img::after{content:''; position:absolute; left:0; right:0; bottom:0; height:30%; background:linear-gradient(180deg, transparent, rgba(20,12,14,.28)); pointer-events:none;}
+.gal-dots{z-index:3; bottom:16px;}
+.pp-thumbs{justify-content:center; gap:10px; padding:16px 16px 4px;}
+.pp-thumbs img{width:58px; height:72px; border-radius:12px; border:2px solid transparent; opacity:.65; transition:opacity .2s ease, border-color .2s ease, transform .2s ease;}
+.pp-thumbs img:hover{opacity:1;}
+.pp-thumbs img.active{border-color:var(--maroon); opacity:1; transform:translateY(-3px); box-shadow:0 8px 16px rgba(110,20,35,.25);}
+.pp-body{margin:14px 12px 24px; padding:24px 20px 28px; background:#fff; border:1px solid var(--line); border-radius:24px; box-shadow:0 16px 40px rgba(20,12,14,.08);}
+.pp-body .cat{display:inline-block; padding:5px 12px; margin-bottom:12px; background:rgba(110,20,35,.08); color:var(--maroon); border-radius:30px; font-size:10px; letter-spacing:2.5px;}
+.pp-body h2{font-size:30px; line-height:1.15; letter-spacing:1px; margin-bottom:14px; color:var(--cream);}
+.pp-price-row{padding:14px 0; margin-bottom:14px; border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+.pp-price-row .price{font-size:26px;}
+.pp-price-row .price.discount{color:var(--maroon); font-weight:700;}
+.off-pill{border-radius:30px; background:var(--maroon); color:#fff; border:none; padding:4px 12px; font-weight:600;}
+.sale-countdown-lg{border-radius:30px; background:var(--cream); padding:7px 14px;}
+.stock-row{font-size:12px;}
+.stock-bar{height:5px; border-radius:6px; background:rgba(20,12,14,.08); margin-bottom:22px;}
+.stock-bar span{border-radius:6px; background:linear-gradient(90deg,var(--maroon),var(--maroon-light));}
+.opt-label{margin:20px 0 10px; font-weight:500; color:var(--cream); letter-spacing:2px;}
+.opt-btn{border-radius:12px; padding:11px 16px; min-width:48px; border:1.5px solid rgba(20,12,14,.15); background:#fff; color:var(--cream); font-weight:500;}
+.opt-btn:hover:not(:disabled){border-color:var(--maroon);}
+.opt-btn.active{background:var(--maroon); border-color:var(--maroon); color:#fff; box-shadow:0 8px 18px rgba(110,20,35,.28);}
+.color-swatch .swatch-dot{width:36px; height:36px;}
+.size-guide-btn{border-radius:30px; border:1.5px solid var(--maroon); color:var(--maroon); background:transparent; padding:7px 14px;}
+.size-guide-btn:hover{background:var(--maroon); color:#fff;}
+.qty-row{margin-top:24px; justify-content:space-between;}
+.qty-row .stepper{border-radius:14px; border:1.5px solid rgba(20,12,14,.15); background:#faf6f6;}
+.qty-row .stepper button{padding:10px 18px; font-size:16px;}
+.qty-row .stepper span{font-weight:600; min-width:20px; text-align:center;}
+.pp-actions{margin-top:20px; flex-direction:column; gap:10px;}
+.add-cart-btn, .order-now-btn{flex:none; width:100%; padding:16px 10px; border-radius:14px; font-size:12px; letter-spacing:2.5px;}
+.add-cart-btn{background:var(--cream); color:#fff;}
+.add-cart-btn:hover{background:#000;}
+.order-now-btn{background:linear-gradient(135deg,var(--maroon-light),var(--maroon)); color:#fff; box-shadow:0 12px 26px rgba(110,20,35,.32);}
+.pp-tabs{gap:6px; padding:5px; margin-top:28px; background:#f3ecec; border:none; border-radius:30px;}
+.pp-tabs button{flex:1; padding:10px 0; border:none; border-radius:30px; color:var(--muted); font-weight:500;}
+.pp-tabs button.active{background:#fff; color:var(--maroon); border:none; box-shadow:0 4px 12px rgba(20,12,14,.1);}
+.pp-tab-panel{margin-top:14px; padding:16px 18px; background:#faf6f6; border-radius:16px; color:var(--muted);}
+.pp-tab-panel li::before{color:var(--maroon);}
+.rec-title{text-align:center; letter-spacing:4px; color:var(--cream); font-family:'Cormorant SC',serif; font-size:18px; margin:34px 0 16px;}
+.rec-title::after{content:''; display:block; width:40px; height:2px; background:var(--maroon-light); margin:10px auto 0; border-radius:2px;}
+.pp-tabs button{font-size:12px; padding:10px 4px;}
+.pp-size-guide-img{width:100%; display:block; border-radius:12px; border:1px solid var(--line); background:#fff; cursor:zoom-in;}
 </style>
 </head>
 <body>
@@ -1046,7 +1187,7 @@ tbody tr:hover{background:rgba(161,49,72,0.06);}
       <span aria-label="Snapchat"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2.7c-2.9 0-4.9 2.2-4.9 5.1 0 .7 0 1.6-.05 2.2-.06.1-.2.2-.5.3-.5.2-1.2.3-1.6.4-.3.05-.5.3-.4.6.1.5.7.9 1.5 1.2-.1.3-.2.6-.15.9.1.4.5.6.9.7-.05.3-.05.6.1.9.25.5 1 .6 1.5.6.2.6.9 1.6 3.55 1.6s3.35-1 3.55-1.6c.5 0 1.25-.1 1.5-.6.15-.3.15-.6.1-.9.4-.1.8-.3.9-.7.05-.3-.05-.6-.15-.9.8-.3 1.4-.7 1.5-1.2.1-.3-.1-.55-.4-.6-.4-.1-1.1-.2-1.6-.4-.3-.1-.44-.2-.5-.3-.05-.6-.05-1.5-.05-2.2 0-2.9-2-5.1-4.9-5.1Z"></path></svg></span>
     </div>
     <div>© <span id="year"></span> <span id="footerYearName">AURA</span>. <span data-i18n="rightsReserved">All rights reserved.</span></div>
-    <div class="lang-switch" id="langSwitch">
+    <div class="lang-switch hidden" id="langSwitch">
       <button data-lang="en" onclick="setLang('en')">English</button>
       <button data-lang="ar" onclick="setLang('ar')">العربية</button>
     </div>
@@ -2444,7 +2585,7 @@ function seedProducts(){
    before drawing anything at all. Now the store can render the moment local data is
    painted, and Firestore quietly catches the screen up a moment later if anything's different. */
 /* ================= I18N ================= */
-let LANG = cacheGet('aura:lang', 'en');
+let LANG = 'en'; // store is English-only
 const I18N = {
   en:{
     searchPlaceholder:'Search products...', shopNow:'Shop Now',
@@ -2869,7 +3010,7 @@ function setupRouter(){
         return; /* second quick back press — let it through */
       }
       window._exitArmed = now;
-      showToast('اضغط رجوع مرة أخرى للخروج · Press back again to exit');
+      showToast('Press back again to exit');
       history.pushState({__aura:true, view:'home'}, '', '#!home');
     }
   });
@@ -3123,6 +3264,8 @@ function renderProductPage(){
   const sizeObjs = normSizes(p);
   const colorObjs = normColors(p);
   const stock = stockInfo(p);
+  const sizeGuideImg = SIZEGUIDES[p.category] || null;
+  if(currentTab==='size' && !sizeGuideImg) currentTab = 'desc';
   const pRating = avgRating(p);
   const pRevCount = approvedReviews(p).length;
   const selectedSize = window._selSize || (sizeObjs.find(s=>!s.soldOut)||sizeObjs[0]||{}).name;
@@ -3155,10 +3298,7 @@ function renderProductPage(){
       <div class="stock-row"><span class="stock-dot ${stock.cls}"></span><span>${stock.label}</span></div>
       <div class="stock-bar"><span style="width:${stock.pct}%"></span></div>
 
-      <div class="opt-label" style="display:flex; justify-content:space-between; align-items:center;">
-        <span>${tr('sizeLabel')}</span>
-        ${SIZEGUIDES[p.category] ? `<button class="size-guide-btn" onclick="openSizeGuide('${p.category.replace(/'/g,"\\'")}')">${tr('sizeGuide')}</button>` : ''}
-      </div>
+      <div class="opt-label"><span>${tr('sizeLabel')}</span></div>
       <div class="opt-row" id="sizeOpts">
         ${sizeObjs.map(s=>`<button class="opt-btn ${s.name===selectedSize?'active':''}" ${s.soldOut?'disabled':''} onclick="selectSize('${s.name.replace(/'/g,"\\'")}')">${s.name}</button>`).join('') || `<span style="font-size:12px; color:var(--muted);">${tr('outOfStock')}</span>`}
       </div>
@@ -3188,9 +3328,11 @@ function renderProductPage(){
       <div class="pp-tabs">
         <button class="${currentTab==='desc'?'active':''}" onclick="setTab('desc')">${tr('description')}</button>
         <button class="${currentTab==='details'?'active':''}" onclick="setTab('details')">${tr('details')}</button>
+        ${sizeGuideImg ? `<button class="${currentTab==='size'?'active':''}" onclick="setTab('size')">${tr('sizeGuide')}</button>` : ''}
       </div>
       <div class="pp-tab-panel ${currentTab==='desc'?'active':''}" id="tabDesc"><p>${p.desc||tr('noDescription')}</p></div>
       <div class="pp-tab-panel ${currentTab==='details'?'active':''}" id="tabDetails"><ul>${(p.details||[]).map(d=>`<li>${d}</li>`).join('') || '<li>'+tr('noDetails')+'</li>'}</ul></div>
+      ${sizeGuideImg ? `<div class="pp-tab-panel ${currentTab==='size'?'active':''}" id="tabSize"><img class="pp-size-guide-img" src="${sizeGuideImg}" alt="${tr('sizeGuide')}" onclick="openSizeGuide('${p.category.replace(/'/g,"\\'")}')"></div>` : ''}
 
       <button class="review-toggle" onclick="toggleReviewForm()">${tr('leaveReview')}</button>
       <div class="review-form" id="reviewForm">
@@ -3915,7 +4057,10 @@ function closeProductModal(){ goBack(); }
 function renderReviewListHTML(p){
   const revs = approvedReviews(p);
   if(!revs.length) return '<div class="rev-empty">No reviews yet — be the first to share your thoughts.</div>';
-  return revs.slice().reverse().map(r=>`<div class="rev"><span class="rev-rating">${starsHTML(r.rating||5)}</span><strong>${r.name}</strong>: ${r.text}</div>`).join('');
+  return revs.slice().reverse().map(r=>{
+    const initial = String(r.name||'?').trim().charAt(0).toUpperCase() || '?';
+    return `<div class="rev"><div class="rev-avatar">${initial}</div><div class="rev-main"><div class="rev-head"><strong>${r.name}</strong><span class="rev-rating">${starsHTML(r.rating||5)}</span></div><div class="rev-text">${r.text}</div>${r.date?`<div class="rev-date">${r.date}</div>`:''}</div></div>`;
+  }).join('');
 }
 function toggleReviewForm(){
   document.getElementById('reviewForm').classList.toggle('open');
@@ -5605,6 +5750,258 @@ function updateNotifBadge(){
 }
 
 init();
+</script>
+<script>
+/* ===== IFTKASA-style Account + multi-admin (added) ===== */
+(function(){
+const $=id=>document.getElementById(id);
+const E=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const STEPS=['Pending','Confirmed','Shipping','Delivered'];
+let TAB='home';
+const _acc=renderAccountPage;
+window.accTab=t=>{TAB=t;renderAccountPage()};
+const tabs=()=>'<div style="display:flex;gap:6px;margin:0 0 16px;overflow-x:auto">'+[['home','Overview'],['orders','My Orders'],['addr','Addresses'],['set','Settings']].map(([k,l])=>`<button class="btn ${TAB==k?'':'secondary'} small" style="white-space:nowrap" onclick="accTab('${k}')">${l}</button>`).join('')+'</div>';
+const orderCard=o=>{const i=STEPS.indexOf(o.status);return `<div style="border:1px solid var(--line);border-radius:8px;padding:14px;margin-bottom:12px">
+<div style="display:flex;justify-content:space-between;gap:8px"><b>${E(o.id)}</b><span class="status-pill status-${E(o.status)}">${E(o.status)}</span></div>
+<div style="font-size:11px;color:var(--muted);margin:2px 0 10px">${E(o.date)}</div>
+${i<0?'':'<div style="display:flex;gap:4px;margin-bottom:10px">'+STEPS.map((s,k)=>`<div style="flex:1"><div style="height:4px;border-radius:2px;background:${k<=i?'var(--maroon-light)':'var(--line)'}"></div><div style="font-size:9px;color:var(--muted);margin-top:3px">${s}</div></div>`).join('')+'</div>'}
+${(o.items||[]).map(x=>`<div style="display:flex;gap:10px;align-items:center;margin-bottom:6px"><img src="${E(x.image)}" style="width:40px;height:40px;object-fit:cover;border-radius:4px"><div style="font-size:12px;flex:1">${E(x.name)}<br><span style="color:var(--muted)">${E(x.size)} / ${E(x.color)} × ${x.qty}</span></div></div>`).join('')}
+<div style="display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:8px;margin-top:6px;font-size:13px"><span>${o.tracking?'Tracking: '+E(o.tracking):''}</span><b>${fmtMoney(o.amount)}</b></div></div>`};
+const saveProf=()=>setData('aura:myprofile',MY_PROFILE,false);
+window.renderAccountPage=function(){
+ const b=$('accountBody');if(!b)return;
+ if(!MY_PROFILE){_acc();const w=$('acNameWrap');if(w){w.classList.remove('hidden');const l=w.querySelector('label');if(l)l.textContent='Your name (for new accounts)'}
+  const bt=b.querySelector('button.btn');if(bt)bt.textContent='Sign in / Create account';return}
+ if(TAB=='home'){_acc();b.insertAdjacentHTML('afterbegin',tabs());return}
+ const c=MY_PROFILE;let h=tabs();
+ if(TAB=='orders'){const L=ORDERS.filter(o=>o.phone===c.phone);h+=L.length?L.map(orderCard).join(''):'<div class="empty-note">No orders yet.</div>'}
+ if(TAB=='addr'){const A=c.addresses||[];
+  h+=A.map((a,i)=>`<div style="border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:10px;display:flex;justify-content:space-between;gap:10px"><div style="font-size:13px"><b>${E(a.gov)}</b><br>${E(a.address)}</div><button class="btn secondary small" onclick="delAddr(${i})">✕</button></div>`).join('')||'<div class="empty-note">No saved addresses.</div>';
+  h+=`<div style="margin-top:14px"><select id="adG" style="width:100%;margin-bottom:8px">${Object.keys(SHIPPING||{}).map(g=>`<option>${E(g)}</option>`).join('')}</select><textarea id="adA" placeholder="Full address" style="width:100%;margin-bottom:8px"></textarea><button class="btn" style="width:100%" onclick="addAddr()">Save address</button></div>`}
+ if(TAB=='set'){h+=`<label class="ck-label">Name</label><input id="stN" value="${E(c.name)}" style="width:100%;margin:6px 0 12px"><label class="ck-label">Phone</label><input value="${E(c.phone)}" disabled style="width:100%;margin:6px 0 4px"><div style="font-size:11px;color:var(--muted);margin-bottom:14px">To use another number, sign out and create a new account.</div><button class="btn" style="width:100%" onclick="saveName()">Save</button><button class="btn secondary" style="width:100%;margin-top:10px" onclick="logoutMyProfile()">Sign out</button>`}
+ b.innerHTML=h};
+window.addAddr=async()=>{const a=($('adA').value||'').trim();if(!a){showToast('Enter the address');return}(MY_PROFILE.addresses=MY_PROFILE.addresses||[]).push({gov:$('adG').value,address:a});await saveProf();renderAccountPage()};
+window.delAddr=async i=>{MY_PROFILE.addresses.splice(i,1);await saveProf();renderAccountPage()};
+window.saveName=async()=>{const n=($('stN').value||'').trim();if(!n)return;MY_PROFILE.name=n;await saveProf();await ensureCustomerRecord(n,MY_PROFILE.phone);showToast('Saved');renderAccountPage()};
+const _lo=logoutMyProfile;window.logoutMyProfile=async()=>{TAB='home';await _lo()};
+
+/* ---- Admin: usernames, roles, sign-in log ---- */
+const H=async s=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode('aura:'+s)))].map(x=>x.toString(16).padStart(2,'0')).join('');
+const ROLES={full:['Full admin',null],sales:['Sales',['invoices','dashboard','inventory','orders','returns','returnrequests','customers','coupons','shipping','notifications','reviews','statistics']]};
+let ME=null;window.getME=()=>ME;
+(function(){const p=$('admLoginPass');if(!p)return;p.removeAttribute('maxlength');p.style.letterSpacing='1px';
+ p.insertAdjacentHTML('beforebegin','<input type="text" id="admLoginUser" placeholder="Username" autocapitalize="off" style="letter-spacing:1px" onkeydown="if(event.key===\'Enter\')submitAdminLogin()">')})();
+window.submitAdminLogin=async function(){
+ const u=($('admLoginUser').value||'').trim().toLowerCase(),pw=$('admLoginPass').value,er=$('admLoginErr');
+ SETTINGS=SETTINGS||await getDataOrDefault('aura:settings',defaultSettings(),true);
+ const L=SETTINGS.admins||[];let m=null;
+ if(L.length){const h=await H(u+':'+pw);m=L.find(a=>a.username==u&&a.ph==h)}
+ else if(u=='admin'&&pw==(SETTINGS.password||'123'))m={id:'a0',name:'Admin',username:'admin',role:'full'};
+ if(!m){er.textContent='Wrong username or password';return}
+ ME=m;ADMIN_LOGGED_IN=true;SETTINGS.lastLogin=new Date().toLocaleString();
+ SETTINGS.adminLog=[{by:m.name,at:SETTINGS.lastLogin,dev:navigator.userAgent.slice(0,60)}].concat(SETTINGS.adminLog||[]).slice(0,50);
+ await setData('aura:settings',SETTINGS,true);
+ $('adminLoginBackdrop').classList.add('hidden');navigateTo('admin');await loadAdminAndShow()};
+const _l=loadAdminAndShow;
+window.loadAdminAndShow=async function(){await _l();
+ const nav=$('adminNav');
+ if(!nav.querySelector('[data-sec=admins]')&&(!ME||ME.role=='full')){nav.insertAdjacentHTML('beforeend','<button data-sec="admins" onclick="switchAdminSection(\'admins\')">🔑 Admins</button>');
+  const s=document.createElement('section');s.className='admin-section';s.id='sec-admins';document.querySelector('.admin-main').appendChild(s)}
+ const allow=ME&&ROLES[ME.role]&&ROLES[ME.role][1];
+ nav.querySelectorAll('button').forEach(b=>b.style.display=(allow&&!allow.includes(b.dataset.sec))?'none':'');
+ if(allow&&!allow.includes(window._lastAdminSection))switchAdminSection(allow[0])};
+const _s=switchAdminSection;
+window.switchAdminSection=function(sec){_s(sec);if(sec=='admins')drawAdmins()};
+function drawAdmins(){
+ const L=(SETTINGS.admins||[]).length?SETTINGS.admins:[{id:'a0',name:'Admin',username:'admin',role:'full',legacy:1}];
+ $('sec-admins').innerHTML=`<div class="admin-h1">Admins</div><div class="admin-sub">Staff accounts, roles and sign-in history</div>
+ ${L.map(a=>`<div style="display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:8px"><div><b>${E(a.name)}</b> <span style="color:var(--muted);font-size:12px">@${E(a.username)} · ${ROLES[a.role||'full'][0]}</span></div>${L.length>1&&!a.legacy?`<button class="btn secondary small" onclick="delAdm('${E(a.id)}')">Delete</button>`:''}</div>`).join('')}
+ <div style="display:flex;gap:8px;flex-wrap:wrap;margin:18px 0"><input id="aN2" placeholder="Name"><input id="aU2" placeholder="Username" autocapitalize="off"><input id="aP2" type="password" placeholder="Password"><select id="aR2">${Object.entries(ROLES).map(([k,v])=>`<option value="${k}">${v[0]}</option>`).join('')}</select><button class="btn" onclick="saveAdm()">+ Add admin</button></div>
+ <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin:20px 0 10px">Sign-in history</div>
+ ${(SETTINGS.adminLog||[]).slice(0,15).map(l=>`<div style="font-size:12px;padding:6px 0;border-bottom:1px solid var(--line)">🔐 <b>${E(l.by)}</b> · ${E(l.at)} <span style="color:var(--muted)">· ${E(l.dev)}</span></div>`).join('')||'<div class="empty-note">No sign-ins yet.</div>'}`}
+window.saveAdm=async()=>{const n=$('aN2').value.trim(),u=$('aU2').value.trim().toLowerCase(),p=$('aP2').value;
+ if(!n||!u||!p){showToast('Fill all fields');return}
+ let L=SETTINGS.admins||[];if(!L.length)L=[{id:'a0',name:'Admin',username:'admin',role:'full',ph:await H('admin:'+(SETTINGS.password||'123'))}];
+ if(L.some(a=>a.username==u)){showToast('Username already exists');return}
+ L.push({id:uid('a'),name:n,username:u,role:$('aR2').value,ph:await H(u+':'+p)});SETTINGS.admins=L;
+ await setData('aura:settings',SETTINGS,true);drawAdmins();showToast('Admin added')};
+window.delAdm=async id=>{if(ME&&ME.id==id){showToast("You can't delete yourself");return}if(!confirm('Delete this admin?'))return;
+ SETTINGS.admins=SETTINGS.admins.filter(a=>a.id!=id);await setData('aura:settings',SETTINGS,true);drawAdmins()};
+})();
+</script>
+<style>
+.admin-main{background:var(--bg-alt)}
+.admin-section.active{max-width:1100px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
+.kpi small{display:block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.kpi b{display:block;font-size:24px;margin-top:6px;color:var(--cream);font-family:'Cormorant SC',serif}
+.kpi.bad b{color:var(--danger)}
+.acard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.acard h4{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.arow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}
+.arow:last-child{border:0}
+.admin-nav button{border-radius:0 24px 24px 0}
+</style>
+<script>
+/* ===== Admin: Dashboard / Inventory / Expenses / Backup + account notifications ===== */
+(function(){
+const $=id=>document.getElementById(id),E=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const SECS=[['dashboard','📊 Dashboard',1],['inventory','📋 Inventory',1],['expenses','💸 Expenses',0],['backup','💾 Backup',0]];
+let EXP=[],CH=null;window.getExp=()=>EXP;
+const low=()=>+(SETTINGS&&SETTINGS.lowStock)||5;
+const _l=loadAdminAndShow;
+window.loadAdminAndShow=async function(){await _l();
+ EXP=await getDataOrDefault('aura:expenses',[],true);
+ const nav=$('adminNav'),me=getME(),full=!me||me.role=='full';
+ const add=SECS.filter(([k,l,s])=>(full||s)&&!nav.querySelector('[data-sec='+k+']'));
+ nav.insertAdjacentHTML('afterbegin',add.map(([k,l])=>`<button data-sec="${k}" onclick="switchAdminSection('${k}')">${l}</button>`).join(''));
+ add.forEach(([k])=>{const s=document.createElement('section');s.className='admin-section';s.id='sec-'+k;document.querySelector('.admin-main').appendChild(s)});
+ switchAdminSection('dashboard')};
+const _s=switchAdminSection;
+window.switchAdminSection=function(sec){_s(sec);({dashboard:dash,inventory:inv,expenses:exps,backup:bak}[sec]||(()=>0))()};
+const live=()=>ORDERS.filter(o=>o.status!='Cancelled'&&o.status!='Returned');
+function dash(){
+ const O=live(),rev=O.reduce((s,o)=>s+(+o.amount||0),0),ex=EXP.reduce((s,e)=>s+(+e.amount||0),0),
+ pend=ORDERS.filter(o=>o.status=='Pending').length,lows=PRODUCTS.filter(p=>p.qty<=low());
+ const days=[...Array(14)].map((_,i)=>new Date(Date.now()-(13-i)*864e5).toISOString().slice(0,10));
+ const cnt={};O.forEach(o=>(o.items||[]).forEach(i=>cnt[i.name]=(cnt[i.name]||0)+i.qty));
+ const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,5);
+ $('sec-dashboard').innerHTML=`<div class="admin-h1">Dashboard</div><div class="admin-sub">Store performance at a glance</div>
+ <div class="kpis"><div class="kpi"><small>Revenue</small><b>${fmtMoney(rev)}</b></div><div class="kpi"><small>Orders</small><b>${ORDERS.length}</b></div><div class="kpi"><small>Pending</small><b>${pend}</b></div><div class="kpi"><small>Customers</small><b>${CUSTOMERS.length}</b></div><div class="kpi ${rev-ex<0?'bad':''}"><small>Net (revenue − expenses)</small><b>${fmtMoney(rev-ex)}</b></div><div class="kpi ${lows.length?'bad':''}"><small>Low stock</small><b>${lows.length}</b></div></div>
+ <div class="acard"><h4>Revenue — last 14 days</h4><canvas id="dashCh" height="110"></canvas></div>
+ <div class="acard"><h4>Top selling</h4>${top.map(([n,q])=>`<div class="arow"><span>${E(n)}</span><b>${q} sold</b></div>`).join('')||'<div class="empty-note">No sales yet.</div>'}</div>
+ <div class="acard"><h4>Recent orders</h4>${ORDERS.slice(0,6).map(o=>`<div class="arow"><span>${E(o.id)} · ${E(o.customer)}</span><span><span class="status-pill status-${E(o.status)}">${E(o.status)}</span> ${fmtMoney(o.amount)}</span></div>`).join('')||'<div class="empty-note">No orders yet.</div>'}</div>`;
+ if(CH)CH.destroy();
+ CH=new Chart($('dashCh'),{type:'line',data:{labels:days.map(d=>d.slice(5)),datasets:[{data:days.map(d=>O.filter(o=>o.date==d).reduce((s,o)=>s+(+o.amount||0),0)),borderColor:'#a13148',backgroundColor:'rgba(161,49,72,.15)',fill:true,tension:.3}]},options:{plugins:{legend:{display:false}}}})}
+function inv(){
+ const L=PRODUCTS.slice().sort((a,b)=>a.qty-b.qty);
+ $('sec-inventory').innerHTML=`<div class="admin-h1">Inventory</div><div class="admin-sub">Lowest stock first · alert at ${low()} or less</div><div class="acard">${L.map(p=>`<div class="arow"><span>${E(p.name)} <small style="color:var(--muted)">${E(p.sku||'')}</small></span><span><input type="number" min="0" value="${p.qty}" style="width:80px;${p.qty<=low()?'border-color:var(--danger)':''}" onchange="setQty('${E(p.id)}',this.value)"></span></div>`).join('')}</div>`}
+window.setQty=async(id,v)=>{const p=PRODUCTS.find(x=>x.id==id);if(!p)return;p.qty=Math.max(0,+v||0);await persistProducts();showToast('Stock updated');inv()};
+function exps(){
+ const t=EXP.reduce((s,e)=>s+(+e.amount||0),0);
+ $('sec-expenses').innerHTML=`<div class="admin-h1">Expenses</div><div class="admin-sub">Total: ${fmtMoney(t)}</div>
+ <div class="acard"><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="exT" placeholder="What for?"><input id="exA" type="number" placeholder="Amount"><button class="btn" onclick="addExp()">+ Add</button></div></div>
+ <div class="acard">${EXP.map((e,i)=>`<div class="arow"><span>${E(e.title)} <small style="color:var(--muted)">${E(e.date)}</small></span><span>${fmtMoney(e.amount)} <button class="btn secondary small" onclick="delExp(${i})">✕</button></span></div>`).join('')||'<div class="empty-note">No expenses yet.</div>'}</div>`}
+window.addExp=async()=>{const t=$('exT').value.trim(),a=+$('exA').value;if(!t||!a){showToast('Enter title and amount');return}EXP.unshift({title:t,amount:a,date:todayStr()});await setData('aura:expenses',EXP,true);exps()};
+window.delExp=async i=>{EXP.splice(i,1);await setData('aura:expenses',EXP,true);exps()};
+function bak(){$('sec-backup').innerHTML=`<div class="admin-h1">Backup</div><div class="admin-sub">Download a copy of your store data</div><div class="acard"><button class="btn" onclick="dlBackup()">💾 Download backup (JSON)</button></div>`}
+window.dlBackup=()=>{const s=Object.assign({},SETTINGS);delete s.admins;const b=new Blob([JSON.stringify({products:PRODUCTS,orders:ORDERS,customers:CUSTOMERS,coupons:COUPONS,shipping:SHIPPING,expenses:EXP,settings:s},null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='aura-backup-'+todayStr()+'.json';a.click()};
+/* account: notifications tab */
+const _r=renderAccountPage;
+window.renderAccountPage=function(){
+ if(MY_PROFILE&&window._accT=='notif'){_r();return}
+ _r();const b=$('accountBody');if(!b||!MY_PROFILE)return;
+ const bt=b.querySelector('button[onclick="accTab(\'set\')"]');
+ if(bt&&!b.querySelector('[data-n]'))bt.insertAdjacentHTML('beforebegin','<button data-n="1" class="btn secondary small" style="white-space:nowrap" onclick="accNotif()">🔔 Updates</button>')};
+window.accNotif=()=>{const b=$('accountBody'),L=ORDERS.filter(o=>o.phone===MY_PROFILE.phone);
+ b.innerHTML=`<button class="btn secondary small" onclick="accTab('home')" style="margin-bottom:14px">← Back</button>`+(L.map(o=>`<div class="arow"><span>Order <b>${E(o.id)}</b> is <b>${E(o.status)}</b>${o.tracking?' · '+E(o.tracking):''}</span><small style="color:var(--muted)">${E(o.date)}</small></div>`).join('')||'<div class="empty-note">No updates yet.</div>')};
+})();
+</script>
+<script>
+/* Admin: Analytics & finance, Invoices, global search */
+(function(){
+const $=id=>document.getElementById(id),E=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const SECS=[['analytics','📈 Analytics & finance',0],['invoices','🧾 Invoices',1]];
+const _l=loadAdminAndShow;
+window.loadAdminAndShow=async function(){await _l();
+ const nav=$('adminNav'),me=getME(),full=!me||me.role=='full',main=document.querySelector('.admin-main');
+ const add=SECS.filter(([k,l,s])=>(full||s)&&!nav.querySelector('[data-sec='+k+']'));
+ nav.insertAdjacentHTML('beforeend',add.map(([k,l])=>`<button data-sec="${k}" onclick="switchAdminSection('${k}')">${l}</button>`).join(''));
+ add.forEach(([k])=>{const s=document.createElement('section');s.className='admin-section';s.id='sec-'+k;main.appendChild(s)});
+ if(!$('sec-search')){const s=document.createElement('section');s.className='admin-section';s.id='sec-search';main.appendChild(s)}
+ if(!$('admGS')){nav.insertAdjacentHTML('beforebegin','<div style="padding:12px 16px 0"><input id="admGS" placeholder="Global search" style="width:100%" onkeydown="if(event.key===\'Enter\')admSearch(this.value)"></div>')}};
+const _s=switchAdminSection;
+window.switchAdminSection=function(sec){_s(sec);({analytics:ana,invoices:invs}[sec]||(()=>0))()};
+const ok=()=>ORDERS.filter(o=>o.status!='Cancelled'&&o.status!='Returned');
+const grp=(L,f)=>{const m={};L.forEach(o=>{const k=f(o)||'—';m[k]=(m[k]||0)+(+o.amount||0)});return Object.entries(m).sort((a,b)=>b[1]-a[1])};
+const rows=A=>A.map(([k,v])=>`<div class="arow"><span>${E(k)}</span><b>${fmtMoney(v)}</b></div>`).join('')||'<div class="empty-note">No data yet.</div>';
+function ana(){
+ const O=ok(),X=getExp(),rev=O.reduce((s,o)=>s+(+o.amount||0),0),ex=X.reduce((s,e)=>s+(+e.amount||0),0),ship=O.reduce((s,o)=>s+(+o.shipping||0),0);
+ const mon=grp(O,o=>(o.date||'').slice(0,7)).sort((a,b)=>a[0]<b[0]?1:-1);
+ const cat={};O.forEach(o=>(o.items||[]).forEach(i=>{const p=PRODUCTS.find(x=>x.id==i.productId);const c=p?p.category:'Other';cat[c]=(cat[c]||0)+i.price*i.qty}));
+ $('sec-analytics').innerHTML=`<div class="admin-h1">Analytics & finance</div><div class="admin-sub">Based on orders that are not cancelled or returned</div>
+ <div class="kpis"><div class="kpi"><small>Revenue</small><b>${fmtMoney(rev)}</b></div><div class="kpi"><small>Shipping collected</small><b>${fmtMoney(ship)}</b></div><div class="kpi"><small>Expenses</small><b>${fmtMoney(ex)}</b></div><div class="kpi ${rev-ex<0?'bad':''}"><small>Net</small><b>${fmtMoney(rev-ex)}</b></div><div class="kpi"><small>Avg order</small><b>${fmtMoney(O.length?rev/O.length:0)}</b></div></div>
+ <div class="acard"><h4>By month</h4>${rows(mon)}</div><div class="acard"><h4>By governorate</h4>${rows(grp(O,o=>o.governorate))}</div><div class="acard"><h4>By category</h4>${rows(Object.entries(cat).sort((a,b)=>b[1]-a[1]))}</div>
+ <div class="acard"><h4>Order status</h4>${['Pending','Confirmed','Shipping','Delivered','Cancelled','Returned'].map(s=>`<div class="arow"><span>${s}</span><b>${ORDERS.filter(o=>o.status==s).length}</b></div>`).join('')}</div>`}
+function invs(){
+ const L=ORDERS.filter(o=>o.status=='Delivered'||o.status=='Shipping'||o.status=='Confirmed');
+ $('sec-invoices').innerHTML=`<div class="admin-h1">Invoices</div><div class="admin-sub">Confirmed, shipping and delivered orders</div><div class="acard">${L.map(o=>`<div class="arow"><span><b>${E(o.id)}</b> · ${E(o.customer)} <small style="color:var(--muted)">${E(o.date)}</small></span><span>${fmtMoney(o.amount)} <button class="btn secondary small" onclick="printOrderInvoice('${E(o.id)}')">🖨 Print</button></span></div>`).join('')||'<div class="empty-note">No invoices yet.</div>'}</div>`}
+window.admSearch=q=>{q=(q||'').trim().toLowerCase();if(!q)return;const h=s=>String(s||'').toLowerCase().includes(q);
+ const O=ORDERS.filter(o=>h(o.id)||h(o.customer)||h(o.phone)),C=CUSTOMERS.filter(c=>h(c.name)||h(c.phone)),P=PRODUCTS.filter(p=>h(p.name)||h(p.sku));
+ switchAdminSection('search');
+ $('sec-search').innerHTML=`<div class="admin-h1">Search</div><div class="admin-sub">“${E(q)}”</div>
+ <div class="acard"><h4>Orders (${O.length})</h4>${O.slice(0,10).map(o=>`<div class="arow"><span>${E(o.id)} · ${E(o.customer)} · ${E(o.phone)}</span><span>${E(o.status)} · ${fmtMoney(o.amount)}</span></div>`).join('')||'—'}</div>
+ <div class="acard"><h4>Customers (${C.length})</h4>${C.slice(0,10).map(c=>`<div class="arow"><span>${E(c.name)}</span><span>${E(c.phone)}</span></div>`).join('')||'—'}</div>
+ <div class="acard"><h4>Products (${P.length})</h4>${P.slice(0,10).map(p=>`<div class="arow"><span>${E(p.name)}</span><span>${E(p.sku||'')} · qty ${p.qty}</span></div>`).join('')||'—'}</div>`};
+})();
+</script>
+<script>
+/* Admin: full activity log */
+(function(){
+const $=id=>document.getElementById(id),E=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let LOG=[];
+const log=async msg=>{const me=getME();LOG.unshift({by:me?me.name:'Admin',msg,at:new Date().toLocaleString()});LOG=LOG.slice(0,200);try{await setData('aura:activity',LOG,true)}catch(e){}};
+const W=(n,f)=>{const o=window[n];if(typeof o!='function')return;window[n]=async function(){const r=await o.apply(this,arguments);try{log(f.apply(null,arguments))}catch(e){}return r}};
+W('updateOrderStatus',(id,s)=>'Order '+id+' → '+s);
+W('saveProduct',()=>'Saved a product');
+W('deleteProduct',id=>'Deleted a product');
+W('saveCoupon',()=>'Saved a coupon');
+W('deleteCoupon',c=>'Deleted coupon '+c);
+W('saveSettings',()=>'Edited store settings');
+W('setQty',(id,v)=>'Stock set to '+v);
+W('addExp',()=>'Added an expense');
+W('saveAdm',()=>'Added an admin');
+W('delAdm',()=>'Deleted an admin');
+const _l=loadAdminAndShow;
+window.loadAdminAndShow=async function(){await _l();
+ LOG=await getDataOrDefault('aura:activity',[],true);
+ const me=getME(),nav=$('adminNav');
+ if((!me||me.role=='full')&&!nav.querySelector('[data-sec=actlog]')){nav.insertAdjacentHTML('beforeend','<button data-sec="actlog" onclick="switchAdminSection(\'actlog\')">🕓 Activity log</button>');const s=document.createElement('section');s.className='admin-section';s.id='sec-actlog';document.querySelector('.admin-main').appendChild(s)}};
+const _s=switchAdminSection;
+window.switchAdminSection=function(sec){_s(sec);if(sec=='actlog')$('sec-actlog').innerHTML=`<div class="admin-h1">Activity log</div><div class="admin-sub">Last ${LOG.length} actions by admins</div><div class="acard">${LOG.map(l=>`<div class="arow"><span><b>${E(l.by)}</b> · ${E(l.msg)}</span><small style="color:var(--muted)">${E(l.at)}</small></div>`).join('')||'<div class="empty-note">No activity yet.</div>'}</div>`};
+})();
+</script>
+<script>
+/* Admin: Offers (bulk % discount by category) */
+(function(){
+const $=id=>document.getElementById(id),E=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let OF=[];
+const _l=loadAdminAndShow;
+window.loadAdminAndShow=async function(){await _l();
+ OF=await getDataOrDefault('aura:offers',[],true);
+ const me=getME(),nav=$('adminNav');
+ if((!me||me.role=='full')&&!nav.querySelector('[data-sec=offers]')){nav.insertAdjacentHTML('beforeend','<button data-sec="offers" onclick="switchAdminSection(\'offers\')">🔥 Offers</button>');const s=document.createElement('section');s.className='admin-section';s.id='sec-offers';document.querySelector('.admin-main').appendChild(s)}};
+const _s=switchAdminSection;
+window.switchAdminSection=function(sec){_s(sec);if(sec=='offers')draw()};
+function draw(){
+ const cats=[...new Set(PRODUCTS.map(p=>p.category).filter(Boolean))];
+ $('sec-offers').innerHTML=`<div class="admin-h1">Offers</div><div class="admin-sub">Apply a % discount to a whole category (or every product). Removing an offer clears its discounts.</div>
+ <div class="acard"><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="ofT" placeholder="Offer name"><input id="ofP" type="number" min="1" max="90" placeholder="% off"><select id="ofC"><option value="">All products</option>${cats.map(c=>`<option>${E(c)}</option>`).join('')}</select><button class="btn" onclick="applyOffer()">Apply</button></div></div>
+ <div class="acard">${OF.map(o=>`<div class="arow"><span><b>${E(o.title)}</b> · ${o.percent}% off · ${E(o.cat||'All products')} <small style="color:var(--muted)">${E(o.date)}</small></span><button class="btn secondary small" onclick="removeOffer('${E(o.id)}')">Remove</button></div>`).join('')||'<div class="empty-note">No active offers.</div>'}</div>`}
+window.applyOffer=async()=>{const t=$('ofT').value.trim(),pc=+$('ofP').value,c=$('ofC').value;
+ if(!t||!(pc>0&&pc<=90)){showToast('Enter a name and a % between 1 and 90');return}
+ const o={id:uid('of'),title:t,percent:pc,cat:c,date:todayStr()};let n=0;
+ PRODUCTS.forEach(p=>{if(c&&p.category!=c)return;p.discount=Math.round(p.price*(1-pc/100));p.offerId=o.id;n++});
+ if(!n){showToast('No products in that category');return}
+ OF.unshift(o);await persistProducts();await setData('aura:offers',OF,true);showToast(n+' products updated');draw()};
+window.removeOffer=async id=>{PRODUCTS.forEach(p=>{if(p.offerId==id){p.discount=0;delete p.offerId}});OF=OF.filter(o=>o.id!=id);await persistProducts();await setData('aura:offers',OF,true);showToast('Offer removed');draw()};
+})();
+</script>
+<style>.ad-g{padding:16px 22px 6px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);opacity:.7}</style>
+<script>
+/* Admin sidebar grouped like IFTKASA */
+(function(){
+const G=[['Overview',['dashboard','analytics','statistics']],['Catalog',['products','offers','inventory','banner','sizeguides','categoryimages']],['Sales',['orders','returns','returnrequests','invoices','coupons','shipping','expenses']],['Customers',['customers','reviews','notifications','wablast']],['System',['settings','admins','backup','actlog','datamanager']]];
+const _l=loadAdminAndShow;
+window.loadAdminAndShow=async function(){await _l();
+ const nav=document.getElementById('adminNav');nav.querySelectorAll('.ad-g').forEach(x=>x.remove());
+ const B={};nav.querySelectorAll('button').forEach(b=>B[b.dataset.sec]=b);
+ G.forEach(([t,ks])=>{const bs=ks.map(k=>B[k]).filter(b=>b&&b.style.display!='none');if(!bs.length)return;
+  const h=document.createElement('div');h.className='ad-g';h.textContent=t;nav.appendChild(h);bs.forEach(b=>nav.appendChild(b))});
+ Object.values(B).forEach(b=>{if(!b.parentNode)return});
+ nav.querySelectorAll('button').forEach(b=>{if(b.style.display=='none')nav.appendChild(b)})};
+})();
 </script>
 </body>
 </html>
