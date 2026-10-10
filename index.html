@@ -1479,6 +1479,70 @@ html[dir="rtl"] .cart-item.ci-new{animation-name:ciNewRtl;}
 .gs-item.sel::after{content:'✓'; position:absolute; top:8px; inset-inline-end:10px; font-size:13px; animation:badgePop .4s ease;}
 @keyframes gsIn{from{opacity:0; transform:translateY(12px);}to{opacity:1; transform:none;}}
 .gs-empty{grid-column:1/-1; text-align:center; color:var(--muted); padding:26px 0; font-size:14px;}
+
+.rv-done{animation:none !important;}
+.add-cart-btn.btn-added, .checkout-btn.btn-added{animation:btnAdded .6s ease;}
+/* ===== v3: FULL-WIDTH BANNER + CENTERED CARD BUTTON ===== */
+.banner{margin:78px 0 0 !important; width:100% !important; border-radius:0 !important;}
+@media(min-width:860px){ .banner{margin:90px 0 0 !important;} }
+.banner-frame{display:none;}
+
+.card-body .quick-add{position:static !important; inset:auto !important; display:flex !important; align-items:center; justify-content:center; gap:8px; width:auto !important; min-width:130px; max-width:86%; height:42px; margin:14px auto 0 !important; padding:0 24px; border-radius:30px; float:none; clear:both;}
+.card-body .price-row{margin-bottom:0;}
+@media(max-width:600px){ .card-body .quick-add{min-width:0; width:78% !important; height:38px; margin:10px auto 0 !important; padding:0 12px; border-radius:24px;} }
+
+/* ===== v3: ANIMATIONS EVERYWHERE ===== */
+@keyframes slideDown{from{opacity:0; transform:translateY(-26px);}to{opacity:1; transform:none;}}
+@keyframes tabUp{from{opacity:0; transform:translateY(40px);}to{opacity:1; transform:none;}}
+@keyframes rvIn{from{opacity:0; transform:translateY(26px) scale(.96);}to{opacity:1; transform:none;}}
+@keyframes ctaNudge{0%,100%{transform:translate(0,0);}50%{transform:translate(3px,-3px);}}
+@keyframes ctaRing{0%{box-shadow:0 12px 28px rgba(0,0,0,.3), 0 0 0 0 rgba(255,255,255,.55);}70%,100%{box-shadow:0 12px 28px rgba(0,0,0,.3), 0 0 0 16px rgba(255,255,255,0);}}
+@keyframes bannerSweep{0%{transform:translateX(-120%) skewX(-18deg);}60%,100%{transform:translateX(320%) skewX(-18deg);}}
+@keyframes heartBeat{0%{transform:scale(1);}25%{transform:scale(1.4);}50%{transform:scale(.95);}75%{transform:scale(1.2);}100%{transform:scale(1);}}
+@keyframes logoGlow{0%,100%{text-shadow:0 0 10px var(--maroon-glow);}50%{text-shadow:0 0 22px var(--maroon-glow), 0 0 34px var(--maroon-glow);}}
+@keyframes floatY{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+@keyframes rpl{to{transform:scale(1); opacity:0;}}
+@keyframes pageFade{from{opacity:0;}to{opacity:1;}}
+
+body{animation:pageFade .6s ease;}
+.header-pill{animation:slideDown .8s cubic-bezier(.2,.8,.2,1) backwards;}
+.header-pill .logo{animation:logoGlow 3.5s ease-in-out infinite;}
+.tabbar{animation:tabUp .7s .25s cubic-bezier(.2,.8,.2,1) backwards;}
+.tabbar button.active .ti{animation:badgePop .5s cubic-bezier(.3,1.8,.5,1);}
+.tabbar button:hover .ti{transform:translateY(-3px);}
+
+.banner::before{content:''; position:absolute; top:0; bottom:0; left:0; width:30%; z-index:3; pointer-events:none; background:linear-gradient(100deg, transparent, rgba(255,255,255,.22), transparent); animation:bannerSweep 7s ease-in-out 1.5s infinite;}
+.banner-content > *{animation:fadeInUp .9s cubic-bezier(.2,.8,.2,1) backwards;}
+.banner-content .eyebrow{animation-delay:.2s;}
+.banner-content h1{animation-delay:.35s;}
+.banner-content p{animation-delay:.5s;}
+.banner-content .cta-hero{animation:fadeInUp .9s .6s cubic-bezier(.2,.8,.2,1) backwards, ctaRing 2.6s 1.6s ease-out infinite;}
+.banner .banner-content .cta-hero svg{animation:ctaNudge 1.8s ease-in-out infinite;}
+
+.card{animation:fadeInUp .6s cubic-bezier(.2,.8,.2,1) backwards; animation-delay:calc(min(var(--i,0),10) * 70ms);}
+.card.rv, .cat-tile.rv, .rec-card.rv, footer.site-footer.rv, .ck-card.rv, .invoice-box.rv{opacity:0; transform:translateY(26px) scale(.96); animation:none;}
+.rv.in{animation:rvIn .65s cubic-bezier(.2,.8,.2,1) forwards; animation-delay:calc(min(var(--i,0),10) * 70ms);}
+.card-wish.active svg, .pp-wish-btn.active svg{animation:heartBeat .7s ease;}
+.card:hover .card-wish{transform:scale(1.08);}
+.card:hover .price.discount, .card:hover .price{transform:scale(1.06);}
+.cat-tile:hover .cat-tile-underline{width:56px;}
+.cat-tile-underline{transition:width .4s ease;}
+.cat-tile:hover .cat-tile-label{letter-spacing:3px;}
+.section-title.in-view::after{animation:fadeIn .8s .2s both;}
+.low-stock-tag, .tag{animation:floatY 3s ease-in-out infinite;}
+.wishlist-panel .cart-item, .cart-item{animation:fadeInUp .45s cubic-bezier(.2,.8,.2,1) backwards;}
+
+#ppContent{animation:fadeInUp .6s .12s cubic-bezier(.2,.8,.2,1) backwards;}
+.product-panel > .section-wrap{animation:fadeInUp .55s .1s cubic-bezier(.2,.8,.2,1) backwards;}
+.ck-card:nth-of-type(2){animation-delay:.08s;}
+.checkout-btn{animation:softGlow 3s ease-in-out infinite;}
+@keyframes softGlow{0%,100%{box-shadow:0 0 0 0 rgba(161,49,72,0);}50%{box-shadow:0 0 0 7px rgba(161,49,72,.14);}}
+.add-cart-btn{animation:softGlow 3s ease-in-out infinite;}
+
+.rpl{position:absolute; border-radius:50%; background:rgba(255,255,255,.45); transform:scale(0); animation:rpl .6s ease-out forwards; pointer-events:none; z-index:0;}
+.gs-item .rpl{background:rgba(161,49,72,.25);}
+.banner-content .cta-hero, .gs-item{position:relative; overflow:hidden;}
+.banner-content .cta-hero{overflow:hidden;}
 </style>
 </head>
 <body>
@@ -2418,26 +2482,214 @@ async function getProductsData(){
   try{
     const snap = await withTimeout(productsColRef().get(), 8000, FETCH_FAILED);
     if(snap === FETCH_FAILED) return FETCH_FAILED;
-    if(snap.empty) return null; // "no products collection yet" — same signal the old missing-doc case gave
+    if(snap.empty){ rememberServerProducts([]); return null; } // "no products collection yet" — same signal the old missing-doc case gave
     const list = snap.docs.map(d=>d.data());
+    rememberServerProducts(list);
     _knownProductIds = new Set(list.map(p=>p.id));
     cacheSet('aura:products', list);
     return list;
   }catch(e){ console.error('getProductsData failed', e); return FETCH_FAILED; }
 }
 
-async function setProductsData(products){
-  cacheSet('aura:products', products); // instant local mirror, same as setData()
+/* ================= PRODUCTS: SAFE, PER-PRODUCT SAVING =================
+   Old behaviour: every device (even a customer's phone) re-wrote the WHOLE catalog and deleted
+   any product it didn't know about, and a failed save only kept the product in the local cache —
+   so it showed for a while and then vanished on the next sync. Now:
+   - only products that actually changed are written (one document each);
+   - a product is deleted only when someone explicitly deletes it;
+   - a product that couldn't be saved is kept on screen, flagged, and retried (never silently dropped);
+   - the real reason a save failed is shown instead of a generic toast. */
+let _serverList = null;            // last product list confirmed by the server
+let _savedJSON = new Map();        // id -> stable JSON of what the server has
+let _savedJSONStale = true;
+const _unsaved = new Map();        // id -> product that has local changes the server doesn't have yet
+const _pendingDeletes = new Set(); // ids the admin explicitly deleted
+let _saveChain = Promise.resolve();
+let _retryTimer = null, _retryCount = 0;
+const MAX_PRODUCT_DOC_CHARS = 950000; // Firestore hard limit is 1 MiB per document
+
+function stableJSON(v){
+  if(Array.isArray(v)) return '[' + v.map(stableJSON).join(',') + ']';
+  if(v && typeof v === 'object'){
+    return '{' + Object.keys(v).sort().filter(k=>v[k]!==undefined).map(k=>JSON.stringify(k)+':'+stableJSON(v[k])).join(',') + '}';
+  }
+  return JSON.stringify(v);
+}
+function rememberServerProducts(list){ _serverList = list; _savedJSONStale = true; }
+function ensureSavedMap(){
+  if(!_savedJSONStale) return;
+  _savedJSON = new Map((_serverList||[]).map(p=>[p.id, stableJSON(p)]));
+  _savedJSONStale = false;
+}
+function mergeUnsavedProducts(list){
+  const out = list.filter(p=>!_pendingDeletes.has(p.id)).map(p=>_unsaved.has(p.id) ? _unsaved.get(p.id) : p);
+  const have = new Set(out.map(p=>p.id));
+  _unsaved.forEach((p,id)=>{ if(!have.has(id) && !_pendingDeletes.has(id)) out.push(p); });
+  return out;
+}
+function describeSaveError(e){
+  const code = (e && e.code) || '';
+  if(code==='permission-denied') return 'قواعد Firestore (Rules) بتمنع الحفظ — permission-denied';
+  if(code==='invalid-argument' || code==='resource-exhausted' || /too large|size|exceeds/i.test((e&&e.message)||'')) return 'حجم المنتج/الصور كبير على Firestore — قلّل الصور';
+  if(code==='unavailable' || code==='deadline-exceeded' || (e && e.timeout)) return 'النت ضعيف أو الاتصال بالسيرفر وقع — هيحاول تاني لوحده';
+  return 'خطأ في الحفظ' + (code ? ' ('+code+')' : '');
+}
+function showSaveErrorBar(msg){
+  try{
+    let bar = document.getElementById('saveErrBar');
+    if(!bar){
+      bar = document.createElement('div'); bar.id = 'saveErrBar';
+      bar.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:500;background:#b3261e;color:#fff;padding:12px 14px;font-size:13px;display:flex;gap:10px;align-items:center;justify-content:space-between;line-height:1.5';
+      document.body.appendChild(bar);
+    }
+    bar.innerHTML = '<span>⚠ ' + msg + ' — المنتج لسه ظاهر عندك بس <b>لسه ماتحفظش على السيرفر</b></span><span style="display:flex;gap:6px;flex-shrink:0"><button onclick="retryUnsavedProducts()" style="background:#fff;color:#b3261e;border-radius:8px;padding:6px 10px;font-weight:700">إعادة المحاولة</button><button onclick="hideSaveErrorBar()" style="background:rgba(255,255,255,.2);color:#fff;border-radius:8px;padding:6px 10px">✕</button></span>';
+  }catch(e){}
+}
+function hideSaveErrorBar(){ const b = document.getElementById('saveErrBar'); if(b) b.remove(); }
+function retryUnsavedProducts(){ _retryCount = 0; return setProductsData(PRODUCTS); }
+function scheduleProductRetry(){
+  if(_retryTimer || _retryCount >= 5) return;
+  _retryCount++;
+  _retryTimer = setTimeout(()=>{ _retryTimer = null; setProductsData(PRODUCTS); }, 15000 * _retryCount);
+}
+
+function setProductsData(products, opts){
+  cacheSet('aura:products', products);
+  const run = ()=>_doSaveProducts(products, opts||{});
+  _saveChain = _saveChain.then(run, run);   // saves run one at a time, so each diff is computed after the previous finished
+  return _saveChain;
+}
+async function _doSaveProducts(products, opts){
   if(!fbReady) return false;
   try{
-    const batch = fbDb.batch();
-    const currentIds = new Set();
-    products.forEach(p=>{ currentIds.add(p.id); batch.set(productsColRef().doc(p.id), p); });
-    _knownProductIds.forEach(id=>{ if(!currentIds.has(id)) batch.delete(productsColRef().doc(id)); }); // remove products deleted since last save
-    const ok = await withTimeout(batch.commit().then(()=>true), 8000, false);
-    if(ok) _knownProductIds = currentIds;
-    return ok;
-  }catch(e){ console.error('setProductsData failed', e); return false; }
+    if(_serverList === null){
+      const fresh = await getProductsData();                 // never write blind: learn what the server really has first
+      if(fresh === FETCH_FAILED){ showSaveErrorBar(describeSaveError({timeout:true})); scheduleProductRetry(); return false; }
+    }
+    ensureSavedMap();
+    const ids = new Set(products.map(p=>p.id));
+    if(opts.replaceAll){ _savedJSON.forEach((_,id)=>{ if(!ids.has(id)) _pendingDeletes.add(id); }); }
+    const writes = [];
+    products.forEach(p=>{
+      if(_pendingDeletes.has(p.id)) return;
+      const j = stableJSON(p);
+      if(_savedJSON.get(p.id) !== j){ writes.push({p, j}); _unsaved.set(p.id, p); }
+    });
+    const dels = Array.from(_pendingDeletes);
+    if(!writes.length && !dels.length){ hideSaveErrorBar(); return true; }
+
+    const big = writes.filter(w=>w.j.length > MAX_PRODUCT_DOC_CHARS);
+    if(big.length){
+      showSaveErrorBar('المنتج "' + (big[0].p.name||'') + '" حجمه ' + Math.round(big[0].j.length/1024) + ' KB وده أكبر من حد Firestore (1MB) — قلّل عدد/حجم الصور');
+      big.forEach(b=>{ _unsaved.delete(b.p.id); });   // can never be saved as-is; don't retry forever
+      writes.splice(0, writes.length, ...writes.filter(w=>w.j.length <= MAX_PRODUCT_DOC_CHARS));
+      if(!writes.length && !dels.length) return false;
+    }
+
+    // chunk into batches (<=400 ops and <=7MB each)
+    const chunks = []; let cur = {w:[], d:[], size:0};
+    const push = ()=>{ if(cur.w.length||cur.d.length){ chunks.push(cur); cur = {w:[], d:[], size:0}; } };
+    writes.forEach(w=>{ if(cur.size + w.j.length > 7000000 || cur.w.length + cur.d.length >= 400) push(); cur.w.push(w); cur.size += w.j.length; });
+    dels.forEach(id=>{ if(cur.w.length + cur.d.length >= 400) push(); cur.d.push(id); });
+    push();
+
+    for(const ch of chunks){
+      const batch = fbDb.batch();
+      ch.w.forEach(w=>batch.set(productsColRef().doc(w.p.id), JSON.parse(w.j)));
+      ch.d.forEach(id=>batch.delete(productsColRef().doc(id)));
+      const res = await Promise.race([
+        batch.commit().then(()=>({ok:true})).catch(err=>({ok:false, err})),
+        new Promise(r=>setTimeout(()=>r({ok:false, err:{timeout:true}}), 60000))
+      ]);
+      if(!res.ok){
+        console.error('product save failed', res.err);
+        showSaveErrorBar(describeSaveError(res.err));
+        scheduleProductRetry();
+        return false;
+      }
+      ch.w.forEach(w=>{ _savedJSON.set(w.p.id, w.j); _unsaved.delete(w.p.id); });
+      ch.d.forEach(id=>{ _savedJSON.delete(id); _pendingDeletes.delete(id); _unsaved.delete(id); });
+    }
+    _retryCount = 0; hideSaveErrorBar();
+    setData('aura:seeded', true, true);   // remember the store is "set up", so an emptied catalog never gets the demo products back
+    return true;
+  }catch(e){
+    console.error('setProductsData failed', e);
+    showSaveErrorBar(describeSaveError(e)); scheduleProductRetry();
+    return false;
+  }
+}
+/* Customers' phones must never re-write whole products. These touch ONLY the counter fields. */
+function bumpProductCounters(id, deltas){
+  if(!fbReady || !id) return Promise.resolve(false);
+  const upd = {};
+  Object.keys(deltas).forEach(k=>{ upd[k] = firebase.firestore.FieldValue.increment(deltas[k]); });
+  return withTimeout(productsColRef().doc(id).update(upd).then(()=>true).catch(e=>{ console.warn('counter update failed', e); return false; }), 10000, false);
+}
+function addProductReview(id, review){
+  if(!fbReady || !id) return Promise.resolve(false);
+  return withTimeout(productsColRef().doc(id).update({reviews: firebase.firestore.FieldValue.arrayUnion(review)}).then(()=>true).catch(e=>{ console.warn('review save failed', e); return false; }), 10000, false);
+}
+/* Safe read-modify-write of a shared list/object: always starts from the LATEST server copy
+   (inside a transaction), so one customer's stale copy can never overwrite another's data. */
+async function mutateShared(key, def, fn){
+  if(!fbReady) return false;
+  try{
+    const ref = fbDb.collection('store').doc(key);
+    const out = await withTimeout(fbDb.runTransaction(async tx=>{
+      const snap = await tx.get(ref);
+      let cur = snap.exists ? snap.data().value : null;
+      if(cur == null) cur = JSON.parse(JSON.stringify(def));
+      const next = fn(cur);
+      const val = next === undefined ? cur : next;
+      tx.set(ref, {value: val, updatedAt: firebase.firestore.FieldValue.serverTimestamp()});
+      return val;
+    }), 20000, FETCH_FAILED);
+    if(out === FETCH_FAILED) return false;
+    cacheSet(key, out);
+    return out;
+  }catch(e){ console.error('mutateShared failed for '+key, e); return false; }
+}
+/* Shrinks product photos until the whole product fits under Firestore's 1MB document limit. */
+function _recompressDataUrl(url, maxDim, q){
+  return new Promise(res=>{
+    if(!/^data:image\//.test(url)) return res(url);
+    const img = new Image();
+    img.onerror = ()=>res(url);
+    img.onload = ()=>{
+      let w = img.width, h = img.height;
+      if(w > maxDim || h > maxDim){ const s = maxDim/Math.max(w,h); w = Math.round(w*s); h = Math.round(h*s); }
+      const c = document.createElement('canvas'); c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      try{ res(c.toDataURL('image/jpeg', q)); }catch(e){ res(url); }
+    };
+    img.src = url;
+  });
+}
+async function fitProductSize(data){
+  const size = ()=>stableJSON(data).length;
+  if(size() <= MAX_PRODUCT_DOC_CHARS) return true;
+  const steps = [[900,.62],[720,.55],[600,.5],[480,.45],[360,.4]];
+  for(const [dim,q] of steps){
+    data.images = await Promise.all((data.images||[]).map(u=>_recompressDataUrl(u, dim, q)));
+    data.image = data.images[0];
+    if(size() <= MAX_PRODUCT_DOC_CHARS) return true;
+  }
+  return false;
+}
+/* A device's cart/wishlist belongs to whichever account last used it. */
+async function adoptAccountCart(phone){
+  const owner = cacheGet('aura:cartOwner', null);
+  if(owner && owner !== phone){ CART = []; WISHLIST = []; MY_LAST_VIEWED = null; }   // previous account's items must not follow the next person
+  const cust = CUSTOMERS.find(c=>c.phone===phone);
+  if(cust){
+    (cust.cart||[]).forEach(it=>{ if(!CART.find(i=>i.productId===it.productId && i.size===it.size && i.color===it.color)) CART.push({...it}); });
+    (cust.wishlist||[]).forEach(id=>{ if(!WISHLIST.includes(id)) WISHLIST.push(id); });
+  }
+  cacheSet('aura:cartOwner', phone);
+  await Promise.all([setData('aura:cart', CART, false), setData('aura:wishlist', WISHLIST, false)]);
+  if(typeof renderCart==='function') renderCart();
+  if(typeof renderWishlistBadge==='function') renderWishlistBadge();
 }
 
 /* One-time upgrade for stores whose whole catalog still lives in the old single
@@ -2622,8 +2874,10 @@ function attachRealtimeListeners(){
   if(!fbReady) return;
 
   productsColRef().onSnapshot(snap=>{
-    PRODUCTS = snap.docs.map(d=>d.data());
-    _knownProductIds = new Set(PRODUCTS.map(p=>p.id));
+    const _serverDocs = snap.docs.map(d=>d.data());
+    if(!snap.metadata.hasPendingWrites) rememberServerProducts(_serverDocs);
+    PRODUCTS = mergeUnsavedProducts(_serverDocs);   // products still waiting to be saved are kept, not wiped
+    _knownProductIds = new Set(_serverDocs.map(p=>p.id));
     cacheSet('aura:products', PRODUCTS);
     const _hgSig = homeGridSignature();
     if(_hgSig !== _homeGridSig){
@@ -3118,6 +3372,7 @@ async function init(){
   CATEGORY_IMAGES = cacheGet('aura:categoryimages', {});
   MY_PROFILE = cacheGet('aura:myprofile', null);
   MY_LAST_VIEWED = cacheGet('aura:lastviewed', null);
+  if(MY_PROFILE && MY_PROFILE.phone && !cacheGet('aura:cartOwner', null)) cacheSet('aura:cartOwner', MY_PROFILE.phone);
 
   renderMenu();
   renderBanner();
@@ -3191,8 +3446,13 @@ async function syncFromFirestore(){
      check" as "empty store". This is what used to silently wipe out real products on a
      bad connection. */
   if(products !== FETCH_FAILED){
-    PRODUCTS = products || seedProducts();
-    if(!products){ await setProductsData(PRODUCTS); }
+    if(products){ PRODUCTS = mergeUnsavedProducts(products); }
+    else {
+      const seeded = await getData('aura:seeded', null, true);
+      if(seeded === FETCH_FAILED){ /* couldn't check — keep what we have */ }
+      else if(seeded){ PRODUCTS = mergeUnsavedProducts([]); }   // the catalog was emptied on purpose — don't bring the demo products back
+      else { PRODUCTS = seedProducts(); await setProductsData(PRODUCTS); }
+    }
   }
   if(orders!==FETCH_FAILED) ORDERS = orders;
   if(customers!==FETCH_FAILED) CUSTOMERS = customers;
@@ -3217,7 +3477,7 @@ async function syncFromFirestore(){
 
   const t = todayStr();
   STATS.visitorsByDay[t] = (STATS.visitorsByDay[t]||0) + 1;
-  setData('aura:stats', STATS, true); // fire-and-forget — nothing on screen needs to wait for this
+  mutateShared('aura:stats', {visitorsByDay:{}, salesByDay:{}, ordersByDay:{}}, st=>{ st.visitorsByDay=st.visitorsByDay||{}; st.visitorsByDay[t]=(st.visitorsByDay[t]||0)+1; return st; }); // fire-and-forget, race-safe
 
   if(typeof renderCategoryTiles==='function') renderCategoryTiles();
   if(typeof renderAccountPage==='function' && !document.getElementById('accountOverlay').classList.contains('hidden')) renderAccountPage();
@@ -3285,7 +3545,7 @@ function applyRoute(state){
       const p = PRODUCTS.find(x=>x.id===state.id);
       if(p){
         currentProduct = p;
-        p.views = (p.views||0) + 1; persistProducts();
+        p.views = (p.views||0) + 1; bumpProductCounters(p.id, {views:1});
         MY_LAST_VIEWED = p.id; setData('aura:lastviewed', p.id, false); syncActivityToCustomer();
         currentGallery = galleryFor(p);
         currentGalleryIdx = 0;
@@ -3843,17 +4103,27 @@ function myCustomerRecord(){ return (MY_PROFILE && MY_PROFILE.phone) ? CUSTOMERS
    and the last product they looked at (Admin > Customers > View). Silently does nothing if nobody
    is signed in on this device yet. */
 async function syncActivityToCustomer(){
-  const cust = myCustomerRecord();
-  if(!cust) return;
-  cust.wishlist = WISHLIST.slice();
-  cust.cart = CART.map(i=>({...i}));
-  cust.lastViewedProductId = MY_LAST_VIEWED || null;
-  await setData('aura:customers', CUSTOMERS, true);
+  if(!MY_PROFILE || !MY_PROFILE.phone) return;
+  const phone = MY_PROFILE.phone, wl = WISHLIST.slice(), cart = CART.map(i=>({...i})), lv = MY_LAST_VIEWED || null;
+  if(!CUSTOMERS.find(c=>c.phone===phone)) return;
+  const r = await mutateShared('aura:customers', [], list=>{
+    const c = list.find(x=>x.phone===phone);
+    if(c){ c.wishlist = wl; c.cart = cart; c.lastViewedProductId = lv; }
+    return list;
+  });
+  if(r) CUSTOMERS = r;
 }
 function loyaltySettings(){ return (SETTINGS && SETTINGS.loyalty) || defaultLoyalty(); }
 /* Finds-or-creates the shared CUSTOMERS record for this name/phone and refreshes lastLogin.
    Does NOT touch ordersCount/totalSpent — those only change when an order is actually placed. */
 async function ensureCustomerRecord(name, phone){
+  const r = await mutateShared('aura:customers', [], list=>{
+    const c = list.find(x=>x.phone===phone);
+    if(c){ c.name = name || c.name; c.lastLogin = todayStr(); }
+    else list.push({id:uid('c'), name, phone, ordersCount:0, totalSpent:0, points:0, lastLogin:todayStr(), createdAt:todayStr()});
+    return list;
+  });
+  if(r){ CUSTOMERS = r; return CUSTOMERS.find(c=>c.phone===phone); }
   let cust = CUSTOMERS.find(c=>c.phone===phone);
   if(cust){ cust.name = name || cust.name; cust.lastLogin = todayStr(); }
   else { cust = {id:uid('c'), name, phone, ordersCount:0, totalSpent:0, points:0, lastLogin:todayStr(), createdAt:todayStr()}; CUSTOMERS.push(cust); }
@@ -3939,6 +4209,7 @@ async function continueWithPhone(){
     MY_PROFILE = {name:existing.name, phone};
     await setData('aura:myprofile', MY_PROFILE, false);
     await ensureCustomerRecord(existing.name, phone);
+    await adoptAccountCart(phone);
     await syncActivityToCustomer();
     showToast('Welcome back, ' + existing.name + '!');
     renderAccountPage();
@@ -3955,14 +4226,19 @@ async function continueWithPhone(){
   MY_PROFILE = {name, phone};
   await setData('aura:myprofile', MY_PROFILE, false);
   await ensureCustomerRecord(name, phone);
+  await adoptAccountCart(phone);
   await syncActivityToCustomer();
   showToast('Welcome, ' + name + '!');
   renderAccountPage();
 }
 async function logoutMyProfile(){
   if(!confirm('Switch to a different account on this device?')) return;
+  await syncActivityToCustomer();   // save this account's bag/wishlist on ITS record first
   MY_PROFILE = null;
-  await setData('aura:myprofile', null, false);
+  CART = []; WISHLIST = []; MY_LAST_VIEWED = null;   // the next person on this device starts clean
+  cacheSet('aura:cartOwner', null);
+  await Promise.all([setData('aura:myprofile', null, false), setData('aura:cart', CART, false), setData('aura:wishlist', WISHLIST, false), setData('aura:lastviewed', null, false)]);
+  renderCart(); renderWishlistBadge();
   renderAccountPage();
 }
 function pointsProgressHTML(cust){
@@ -4570,8 +4846,9 @@ async function submitReview(){
   // realtime-listener rebuild that would otherwise yank focus out from under the user.
   if(document.activeElement && typeof document.activeElement.blur === 'function') document.activeElement.blur();
   currentProduct.reviews = currentProduct.reviews || [];
-  currentProduct.reviews.push({id:uid('rev'), name, text, rating, date: todayStr(), status:'pending'});
-  await persistProducts();
+  const _rev = {id:uid('rev'), name, text, rating, date: todayStr(), status:'pending'};
+  currentProduct.reviews.push(_rev);
+  await addProductReview(currentProduct.id, _rev);
   await addNotification('review', `${name} left a ${rating}★ review on "${currentProduct.name}" — awaiting approval`);
   document.getElementById('revName').value=''; document.getElementById('revText').value='';
   document.getElementById('reviewForm').classList.remove('open');
@@ -4656,7 +4933,7 @@ function addToCart(p, size, color, qty){
   renderCart();
   showToast('Added to bag');
   // Sync to the server in the background; a slow/offline connection no longer freezes the button.
-  persistProducts();
+  bumpProductCounters(p.id, {addToCart:qty});
   setData('aura:cart', CART, false);
   syncActivityToCustomer();
 }
@@ -4797,7 +5074,7 @@ async function placeOrder(){
     else { cust = {id:uid('c'), name, phone, ordersCount:1, totalSpent:amount, points:pointsEarned, lastLogin:todayStr(), createdAt:todayStr()}; CUSTOMERS.push(cust); }
 
     // Remember this customer on this device so their "My Account" page shows this order, points and history next time they visit.
-    if(!MY_PROFILE || MY_PROFILE.phone !== phone){ MY_PROFILE = {name, phone}; setData('aura:myprofile', MY_PROFILE, false); }
+    if(!MY_PROFILE || MY_PROFILE.phone !== phone){ MY_PROFILE = {name, phone}; setData('aura:myprofile', MY_PROFILE, false); cacheSet('aura:cartOwner', phone); }
     appliedPointsRedeem = null;
 
     CHECKOUT_ITEMS.forEach(ci=>{ const p = PRODUCTS.find(x=>x.id===ci.productId); if(p){ p.purchases=(p.purchases||0)+ci.qty; p.qty=Math.max(0,p.qty-ci.qty); } });
@@ -4808,18 +5085,24 @@ async function placeOrder(){
 
     // All these are saved to the server in parallel (each individually time-bounded — see setData),
     // so the confirmation below can never be held up longer than a single save would take.
+    const _ordSnapshot = CHECKOUT_ITEMS.map(i=>({productId:i.productId, qty:i.qty}));
     const syncTasks = [
-      setData('aura:orders', ORDERS, true),
-      setData('aura:customers', CUSTOMERS, true),
-      persistProducts(),
-      setData('aura:stats', STATS, true),
+      mutateShared('aura:orders', [], list=>{ if(!list.some(o=>o.id===order.id)) list.unshift(order); return list; }).then(r=>{ if(r) ORDERS = r; else return setData('aura:orders', ORDERS, true); }),
+      mutateShared('aura:customers', [], list=>{
+        const c = list.find(x=>x.phone===phone);
+        if(c){ c.ordersCount=(c.ordersCount||0)+1; c.totalSpent=(c.totalSpent||0)+amount; c.lastLogin=todayStr(); c.points=Math.max(0,(c.points||0)-pointsUsed)+pointsEarned; }
+        else list.push({id:uid('c'), name, phone, ordersCount:1, totalSpent:amount, points:pointsEarned, lastLogin:todayStr(), createdAt:todayStr()});
+        return list;
+      }).then(r=>{ if(r) CUSTOMERS = r; else return setData('aura:customers', CUSTOMERS, true); }),
+      ..._ordSnapshot.map(it=>bumpProductCounters(it.productId, {purchases:it.qty, qty:-it.qty})),
+      mutateShared('aura:stats', {visitorsByDay:{}, salesByDay:{}, ordersByDay:{}}, st=>{ st.salesByDay=st.salesByDay||{}; st.ordersByDay=st.ordersByDay||{}; st.salesByDay[t]=(st.salesByDay[t]||0)+amount; st.ordersByDay[t]=(st.ordersByDay[t]||0)+1; return st; }).then(r=>{ if(r) STATS = r; else return setData('aura:stats', STATS, true); }),
       addNotification('order', `New order ${order.id} from ${name} — ${fmtMoney(amount)}`)
     ];
 
     if(appliedCoupon){
       const couponCode = appliedCoupon.code;
       const c = COUPONS.find(x=>x.code===couponCode);
-      if(c){ c.used=(c.used||0)+1; syncTasks.push(setData('aura:coupons', COUPONS, true)); }
+      if(c){ c.used=(c.used||0)+1; syncTasks.push(mutateShared('aura:coupons', [], list=>{ const cc=list.find(x=>x.code===couponCode); if(cc) cc.used=(cc.used||0)+1; return list; }).then(r=>{ if(r) COUPONS = r; else return setData('aura:coupons', COUPONS, true); })); }
       syncTasks.push(addNotification('coupon', pointsUsed ? `Customer ${name} redeemed ${pointsUsed} loyalty points on order ${order.id}` : `Coupon "${couponCode}" was used on order ${order.id}`));
       appliedCoupon = null;
     }
@@ -4850,8 +5133,10 @@ async function placeOrder(){
 
 async function persistProducts(){ return await setProductsData(PRODUCTS); }
 async function addNotification(type, message){
-  NOTIFS.unshift({id:uid('n'), type, message, date:new Date().toISOString(), read:false});
-  await setData('aura:notifications', NOTIFS, true);
+  const n = {id:uid('n'), type, message, date:new Date().toISOString(), read:false};
+  NOTIFS.unshift(n);
+  const r = await mutateShared('aura:notifications', [], list=>{ list.unshift(n); return list; });
+  if(r) NOTIFS = r; else await setData('aura:notifications', NOTIFS, true);
 }
 
 /* ================= ADMIN ================= */
@@ -5211,6 +5496,7 @@ async function saveProduct(){
   };
   if(data.sizes.length===0) data.sizes=['One Size'];
   if(data.colors.length===0) data.colors=['Default'];
+  if(!(await fitProductSize(data))){ showToast('⚠ الصور كبيرة قوي — قلّل عددها'); return; }
   if(editingProductId){ const p = PRODUCTS.find(x=>x.id===editingProductId); Object.assign(p, data); }
   else { PRODUCTS.push({id:uid('p'), views:0, addToCart:0, purchases:0, reviews:[], archived:false, ...data}); }
   const saved = await persistProducts();
@@ -5251,6 +5537,7 @@ async function restoreProduct(id){
 async function deleteProduct(id){
   if(!confirm('Permanently delete this product? This cannot be undone.')) return;
   PRODUCTS = PRODUCTS.filter(x=>x.id!==id);
+  _pendingDeletes.add(id); _unsaved.delete(id);
   await persistProducts();
   renderProductsTable();
   showToast('Product deleted');
@@ -6158,7 +6445,7 @@ async function removeDataSection(section){
   if(!confirmAdminPassword('Type your admin password to delete this data:')){ showToast('Incorrect password — cancelled'); return; }
   if(!confirm('This will permanently delete this data. Continue?')) return;
   const map = {
-    products: async()=>{ PRODUCTS=[]; await setProductsData(PRODUCTS); renderProductsTable(); },
+    products: async()=>{ PRODUCTS=[]; await setProductsData(PRODUCTS, {replaceAll:true}); renderProductsTable(); },
     orders: async()=>{ ORDERS=[]; await setData('aura:orders', ORDERS, true); renderOrdersTable(); },
     returns: async()=>{ RETURNS=[]; await setData('aura:returns', RETURNS, true); renderReturnsAdmin(); },
     returnrequests: async()=>{ RETURN_REQUESTS=[]; await setData('aura:returnrequests', RETURN_REQUESTS, true); renderReturnRequestsAdmin(); },
@@ -6184,7 +6471,7 @@ async function removeAllData(){
 }
 async function removeDataSectionSilent(section){
   const map = {
-    products: async()=>{ PRODUCTS=[]; await setProductsData(PRODUCTS); },
+    products: async()=>{ PRODUCTS=[]; await setProductsData(PRODUCTS, {replaceAll:true}); },
     orders: async()=>{ ORDERS=[]; await setData('aura:orders', ORDERS, true); },
     returns: async()=>{ RETURNS=[]; await setData('aura:returns', RETURNS, true); },
     returnrequests: async()=>{ RETURN_REQUESTS=[]; await setData('aura:returnrequests', RETURN_REQUESTS, true); },
@@ -6218,7 +6505,7 @@ function importBackup(e){
     try{
       const data = JSON.parse(reader.result);
       if(!confirm('This will overwrite all current store data with the backup file. Continue?')) return;
-      if(data.products) { PRODUCTS = data.products; await setProductsData(PRODUCTS); }
+      if(data.products) { PRODUCTS = data.products; await setProductsData(PRODUCTS, {replaceAll:true}); }
       if(data.orders) { ORDERS = data.orders; await setData('aura:orders', ORDERS, true); }
       if(data.customers) { CUSTOMERS = data.customers; await setData('aura:customers', CUSTOMERS, true); }
       if(data.coupons) { COUPONS = data.coupons; await setData('aura:coupons', COUPONS, true); }
@@ -6605,6 +6892,48 @@ if(typeof openCart==='function'){
     w.classList.add('entering'); setTimeout(()=>w.classList.remove('entering'), 900);
   };
 }
+</script>
+
+<script>
+/* ===== v3 motion: scroll reveal, stagger, ripple ===== */
+(function(){
+  const SEL = '.card, .cat-tile, .rec-card, footer.site-footer, .ck-card, .invoice-box';
+  const io = ('IntersectionObserver' in window) ? new IntersectionObserver(es=>{
+    es.forEach(en=>{ if(en.isIntersecting){ reveal(en.target); io.unobserve(en.target); } });
+  }, {threshold:0.08}) : null;
+  function reveal(el){
+    if(el.classList.contains('in')) return;
+    el.classList.add('in');
+    el.addEventListener('animationend', ()=>{ el.classList.remove('rv','in'); el.classList.add('rv-done'); }, {once:true});
+  }
+  function refresh(){
+    ['.grid', '.cat-grid', '.rec-row'].forEach(g=>{
+      document.querySelectorAll(g).forEach(c=>Array.from(c.children).forEach((el,i)=>el.style.setProperty('--i', i)));
+    });
+    document.querySelectorAll(SEL).forEach(el=>{
+      if(el.dataset.mo) return;
+      el.dataset.mo = '1';
+      if(!io){ return; }
+      el.classList.add('rv');
+      io.observe(el);
+      setTimeout(()=>reveal(el), 3500);   // safety net so nothing stays hidden
+    });
+  }
+  let t;
+  new MutationObserver(()=>{ clearTimeout(t); t = setTimeout(refresh, 50); }).observe(document.body, {childList:true, subtree:true});
+  refresh();
+
+  document.addEventListener('pointerdown', e=>{
+    const b = e.target.closest && e.target.closest('.checkout-btn, .add-cart-btn, .order-now-btn, .quick-add, .cta-hero, .gs-item, .ce-browse');
+    if(!b || b.disabled) return;
+    const r = b.getBoundingClientRect(), d = Math.max(r.width, r.height)*2;
+    const sp = document.createElement('span');
+    sp.className = 'rpl';
+    sp.style.cssText = `width:${d}px;height:${d}px;left:${e.clientX-r.left-d/2}px;top:${e.clientY-r.top-d/2}px`;
+    b.appendChild(sp);
+    setTimeout(()=>sp.remove(), 650);
+  });
+})();
 </script>
 </body>
 </html>
