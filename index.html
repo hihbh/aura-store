@@ -8215,5 +8215,198 @@ html[dir="rtl"] .section-title,html[dir="rtl"] .section-sub{margin-right:0!impor
   html[dir="rtl"] .card .card-body .quick-add{right:auto!important;left:14px!important}
 }
 </style>
+<style id="horusV3">
+/* ===== HORUS v3 — new account look, clearer colors, phone-safe governorate picker ===== */
+:root{--ink:#14120e;--gold:#b8914a;--gold-2:#d9b972;--paper:#faf7f0;--card:#ffffff;--ln:rgba(20,18,14,.09);--mut:#7d776b}
+
+/* ---------- ACCOUNT: light, clean, matches the store ---------- */
+#accountOverlay .product-panel{background:var(--paper)!important;background-image:none!important;color:var(--ink)!important}
+#accountOverlay .pg-top{background:rgba(250,247,240,.96)!important;border-bottom:1px solid var(--ln)!important;backdrop-filter:blur(8px)}
+#accountOverlay .pg-btn{background:#fff!important;color:var(--ink)!important;border:1px solid var(--ln)!important;box-shadow:none!important}
+#accountOverlay .pg-title h3{color:var(--ink)!important;letter-spacing:.04em}
+#accountBody{padding:16px 14px 60px!important}
+
+.nx-hero{background:linear-gradient(135deg,#1a1610 0%,#2b2214 100%)!important;border:0!important;border-radius:24px!important;padding:20px 18px!important;box-shadow:0 14px 30px rgba(20,18,14,.18)!important}
+.nx-hero::after{background:radial-gradient(circle,rgba(217,185,114,.35),transparent 68%)!important}
+.nx-ava{width:68px!important;height:68px!important;border-radius:50%!important;background:linear-gradient(135deg,var(--gold-2),var(--gold))!important;border:0!important;box-shadow:0 0 0 4px rgba(217,185,114,.25)!important}
+.nx-ava span{color:#1a1610!important;font-size:28px!important}
+.nx-id h2{color:#fff!important;font-size:20px!important}
+.nx-id p{color:#cfc6b2!important}
+.nx-tier{background:rgba(217,185,114,.16)!important;color:var(--gold-2)!important;border:1px solid rgba(217,185,114,.4)!important}
+
+.nx-stats{background:var(--card)!important;border:1px solid var(--ln)!important;border-radius:18px!important;box-shadow:0 6px 18px rgba(20,18,14,.05)}
+.nx-stat + .nx-stat{border-color:var(--ln)!important}
+html[dir="rtl"] .nx-stat + .nx-stat{border-color:var(--ln)!important}
+.nx-stat b{color:var(--ink)!important}
+.nx-stat span{color:var(--mut)!important}
+
+.nx-tabs{background:#efeadd!important;border:0!important;border-radius:16px!important;padding:4px!important}
+.nx-tab{color:#6d675a!important;border-radius:12px!important}
+.nx-tab.on{background:#fff!important;color:var(--ink)!important;box-shadow:0 3px 10px rgba(20,18,14,.12)!important;font-weight:700!important}
+.nx-tab.on svg{stroke:var(--gold)!important}
+
+.nx-card{background:var(--card)!important;border:1px solid var(--ln)!important;border-radius:20px!important;box-shadow:0 6px 18px rgba(20,18,14,.05)!important}
+.nx-h{color:var(--ink)!important;letter-spacing:1.4px!important;font-weight:700}
+.nx-h em{background:#f1ead8!important;color:var(--gold)!important}
+.nx-ring .bg{stroke:#efe7d2!important}
+.nx-ring .fg{stroke:var(--gold)!important}
+.nx-ring b{color:var(--ink)!important}
+.nx-ring small,.nx-pts p{color:var(--mut)!important}
+.nx-pts p b{color:var(--gold)!important}
+.nx-t{border-color:var(--ln)!important}
+.nx-t.on{border-color:var(--gold)!important;background:#fbf4e3!important}
+.nx-t b{color:var(--ink)!important}
+.nx-t span{color:var(--mut)!important}
+.nx-act{background:var(--card)!important;border:1px solid var(--ln)!important;color:var(--ink)!important;box-shadow:0 4px 12px rgba(20,18,14,.04)}
+.nx-act svg{stroke:var(--gold)!important}
+.nx-act u{background:var(--ink)!important;color:#fff!important}
+.nx-row{border-color:var(--ln)!important}
+.nx-row img,.nx-item img{background:#f1ece0!important}
+.nx-row .n,.nx-order .top b{color:var(--ink)!important}
+.nx-row .m,.nx-empty,.nx-order .dt,.nx-item div span,.nx-foot,.nx-note,.nx-msg,.nx-up small{color:var(--mut)!important}
+.nx-item div,.nx-addr div.t,.nx-up div{color:var(--ink)!important}
+.nx-addr div.t b,.nx-foot b{color:var(--ink)!important}
+.nx-addr .pin{background:#f6efdc!important}
+.nx-addr .pin svg{stroke:var(--gold)!important}
+.nx-x{background:#fbe9e6!important;color:#b3261e!important}
+.nx-pill{background:#f6efdc!important;color:#8a6a2c!important;border-color:rgba(184,145,74,.4)!important}
+.nx-pill.Delivered{background:#e6f2dc!important;color:#3f6b1f!important;border-color:rgba(63,107,31,.35)!important}
+.nx-pill.Cancelled,.nx-pill.Returned{background:#fbe9e6!important;color:#b3261e!important;border-color:rgba(179,38,30,.3)!important}
+.nx-step{color:#a39c8c!important}
+.nx-step::before{background:#fff!important;border-color:#d8d0bd!important}
+.nx-step::after{background:#e6dfcd!important}
+.nx-step.on{color:var(--ink)!important}
+.nx-step.on::before{background:var(--gold)!important;border-color:var(--gold)!important;box-shadow:0 0 0 3px rgba(184,145,74,.2)!important}
+.nx-step.on::after{background:var(--gold)!important}
+.nx-foot{border-top-color:var(--ln)!important}
+.nx-up{border-color:var(--ln)!important}
+.nx-up i{background:var(--gold)!important;box-shadow:0 0 0 4px rgba(184,145,74,.18)!important}
+#accountBody label.nx-l{color:var(--mut)!important}
+#accountBody .nx-in{background:#faf7f0!important;border:1.5px solid var(--ln)!important;color:var(--ink)!important;-webkit-text-fill-color:var(--ink)!important;font-size:16px!important}
+#accountBody .nx-in:focus{background:#fff!important;border-color:var(--gold)!important;box-shadow:0 0 0 4px rgba(184,145,74,.14)!important}
+#accountBody .nx-in option{background:#fff;color:var(--ink)}
+.nx-btn{background:var(--ink)!important;color:var(--gold-2)!important;box-shadow:0 10px 22px rgba(20,18,14,.2)!important;letter-spacing:1px!important}
+.nx-btn.ghost{background:#fff!important;color:var(--ink)!important;border:1.5px solid var(--ln)!important;box-shadow:none!important}
+.nx-emblem{background:#fff!important;border-color:var(--gold)!important;box-shadow:0 0 0 6px rgba(184,145,74,.12)!important}
+.nx-emblem svg{stroke:var(--gold)!important}
+.nx-login h2{color:var(--ink)!important}
+.nx-login p{color:var(--mut)!important}
+
+/* ---------- COLORS: big swatches, obvious selected state ---------- */
+.color-row{gap:12px!important;flex-wrap:wrap}
+.color-swatch{position:relative;max-width:72px!important;padding:4px!important;border-radius:14px!important;-webkit-tap-highlight-color:transparent}
+.color-swatch .swatch-dot{width:42px!important;height:42px!important;border:2px solid #fff!important;box-shadow:0 0 0 1.5px rgba(20,18,14,.22),0 3px 8px rgba(20,18,14,.15)!important}
+.color-swatch.active{background:#f6efdc}
+.color-swatch.active .swatch-dot{box-shadow:0 0 0 2.5px var(--ink),0 3px 8px rgba(20,18,14,.2)!important}
+.color-swatch.active .swatch-dot::before{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;text-shadow:0 0 3px rgba(0,0,0,.85),0 0 1px #000}
+.color-swatch .swatch-dot{position:relative}
+.color-swatch .swatch-name{font-size:11px!important;color:var(--mut)!important;max-width:70px!important}
+.color-swatch.active .swatch-name{color:var(--ink)!important;font-weight:700}
+
+/* ---------- GOVERNORATES: always-visible selection on phones ---------- */
+.gov-btn{min-height:52px;background:#fff!important;border:1.5px solid rgba(20,18,14,.14)!important;color:var(--ink)!important;-webkit-text-fill-color:var(--ink);transform:none!important}
+.gov-btn .gb-txt{color:var(--ink)!important;font-weight:600;font-size:16px}
+.gov-btn .gb-txt.ph{color:var(--mut)!important;font-weight:400}
+.gov-btn.has-val{border-color:var(--gold)!important;background:#fbf6e8!important}
+.gov-btn .gb-price{background:var(--ink)!important;color:var(--gold-2)!important}
+.gov-btn[data-target="adG"]{margin-bottom:12px}
+.gs-wrap{z-index:9999!important}
+.gs-sheet{max-height:86vh!important;max-height:86dvh!important;padding-bottom:calc(20px + env(safe-area-inset-bottom))!important;color:var(--ink)!important}
+.gs-list{grid-template-columns:1fr 1fr!important;gap:10px!important;padding-bottom:10px}
+.gs-item{min-height:62px;background:#faf7f0!important;border:1.5px solid rgba(20,18,14,.08)!important;color:var(--ink)!important;-webkit-text-fill-color:var(--ink)}
+.gs-item b{color:inherit!important;font-size:15px!important;-webkit-text-fill-color:currentColor}
+.gs-item small{color:var(--mut)!important;-webkit-text-fill-color:var(--mut)}
+.gs-item.sel{background:var(--ink)!important;border-color:var(--ink)!important;color:#fff!important;-webkit-text-fill-color:#fff}
+.gs-item.sel small{color:var(--gold-2)!important;-webkit-text-fill-color:var(--gold-2)}
+.gs-item.sel::after{color:var(--gold-2)!important}
+.gs-item{animation:none!important}
+</style>
+<script>
+/* ===== HORUS v3 — governorate picker fix (selection was lost when the option list was stale) ===== */
+(function(){
+  var GOV_TARGET='ckGov';
+  function sel(){return document.getElementById(GOV_TARGET)}
+  function ensureOpt(s,g){
+    if(!s) return;
+    var ok=false; for(var i=0;i<s.options.length;i++){ if(s.options[i].value===g){ok=true;break} }
+    if(!ok){ var o=document.createElement('option'); o.value=g; o.textContent=g; s.appendChild(o); }
+  }
+  /* checkout dropdown: rebuild from the live list, keep the current choice */
+  window.populateGovernorateOptions=function(){
+    var s=document.getElementById('ckGov'); if(!s) return;
+    var cur=s.value;
+    s.innerHTML='<option value="">Select governorate</option>'+GOVERNORATES.map(function(g){return '<option value="'+g+'">'+g+'</option>'}).join('');
+    if(cur){ ensureOpt(s,cur); s.value=cur; }
+    window.syncGovPicker();
+  };
+  /* when shipping rates arrive late from the server (common on phones), refresh the list */
+  var _sg=window.syncGovs;
+  window.syncGovs=function(){
+    if(_sg) _sg.apply(this,arguments);
+    try{ if(document.getElementById('ckGov')) window.populateGovernorateOptions(); }catch(e){}
+  };
+  window.syncGovPicker=function(){
+    document.querySelectorAll('.gov-btn').forEach(function(btn){
+      var s=document.getElementById(btn.dataset.target||'ckGov'); if(!s) return;
+      var g=s.value;
+      var price=(g&&typeof SHIPPING!=='undefined'&&SHIPPING[g]!=null)?'<span class="gb-price">'+fmtMoney(SHIPPING[g])+'</span>':'';
+      btn.classList.toggle('has-val',!!g);
+      btn.innerHTML='<span class="gb-ico">'+PIN_SVG+'</span><span class="gb-txt '+(g?'':'ph')+'">'+(g?govLabel(g):tr('selectGov'))+'</span>'+price+'<span class="gb-chev">'+CHEV_SVG+'</span>';
+    });
+  };
+  window.renderGovList=function(){
+    var q=(document.getElementById('gsInput').value||'').trim().toLowerCase();
+    var s=sel(), cur=s?s.value:'';
+    var items=GOVERNORATES.filter(function(g){return !q||g.toLowerCase().indexOf(q)>-1||(GOV_AR[g]||'').indexOf(q)>-1});
+    document.getElementById('gsList').innerHTML=items.length?items.map(function(g,i){
+      var p=(typeof SHIPPING!=='undefined'&&SHIPPING[g]!=null)?fmtMoney(SHIPPING[g]):'';
+      return '<button type="button" class="gs-item '+(g===cur?'sel':'')+'" data-g="'+g+'"><b>'+govLabel(g)+'</b><small>'+p+'</small></button>';
+    }).join(''):'<div class="gs-empty">'+tr('noGov')+'</div>';
+    document.querySelectorAll('#gsList .gs-item').forEach(function(b){b.addEventListener('click',function(){window.pickGov(b.dataset.g)})});
+  };
+  window.openGovSheet=function(target){
+    GOV_TARGET=(typeof target==='string'&&target)?target:'ckGov';
+    buildGovSheet();
+    document.getElementById('gsTitle').textContent=tr('selectGov');
+    var inp=document.getElementById('gsInput'); inp.value=''; inp.placeholder=tr('searchGov');
+    window.renderGovList();
+    requestAnimationFrame(function(){document.getElementById('govSheet').classList.add('open')});
+  };
+  window.pickGov=function(g){
+    var s=sel(); if(!s) return;
+    ensureOpt(s,g); s.value=g;
+    s.dispatchEvent(new Event('change',{bubbles:true}));
+    if(GOV_TARGET==='ckGov'){ try{renderCheckoutInvoice()}catch(e){} }
+    window.syncGovPicker(); window.renderGovList();
+    setTimeout(closeGovSheet,180);
+  };
+  /* account → addresses: swap the native <select> for the same picker */
+  function upgradeAddrSelect(){
+    var s=document.getElementById('adG');
+    if(!s||s.dataset.up) return;
+    s.dataset.up='1';
+    if(!s.querySelector('option[value=""]')){ var o=document.createElement('option'); o.value=''; o.textContent='Select governorate'; s.insertBefore(o,s.firstChild); }
+    s.value='';
+    s.style.display='none'; s.tabIndex=-1;
+    var b=document.createElement('button'); b.type='button'; b.className='gov-btn'; b.dataset.target='adG';
+    b.onclick=function(){window.openGovSheet('adG')};
+    s.parentNode.insertBefore(b,s);
+    window.syncGovPicker();
+  }
+  var body=document.getElementById('accountBody');
+  if(body){ new MutationObserver(upgradeAddrSelect).observe(body,{childList:true,subtree:true}); upgradeAddrSelect(); }
+  window.addAddr=async function(){
+    var g=(document.getElementById('adG')||{}).value||'';
+    var a=((document.getElementById('adA')||{}).value||'').trim();
+    if(!g){ showToast(LANG==='ar'?'اختر المحافظة':'Choose the governorate'); return; }
+    if(!a){ showToast(LANG==='ar'?'اكتب العنوان':'Enter the address'); return; }
+    (MY_PROFILE.addresses=MY_PROFILE.addresses||[]).push({gov:g,address:a});
+    await setData('aura:myprofile',MY_PROFILE,false);
+    renderAccountPage();
+  };
+  window.syncGovPicker();
+})();
+</script>
+
 </body>
 </html>
